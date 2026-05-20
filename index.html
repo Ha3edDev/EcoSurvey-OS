@@ -607,19 +607,8 @@
            QUESTION ANIMATION
         ========================================= */
 
-        .question-transition-out {
-            animation: questionOut .22s ease forwards;
-        }
-
         .question-transition-in {
             animation: questionIn .35s cubic-bezier(.22,1,.36,1);
-        }
-
-        @keyframes questionOut {
-            to {
-                opacity: 0;
-                transform: translateX(-12px) translateY(4px);
-            }
         }
 
         @keyframes questionIn {
@@ -1232,180 +1221,168 @@
            SHOW QUESTION
         ========================================= */
 
-        function showQuestion(index) {
+       function showQuestion(index) {
 
-            const qBox =
-                document.getElementById('question-box');
+    const qBox =
+        document.getElementById('question-box');
 
-            qBox.classList.remove(
-                'question-transition-in'
-            );
+    const q = questions[index];
 
-            qBox.classList.add(
-                'question-transition-out'
-            );
+    document.querySelector(
+        '.progress-bar'
+    ).style.width =
+        `${((index + 1) / questions.length) * 100}%`;
 
-            setTimeout(() => {
+    questionStartTime = Date.now();
 
-                const q = questions[index];
+    const badge =
+        q.required
+            ? '<span style="color:#ff4757;">*</span>'
+            : '';
 
-                document.querySelector(
-                    '.progress-bar'
-                ).style.width =
-                    `${((index + 1) / questions.length) * 100}%`;
+    let inputHtml = '';
 
-                questionStartTime = Date.now();
+    const savedAns =
+        answers[q.id] || "";
 
-                const badge =
-                    q.required
-                        ? '<span style="color:#ff4757;">*</span>'
-                        : '';
+    if (q.type === 'radio') {
 
-                let inputHtml = '';
+        q.options.forEach(opt => {
 
-                const savedAns =
-                    answers[q.id] || "";
+            const checked =
+                savedAns === opt
+                    ? 'checked'
+                    : '';
 
-                if (q.type === 'radio') {
+            inputHtml += `
+                <label class="radio-option">
 
-                    q.options.forEach(opt => {
+                    <input
+                        type="radio"
+                        name="q_${q.id}"
+                        value="${opt}"
+                        ${checked}
+                        onchange="handleRadioAnswer(${q.id}, '${opt}')"
+                    >
 
-                        const checked =
-                            savedAns === opt
-                                ? 'checked'
-                                : '';
+                    ${opt}
 
-                        inputHtml += `
-                            <label class="radio-option">
+                </label>
+            `;
+        });
 
-                                <input
-                                    type="radio"
-                                    name="q_${q.id}"
-                                    value="${opt}"
-                                    ${checked}
-                                    onchange="handleRadioAnswer(${q.id}, '${opt}')"
-                                >
+    } else if (q.type === 'text') {
 
-                                ${opt}
+        inputHtml = `
+            <textarea
+                class="form-control"
+                rows="4"
+                placeholder="پاسخ دهید..."
+                oninput="saveAns(${q.id}, this.value)"
+            >${savedAns}</textarea>
+        `;
 
-                            </label>
-                        `;
-                    });
+    } else if (q.type === 'number') {
 
-                } else if (q.type === 'text') {
+        inputHtml = `
+            <input
+                type="number"
+                class="form-control"
+                value="${savedAns}"
+                placeholder="عدد"
+                oninput="saveAns(${q.id}, this.value)"
+            >
+        `;
 
-                    inputHtml = `
-                        <textarea
-                            class="form-control"
-                            rows="4"
-                            placeholder="پاسخ دهید..."
-                            oninput="saveAns(${q.id}, this.value)"
-                        >${savedAns}</textarea>
-                    `;
+    } else if (q.type === 'range') {
 
-                } else if (q.type === 'number') {
+        const val = savedAns || "50";
 
-                    inputHtml = `
-                        <input
-                            type="number"
-                            class="form-control"
-                            value="${savedAns}"
-                            placeholder="عدد"
-                            oninput="saveAns(${q.id}, this.value)"
-                        >
-                    `;
+        if (!savedAns)
+            saveAns(q.id, val);
 
-                } else if (q.type === 'range') {
+        inputHtml = `
+            <div class="range-wrap">
 
-                    const val =
-                        savedAns || "50";
+                <div
+                    class="range-display"
+                    id="val_disp"
+                >
+                    ${val}%
+                </div>
 
-                    if (!savedAns)
-                        saveAns(q.id, val);
+                <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="${val}"
+                    oninput="
+                        document.getElementById('val_disp').innerText=this.value+'%';
+                        saveAns(${q.id}, this.value)
+                    "
+                >
 
-                    inputHtml = `
-                        <div class="range-wrap">
+            </div>
+        `;
+    }
 
-                            <div
-                                class="range-display"
-                                id="val_disp"
-                            >
-                                ${val}%
-                            </div>
+    qBox.innerHTML = `
+        <h3 style="
+            margin-bottom:20px;
+            line-height:1.7;
+            font-size:1.1rem;
+        ">
+            ${badge}
+            ${index + 1}. ${q.text}
+        </h3>
 
-                            <input
-                                type="range"
-                                min="0"
-                                max="100"
-                                value="${val}"
-                                oninput="
-                                    document.getElementById('val_disp').innerText=this.value+'%';
-                                    saveAns(${q.id}, this.value)
-                                "
-                            >
+        ${inputHtml}
+    `;
 
-                        </div>
-                    `;
-                }
+    qBox.classList.remove(
+        'question-transition-in'
+    );
 
-                qBox.innerHTML = `
-                    <h3 style="
-                        margin-bottom:20px;
-                        line-height:1.7;
-                        font-size:1.1rem;
-                    ">
-                        ${badge}
-                        ${index + 1}. ${q.text}
-                    </h3>
+    void qBox.offsetWidth;
 
-                    ${inputHtml}
-                `;
+    qBox.classList.add(
+        'question-transition-in'
+    );
 
-                qBox.classList.remove(
-                    'question-transition-out'
-                );
+    document
+        .getElementById('btn-prev')
+        .style.visibility =
+            index === 0
+                ? 'hidden'
+                : 'visible';
 
-                qBox.classList.add(
-                    'question-transition-in'
-                );
+    const nextBtn =
+        document.getElementById('btn-next');
 
-                document
-                    .getElementById('btn-prev')
-                    .style.visibility =
-                        index === 0
-                            ? 'hidden'
-                            : 'visible';
+    if (index === questions.length - 1) {
 
-                const nextBtn =
-                    document.getElementById('btn-next');
+        nextBtn.innerText =
+            config.btn_submit ||
+            "ثبت نهایی";
 
-                if (index === questions.length - 1) {
+        nextBtn.style.background =
+            "#2ed573";
 
-                    nextBtn.innerText =
-                        config.btn_submit ||
-                        "ثبت نهایی";
+        nextBtn.style.color =
+            "#fff";
 
-                    nextBtn.style.background =
-                        "#2ed573";
+    } else {
 
-                    nextBtn.style.color =
-                        "#fff";
+        nextBtn.innerText =
+            "بعدی";
 
-                } else {
+        nextBtn.style.background =
+            "";
 
-                    nextBtn.innerText =
-                        "بعدی";
-
-                    nextBtn.style.background =
-                        "";
-
-                    nextBtn.style.color =
-                        "";
-                }
-
-            }, 120);
-        }
-
+        nextBtn.style.color =
+            "";
+    }
+}
         /* =========================================
            ANSWERS
         ========================================= */
