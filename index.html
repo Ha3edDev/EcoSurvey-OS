@@ -1,410 +1,1171 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>سامانه پژوهشی EconGraph</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Survey Web App</title>
+
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
+        rel="stylesheet">
+
     <style>
         /* =========================================
-           1. تعریف متغیرهای تم‌ها (Themes System)
-           ========================================= */
-        
-        /* پیش‌فرض: نئونی (Neon/Dark) */
+           THEMES
+        ========================================= */
+
         :root {
             --font-main: 'Vazirmatn', sans-serif;
+
             --primary: #00d2d3;
             --accent: #54a0ff;
+
             --bg-body: #1e272e;
             --card-bg: rgba(47, 54, 64, 0.95);
+
             --text-main: #f5f6fa;
             --text-sub: #a4b0be;
+
             --border-color: #576574;
-            --input-bg: rgba(0,0,0,0.3);
-            --card-radius: 24px;
-            --blob-opacity: 0.25;
-            --shadow-color: rgba(0,0,0,0.5);
-            --blob-1: #00d2d3; --blob-2: #5f27cd;
+            --input-bg: rgba(0, 0, 0, 0.25);
+
+            --shadow-color: rgba(0, 0, 0, 0.4);
+
+            --blob-1: #00d2d3;
+            --blob-2: #5f27cd;
+
+            --blob-opacity: 0.3;
+
+            --radius: 24px;
         }
 
-        /* تم زرشکی (Crimson) */
         body.theme-crimson {
-            --primary: #990033; --accent: #ff4757;
-            --bg-body: #f8f9fa; --card-bg: rgba(255, 255, 255, 0.96);
-            --text-main: #2d3436; --text-sub: #636e72;
-            --border-color: #dfe6e9; --input-bg: #f1f2f6;
-            --card-radius: 24px; --blob-opacity: 0.5;
-            --shadow-color: rgba(0,0,0,0.1);
-            --blob-1: #ffcbd6; --blob-2: #e0e7ff;
+            --primary: #990033;
+            --accent: #ff4757;
+
+            --bg-body: #f8f9fa;
+            --card-bg: rgba(255, 255, 255, 0.95);
+
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+
+            --border-color: #dfe6e9;
+            --input-bg: #f1f2f6;
+
+            --shadow-color: rgba(0, 0, 0, 0.08);
+
+            --blob-1: #ffcbd6;
+            --blob-2: #e0e7ff;
         }
 
-        /* تم رسمی (Corporate) */
         body.theme-corporate {
-            --primary: #0984e3; --accent: #74b9ff;
-            --bg-body: #f1f2f6; --card-bg: #ffffff;
-            --text-main: #2d3436; --text-sub: #636e72;
-            --border-color: #dfe6e9; --input-bg: #f8f9fa;
-            --card-radius: 16px; --blob-opacity: 0.4;
-            --shadow-color: rgba(0,0,0,0.08);
-            --blob-1: #74b9ff; --blob-2: #81ecec;
+            --primary: #0984e3;
+            --accent: #74b9ff;
+
+            --bg-body: #f1f2f6;
+            --card-bg: #ffffff;
+
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+
+            --border-color: #dfe6e9;
+            --input-bg: #f8f9fa;
+
+            --shadow-color: rgba(0, 0, 0, 0.08);
+
+            --blob-1: #74b9ff;
+            --blob-2: #81ecec;
         }
 
-        /* تم مینیمال (Minimal) */
-        body.theme-minimal {
-            --primary: #000000; --accent: #333333;
-            --bg-body: #ffffff; --card-bg: #ffffff;
-            --text-main: #000000; --text-sub: #666666;
-            --border-color: #000000; --input-bg: transparent;
-            --card-radius: 0px; --blob-opacity: 0.05;
-            --shadow-color: transparent;
-            --blob-1: #bdc3c7; --blob-2: #ecf0f1;
-        }
-
-        /* تم سایبرپانک (Cyberpunk) */
-        body.theme-cyberpunk {
-            --font-main: 'Courier New', monospace;
-            --primary: #fcee0a; --accent: #ff003c;
-            --bg-body: #050505; --card-bg: #000000;
-            --text-main: #fcee0a; --text-sub: #00d2d3;
-            --border-color: #fcee0a; --input-bg: #111;
-            --card-radius: 0px; --blob-opacity: 0.2;
-            --shadow-color: rgba(255, 0, 60, 0.2);
-            --blob-1: #ff003c; --blob-2: #00d2d3;
-        }
-
-        /* تم طبیعت (Nature) */
         body.theme-nature {
-            --primary: #2d6a4f; --accent: #d4a373;
-            --bg-body: #eaf4f4; --card-bg: rgba(255, 255, 255, 0.9);
-            --text-main: #1b4332; --text-sub: #52796f;
-            --border-color: #b7e4c7; --input-bg: #f0fff4;
-            --card-radius: 30px; --blob-opacity: 0.7;
-            --shadow-color: rgba(45, 106, 79, 0.1);
-            --blob-1: #95d5b2; --blob-2: #d8f3dc;
-        }
+            --primary: #2d6a4f;
+            --accent: #95d5b2;
 
-        /* تم یخی (Frost) */
-        body.theme-frost {
-            --primary: #ffffff; --accent: #a2d2ff;
-            --bg-body: #a29bfe; --card-bg: rgba(255, 255, 255, 0.25);
-            --text-main: #fff; --text-sub: #dfe6e9;
-            --border-color: rgba(255,255,255,0.4); --input-bg: rgba(255,255,255,0.15);
-            --card-radius: 24px; --blob-opacity: 0.5;
-            --shadow-color: rgba(31, 38, 135, 0.37);
-            --blob-1: #fd79a8; --blob-2: #0984e3;
+            --bg-body: #eaf4f4;
+            --card-bg: rgba(255, 255, 255, 0.95);
+
+            --text-main: #1b4332;
+            --text-sub: #52796f;
+
+            --border-color: #b7e4c7;
+            --input-bg: #f0fff4;
+
+            --shadow-color: rgba(45, 106, 79, 0.08);
+
+            --blob-1: #95d5b2;
+            --blob-2: #d8f3dc;
         }
 
         /* =========================================
-           2. استایل‌های اصلی (Core CSS)
-           ========================================= */
+           GLOBAL
+        ========================================= */
 
-        * { box-sizing: border-box; outline: none; }
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
 
         body {
+            margin: 0;
+            min-height: 100vh;
+
+            padding: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            overflow-x: hidden;
+
+            background: var(--bg-body);
+
             font-family: var(--font-main);
-            background-color: var(--bg-body);
+
             color: var(--text-main);
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; margin: 0; 
-            padding: 25px; /* بهینه‌سازی موبایل: فاصله از لبه‌ها */
-            overflow-x: hidden; flex-direction: column;
-            transition: background-color 0.5s ease;
+
+            transition: 0.4s ease;
         }
 
         .background-animation {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            overflow: hidden; pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
         }
+
         .blob {
-            position: absolute; border-radius: 50%; filter: blur(80px); 
-            opacity: var(--blob-opacity); 
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: var(--blob-opacity);
             animation: float 25s infinite alternate linear;
         }
-        .b1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--blob-1); }
-        .b2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: var(--blob-2); animation-delay: -5s; }
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, -30px); } }
 
-        /* کارت اصلی */
+        .blob.one {
+            top: -10%;
+            left: -10%;
+            background: var(--blob-1);
+        }
+
+        .blob.two {
+            bottom: -10%;
+            right: -10%;
+            background: var(--blob-2);
+        }
+
+        @keyframes float {
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(30px, -30px);
+            }
+        }
+
         .container {
-            width: 100%; max-width: 420px; /* عرض بهینه */
+            width: 100%;
+            max-width: 430px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: var(--radius);
+
             background: var(--card-bg);
+
             border: 1px solid var(--border-color);
+
+            backdrop-filter: blur(12px);
+
             padding: 35px 25px;
-            border-radius: var(--card-radius);
+
             box-shadow: 0 25px 50px var(--shadow-color);
-            position: relative; 
-            overflow: hidden; /* برش گوشه‌های نوار پیشرفت */
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            display: flex; flex-direction: column;
-            transition: all 0.5s ease;
+
+            transition: 0.4s ease;
         }
 
-        /* نوار پیشرفت */
-        .progress-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: rgba(128,128,128,0.1); z-index: 10; }
+        .progress-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            width: 100%;
+            height: 5px;
+
+            background: rgba(255, 255, 255, 0.05);
+        }
+
         .progress-bar {
-            height: 100%; width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 0 10px var(--primary);
+            height: 100%;
+            width: 0%;
+
+            background: linear-gradient(90deg,
+                    var(--primary),
+                    var(--accent));
+
+            transition: width 0.4s ease;
         }
 
-        h1 { margin: 10px 0; font-size: 1.6rem; color: var(--text-main); text-align: center; font-weight:800; text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .subtitle { color: var(--text-sub); font-size: 0.9rem; margin-bottom: 30px; text-align: center; line-height: 1.6;}
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
+        }
 
-        /* ورودی‌ها */
+        h1 {
+            text-align: center;
+            font-size: 1.7rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-sub);
+
+            line-height: 1.8;
+
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
         .form-control {
-            background: var(--input-bg); border: 2px solid var(--border-color);
-            color: var(--text-main); padding: 14px; border-radius: 14px; width: 100%; margin-top: 10px;
-            font-family: inherit; font-size: 1rem; transition: 0.3s;
-        }
-        .form-control:focus { border-color: var(--primary); }
-        .form-control::placeholder { color: var(--text-sub); opacity: 0.5; }
+            width: 100%;
 
-        /* گزینه‌ها */
+            border: 2px solid var(--border-color);
+
+            background: var(--input-bg);
+
+            color: var(--text-main);
+
+            border-radius: 14px;
+
+            padding: 14px;
+
+            font-family: inherit;
+            font-size: 1rem;
+
+            transition: 0.25s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-sub);
+        }
+
         .radio-option {
-            background: var(--input-bg); border: 2px solid var(--border-color);
-            color: var(--text-main); padding: 14px; border-radius: 14px; width: 100%;
-            margin-bottom: 12px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; font-weight: 500;
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 14px;
+
+            border-radius: 14px;
+
+            border: 2px solid var(--border-color);
+
+            margin-bottom: 12px;
+
+            cursor: pointer;
+
+            background: var(--input-bg);
+
+            transition: 0.25s ease;
         }
-        .radio-option:active { transform: scale(0.98); }
-        .radio-option:has(input:checked) { 
-            border-color: var(--primary); color: var(--primary); 
-            background: rgba(128,128,128,0.05); font-weight: bold;
-            box-shadow: inset 0 0 0 1px var(--primary);
+
+        .radio-option:hover {
+            transform: translateY(-2px);
         }
-        .radio-option input { display: none; }
 
-        /* اسلایدر */
-        .range-wrap { padding: 20px 0; }
-        input[type="range"] { width: 100%; accent-color: var(--primary); height: 6px; background: var(--border-color); border-radius: 5px; cursor: pointer;}
-        .range-display { text-align: center; font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 10px; }
-
-        /* دکمه‌ها */
-        .nav-buttons { display: flex; gap: 12px; margin-top: 30px; }
-        button { padding: 15px; border-radius: 14px; border: none; width: 100%; font-family: inherit; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.2s; }
-        .btn-primary { background: var(--primary); color: #fff; flex: 2; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        
-        /* تنظیم رنگ متن دکمه برای تم‌های تیره/روشن */
-        body:not([class]) .btn-primary, body.theme-cyberpunk .btn-primary { color: #1e272e; } 
-        body.theme-crimson .btn-primary, body.theme-corporate .btn-primary, body.theme-nature .btn-primary { color: #fff; }
-        body.theme-frost .btn-primary { color: #6c5ce7; background: rgba(255,255,255,0.9); }
-
-        .btn-secondary { background: transparent; border: 2px solid var(--border-color); color: var(--text-sub); flex: 1; }
-
-        /* سوشال مدیا */
-        .social-links { display: flex; gap: 10px; justify-content: center; margin-top: 25px; flex-wrap: wrap;}
-        .social-btn {
-            background: rgba(128,128,128,0.1); border: 1px solid var(--border-color); 
-            color: var(--text-main); padding: 10px 20px; border-radius: 12px; text-decoration: none; 
-            font-size: 0.9rem; transition: 0.2s; display: flex; align-items: center; gap: 8px;
+        .radio-option input {
+            display: none;
         }
-        .social-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
 
-        /* امضا */
+        .radio-option:has(input:checked) {
+            border-color: var(--primary);
+
+            color: var(--primary);
+
+            font-weight: bold;
+
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+
+            margin-top: 25px;
+        }
+
+        button {
+            border: none;
+
+            cursor: pointer;
+
+            border-radius: 14px;
+
+            padding: 15px;
+
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: bold;
+
+            transition: 0.25s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            flex: 2;
+
+            background: var(--primary);
+
+            color: #fff;
+        }
+
+        .btn-secondary {
+            flex: 1;
+
+            background: transparent;
+
+            border: 2px solid var(--border-color);
+
+            color: var(--text-sub);
+        }
+
+        .screen {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loader {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary);
+
+            animation: spin 0.8s linear infinite;
+
+            margin: auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =========================================
+           THEME SELECTOR
+        ========================================= */
+
+        .theme-selector {
+            margin-top: 25px;
+        }
+
+        .theme-title {
+            text-align: center;
+
+            margin-bottom: 14px;
+
+            color: var(--text-sub);
+
+            font-size: 0.9rem;
+        }
+
+        .theme-options {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .theme-btn {
+            width: 28px;
+            height: 28px;
+
+            border-radius: 50%;
+
+            border: 3px solid transparent;
+
+            cursor: pointer;
+        }
+
+        .theme-btn.active {
+            border-color: #fff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        }
+
+        .theme-btn.neon {
+            background: linear-gradient(135deg,
+                    #00d2d3,
+                    #5f27cd);
+        }
+
+        .theme-btn.crimson {
+            background: linear-gradient(135deg,
+                    #990033,
+                    #ff4757);
+        }
+
+        .theme-btn.corporate {
+            background: linear-gradient(135deg,
+                    #0984e3,
+                    #74b9ff);
+        }
+
+        .theme-btn.nature {
+            background: linear-gradient(135deg,
+                    #2d6a4f,
+                    #95d5b2);
+        }
+
+        /* =========================================
+           REFERRAL
+        ========================================= */
+
+        .referral-box {
+            margin-top: 25px;
+            text-align: right;
+        }
+
+        .referral-box label {
+            display: block;
+            margin-bottom: 10px;
+
+            color: var(--text-sub);
+        }
+
+        .referral-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .copy-btn {
+            min-width: 90px;
+
+            background: var(--primary);
+
+            color: white;
+        }
+
         .signature {
-            width: 100%; margin-top: 30px; margin-bottom: 10px;
-            font-size: 0.8rem; color: var(--text-sub); opacity: 0.7;
-            text-align: center; font-weight: 300; letter-spacing: 0.5px;
+            margin-top: 25px;
+
+            color: var(--text-sub);
+
+            font-size: 0.8rem;
         }
-        .signature span { font-weight: bold; color: var(--primary); opacity: 1; }
 
-        /* استایل خاص برای مینیمال */
-        body.theme-minimal .container { border:none; box-shadow:none; border-bottom: 2px solid #000; border-radius:0; padding-left:0; padding-right:0; width:100%; background:transparent;}
-        body.theme-minimal .btn-primary { border: 2px solid #000; border-radius:0; background:#000; color:#fff;}
-        body.theme-minimal .form-control, body.theme-minimal .radio-option { border:none; border-bottom:1px solid #ddd; border-radius:0; background:transparent;}
+        .signature span {
+            color: var(--primary);
+            font-weight: bold;
+        }
 
-        /* لودینگ و انیمیشن */
-        .hidden { display: none !important; }
-        .fade-enter { animation: fadeEnter 0.4s ease forwards; opacity: 0; transform: translateY(10px); }
-        @keyframes fadeEnter { to { opacity: 1; transform: translateY(0); } }
-        .loader { width: 40px; height: 40px; border: 4px solid var(--border-color); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: auto; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* موبایل */
         @media (max-width: 480px) {
-            body { padding: 15px; } 
-            .container { padding: 25px 20px; } 
+
+            body {
+                padding: 14px;
+            }
+
+            .container {
+                padding: 25px 18px;
+            }
+
+            .referral-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="background-animation"><div class="blob b1"></div><div class="blob b2"></div></div>
-
-    <div class="container">
-        <div class="progress-wrapper"><div id="progress-bar" class="progress-bar"></div></div>
-        <div id="loader" class="loader"></div>
-
-        <!-- صفحه شروع -->
-        <div id="start-screen" class="hidden fade-enter">
-            <h1 id="site-title">...</h1>
-            <p id="site-subtitle" class="subtitle">...</p>
-            <div style="text-align: right;">
-                <label style="color:var(--text-main); margin-bottom:5px; display:block; font-size:0.9rem;">نام شما</label>
-                <input type="text" id="user-name" class="form-control" placeholder="وارد کنید...">
-                <br>
-                <label style="color:var(--text-main); margin-bottom:5px; display:block; font-size:0.9rem;">سن</label>
-                <input type="number" id="user-age" class="form-control" placeholder="مثال: 22">
-            </div>
-            <div class="nav-buttons"><button class="btn-primary" id="btn-start" onclick="startQuiz()">شروع</button></div>
-        </div>
-
-        <!-- صفحه سوالات -->
-        <div id="quiz-screen" class="hidden">
-            <div id="question-box" class="fade-enter"></div>
-            <div class="nav-buttons">
-                <button class="btn-secondary" id="btn-prev" onclick="prevStep()">قبلی</button>
-                <button class="btn-primary" id="btn-next" onclick="nextStep()">بعدی</button>
-            </div>
-        </div>
-
-        <!-- صفحه پایان / تکراری -->
-        <div id="end-screen" class="hidden fade-enter" style="text-align: center; padding-top: 20px;">
-            <div id="end-emoji" style="font-size: 4rem; margin-bottom: 10px;">🎉</div>
-            <h2 id="end-title" style="color: var(--primary);">ثبت شد!</h2>
-            <p id="end-msg" style="color: var(--text-sub);">اطلاعات ذخیره شد.</p>
-            <div id="social-area" class="social-links hidden"></div>
-        </div>
+    <div class="background-animation">
+        <div class="blob one"></div>
+        <div class="blob two"></div>
     </div>
 
-    <div class="signature">Designed for <span>Economic Research</span> © 2025</div>
+    <div class="container">
+
+        <div class="progress-wrapper">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+
+        <div id="loader" class="loader"></div>
+
+        <!-- START SCREEN -->
+
+        <div id="start-screen" class="screen hidden">
+
+            <h1 id="site-title">سامانه نظرسنجی</h1>
+
+            <p id="site-subtitle" class="subtitle">
+                لطفاً اطلاعات خود را وارد کنید
+            </p>
+
+            <div class="form-group">
+                <label class="label">نام</label>
+
+                <input type="text"
+                    id="user-name"
+                    class="form-control"
+                    placeholder="نام شما">
+            </div>
+
+            <div class="form-group">
+                <label class="label">سن</label>
+
+                <input type="number"
+                    id="user-age"
+                    class="form-control"
+                    placeholder="مثلاً 22">
+            </div>
+
+            <!-- THEMES -->
+
+            <div class="theme-selector">
+
+                <div class="theme-title">
+                    انتخاب تم
+                </div>
+
+                <div class="theme-options">
+
+                    <button class="theme-btn neon"
+                        onclick="changeTheme('neon')"></button>
+
+                    <button class="theme-btn crimson"
+                        onclick="changeTheme('crimson')"></button>
+
+                    <button class="theme-btn corporate"
+                        onclick="changeTheme('corporate')"></button>
+
+                    <button class="theme-btn nature"
+                        onclick="changeTheme('nature')"></button>
+
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-primary"
+                    onclick="startQuiz()">
+                    شروع آزمون
+                </button>
+            </div>
+
+        </div>
+
+        <!-- QUIZ SCREEN -->
+
+        <div id="quiz-screen" class="screen hidden">
+
+            <div id="question-box"></div>
+
+            <div class="nav-buttons">
+
+                <button class="btn-secondary"
+                    id="btn-prev"
+                    onclick="prevStep()">
+                    قبلی
+                </button>
+
+                <button class="btn-primary"
+                    id="btn-next"
+                    onclick="nextStep()">
+                    بعدی
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- END SCREEN -->
+
+        <div id="end-screen"
+            class="screen hidden"
+            style="text-align:center;">
+
+            <div style="font-size:4rem;">
+                🎉
+            </div>
+
+            <h2 style="color:var(--primary);">
+                ثبت شد
+            </h2>
+
+            <p style="color:var(--text-sub);">
+                پاسخ‌های شما با موفقیت ذخیره شد.
+            </p>
+
+            <!-- REFERRAL -->
+
+            <div class="referral-box">
+
+                <label>
+                    لینک دعوت اختصاصی شما
+                </label>
+
+                <div class="referral-row">
+
+                    <input type="text"
+                        id="referral-link"
+                        class="form-control"
+                        readonly>
+
+                    <button class="copy-btn"
+                        onclick="copyReferralLink()">
+                        کپی
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="signature">
+        Designed for <span>Economic Research</span>
+    </div>
 
     <script>
-        // ******************************************************
-        // 👇 لینک وب‌اپلیکیشن خودت رو اینجا جایگزین کن 👇
-        const API_URL = "https://script.google.com/macros/s/AKfycbzxljrF2WvzSJ0xFtxEoFh8Y5QSwg-Kp2LxO-nSJzzoZ10JzYdqcWk3g0vwrHg4Dru0AA/exec";
-        // ******************************************************
 
-        let questions = [], config = {}, answers = {}, currentStep = 0, timeLogs = {}; 
-        const urlParams = new URLSearchParams(window.location.search);
-        const sourceRef = urlParams.get('ref') || 'direct'; 
+        /* =========================================
+           CONFIG
+        ========================================= */
 
-        window.onload = async () => {
-            try {
-                const res = await fetch(API_URL);
-                const data = await res.json();
-                document.getElementById('loader').classList.add('hidden');
-                
-                if (data.config) {
-                    config = data.config;
-                    
-                    // اعمال تم
-                    if (config.theme && config.theme !== 'neon') {
-                        document.body.classList.add(`theme-${config.theme}`);
-                    }
+        const API_URL =
+            "YOUR_GOOGLE_APPS_SCRIPT_URL";
 
-                    // لاجیک تکراری / ضد اسپم
-                    const completedQuizzes = JSON.parse(localStorage.getItem('completed_quizzes') || "[]");
-                    if (config.title && completedQuizzes.includes(config.title)) {
-                        document.getElementById('start-screen').classList.add('hidden');
-                        document.getElementById('end-screen').classList.remove('hidden');
-                        
-                        const dupMsg = config.msg_duplicate || `شما قبلاً در آزمون <b>"${config.title}"</b> شرکت کرده‌اید.`;
-                        const dupEmoji = config.emoji_duplicate || "✋";
+        /* =========================================
+           STATE
+        ========================================= */
 
-                        document.getElementById('end-title').innerText = "قبلاً شرکت کرده‌اید";
-                        document.getElementById('end-msg').innerHTML = dupMsg;
-                        document.getElementById('end-emoji').innerText = dupEmoji;
-                        renderSocialLinks();
-                        return;
-                    }
+        const state = {
 
-                    if(config.title) document.getElementById('site-title').innerText = config.title;
-                    if(config.subtitle) document.getElementById('site-subtitle').innerText = config.subtitle;
-                    if(config.btn_start) document.getElementById('btn-start').innerText = config.btn_start;
-                    if(config.success_msg) document.getElementById('end-msg').innerText = config.success_msg;
-                    if(config.end_emoji) document.getElementById('end-emoji').innerText = config.end_emoji;
-                }
+            currentScreen: "start",
 
-                if (!data.active) {
-                    document.querySelector('.container').innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-main);"><h2>⛔ آزمون غیرفعال است</h2></div>`;
-                    return;
-                }
-                questions = data.questions;
-                document.getElementById('start-screen').classList.remove('hidden');
-            } catch (e) { console.error(e); alert("خطا در اتصال."); }
+            currentQuestion: 0,
+
+            questions: [],
+
+            answers: {},
+
+            timeLogs: {},
+
+            config: {},
+
+            currentTheme: "neon"
+
         };
 
-        function startQuiz() {
-            const name = document.getElementById('user-name').value;
-            const age = document.getElementById('user-age').value;
-            if(!name || !age) return alert("لطفا نام و سن را تکمیل کنید");
-            document.getElementById('start-screen').classList.add('hidden');
-            document.getElementById('quiz-screen').classList.remove('hidden');
-            currentStep = 0; showQuestion(currentStep);
+        let questionStartTime = 0;
+
+        /* =========================================
+           DOM
+        ========================================= */
+
+        const screens = {
+
+            start:
+                document.getElementById("start-screen"),
+
+            quiz:
+                document.getElementById("quiz-screen"),
+
+            end:
+                document.getElementById("end-screen")
+
+        };
+
+        /* =========================================
+           INIT
+        ========================================= */
+
+        window.addEventListener(
+            "DOMContentLoaded",
+            initApp
+        );
+
+        async function initApp() {
+
+            loadTheme();
+
+            try {
+
+                const response =
+                    await fetch(API_URL);
+
+                const data =
+                    await response.json();
+
+                state.questions =
+                    data.questions || [];
+
+                state.config =
+                    data.config || {};
+
+                initializeUI();
+
+                setScreen("start");
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert("خطا در اتصال");
+
+            } finally {
+
+                document.getElementById("loader")
+                    .classList.add("hidden");
+
+            }
         }
 
-        function showQuestion(index) {
-            const qBox = document.getElementById('question-box');
-            const q = questions[index];
-            document.querySelector('.progress-bar').style.width = `${((index + 1) / questions.length) * 100}%`;
+        /* =========================================
+           UI
+        ========================================= */
+
+        function setScreen(screenName) {
+
+            Object.values(screens)
+                .forEach(screen => {
+
+                    screen.classList.add("hidden");
+
+                });
+
+            screens[screenName]
+                .classList.remove("hidden");
+
+            state.currentScreen = screenName;
+        }
+
+        function initializeUI() {
+
+            const config = state.config;
+
+            if (config.title) {
+
+                document.getElementById("site-title")
+                    .innerText = config.title;
+            }
+
+            if (config.subtitle) {
+
+                document.getElementById("site-subtitle")
+                    .innerText = config.subtitle;
+            }
+        }
+
+        /* =========================================
+           THEMES
+        ========================================= */
+
+        function changeTheme(themeName) {
+
+            document.body.className = "";
+
+            if (themeName !== "neon") {
+
+                document.body.classList.add(
+                    `theme-${themeName}`
+                );
+            }
+
+            localStorage.setItem(
+                "survey_theme",
+                themeName
+            );
+
+            state.currentTheme = themeName;
+
+            updateThemeButtons(themeName);
+        }
+
+        function loadTheme() {
+
+            const savedTheme =
+                localStorage.getItem("survey_theme")
+                || "neon";
+
+            changeTheme(savedTheme);
+        }
+
+        function updateThemeButtons(activeTheme) {
+
+            document.querySelectorAll(".theme-btn")
+                .forEach(btn => {
+
+                    btn.classList.remove("active");
+
+                    if (btn.classList.contains(activeTheme)) {
+
+                        btn.classList.add("active");
+                    }
+                });
+        }
+
+        /* =========================================
+           QUIZ
+        ========================================= */
+
+        function startQuiz() {
+
+            const name =
+                document.getElementById("user-name")
+                    .value.trim();
+
+            const age =
+                document.getElementById("user-age")
+                    .value.trim();
+
+            if (!name || !age) {
+
+                alert("لطفاً اطلاعات را کامل کنید");
+
+                return;
+            }
+
+            state.currentQuestion = 0;
+
+            setScreen("quiz");
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+
+            const question =
+                state.questions[state.currentQuestion];
+
+            const questionBox =
+                document.getElementById("question-box");
+
+            updateProgress();
+
             questionStartTime = Date.now();
 
-            const badge = q.required ? '<span style="color:#ff4757; margin-right:5px">*</span>' : '';
-            let inputHtml = '';
-            const savedAns = answers[q.id] || "";
+            const savedAnswer =
+                state.answers[question.id] || "";
 
-            if (q.type === 'radio') {
-                q.options.forEach(opt => {
-                    const checked = savedAns === opt ? 'checked' : '';
-                    inputHtml += `<label class="radio-option"><input type="radio" name="q_${q.id}" value="${opt}" ${checked} onchange="saveAns(${q.id}, '${opt}')">${opt}</label>`;
-                });
-            } else if (q.type === 'text') {
-                inputHtml = `<textarea class="form-control" rows="4" placeholder="پاسخ دهید..." oninput="saveAns(${q.id}, this.value)">${savedAns}</textarea>`;
-            } else if (q.type === 'number') {
-                inputHtml = `<input type="number" class="form-control" value="${savedAns}" placeholder="عدد" oninput="saveAns(${q.id}, this.value)">`;
-            } else if (q.type === 'range') {
-                const val = savedAns || "50"; if(!savedAns) saveAns(q.id, val);
-                inputHtml = `<div class="range-wrap"><div class="range-display" id="val_disp">${val}%</div><input type="range" min="0" max="100" value="${val}" oninput="document.getElementById('val_disp').innerText=this.value+'%'; saveAns(${q.id}, this.value)"></div>`;
+            let optionsHTML = "";
+
+            if (question.type === "radio") {
+
+                optionsHTML =
+                    question.options.map(option => {
+
+                        const checked =
+                            savedAnswer === option
+                                ? "checked"
+                                : "";
+
+                        return `
+                            <label class="radio-option">
+
+                                <input
+                                    type="radio"
+                                    name="question"
+                                    value="${option}"
+                                    ${checked}
+                                    onchange="saveAnswer('${question.id}','${option}')"
+                                >
+
+                                ${option}
+
+                            </label>
+                        `;
+
+                    }).join("");
             }
 
-            qBox.innerHTML = `<h3 style="margin-bottom:20px; line-height:1.5; font-size:1.1rem; color:var(--text-main);">${badge} ${index + 1}. ${q.text}</h3>${inputHtml}`;
-            qBox.classList.remove('fade-enter'); void qBox.offsetWidth; qBox.classList.add('fade-enter');
+            if (question.type === "text") {
 
-            document.getElementById('btn-prev').style.visibility = index === 0 ? 'hidden' : 'visible';
-            const nextBtn = document.getElementById('btn-next');
-            if (index === questions.length - 1) {
-                nextBtn.innerText = config.btn_submit || "ثبت نهایی";
-                nextBtn.style.background = "#2ed573"; nextBtn.style.color = "#fff";
-            } else {
-                nextBtn.innerText = "بعدی"; nextBtn.style.background = ""; nextBtn.style.color = "";
+                optionsHTML = `
+                    <textarea
+                        class="form-control"
+                        rows="4"
+                        placeholder="پاسخ خود را وارد کنید..."
+                        oninput="saveAnswer('${question.id}', this.value)"
+                    >${savedAnswer}</textarea>
+                `;
             }
+
+            if (question.type === "number") {
+
+                optionsHTML = `
+                    <input
+                        type="number"
+                        class="form-control"
+                        value="${savedAnswer}"
+                        placeholder="عدد"
+                        oninput="saveAnswer('${question.id}', this.value)"
+                    >
+                `;
+            }
+
+            questionBox.innerHTML = `
+
+                <h3 style="line-height:1.8; margin-bottom:20px;">
+
+                    ${state.currentQuestion + 1}.
+                    ${question.text}
+
+                </h3>
+
+                ${optionsHTML}
+            `;
+
+            updateNavigationButtons();
         }
 
-        function saveAns(qid, val) { answers[qid] = val; }
+        function saveAnswer(questionId, value) {
+
+            state.answers[questionId] = value;
+        }
+
         function nextStep() {
-            const q = questions[currentStep];
-            if (q.required && !answers[q.id]) { alert("پاسخ الزامی است."); return; }
-            const qId = questions[currentStep].id;
-            timeLogs[qId] = ((Date.now() - questionStartTime) / 1000).toFixed(1);
-            if (currentStep === questions.length - 1) submitData(); else { currentStep++; showQuestion(currentStep); }
+
+            const question =
+                state.questions[state.currentQuestion];
+
+            if (
+                question.required &&
+                !state.answers[question.id]
+            ) {
+
+                alert("این سوال الزامی است");
+
+                return;
+            }
+
+            state.timeLogs[question.id] =
+                (
+                    (Date.now() - questionStartTime)
+                    / 1000
+                ).toFixed(1);
+
+            if (
+                state.currentQuestion >=
+                state.questions.length - 1
+            ) {
+
+                submitData();
+
+                return;
+            }
+
+            state.currentQuestion++;
+
+            showQuestion();
         }
-        function prevStep() { if (currentStep > 0) { currentStep--; showQuestion(currentStep); } }
+
+        function prevStep() {
+
+            if (state.currentQuestion <= 0)
+                return;
+
+            state.currentQuestion--;
+
+            showQuestion();
+        }
+
+        function updateNavigationButtons() {
+
+            const prevBtn =
+                document.getElementById("btn-prev");
+
+            const nextBtn =
+                document.getElementById("btn-next");
+
+            prevBtn.style.visibility =
+                state.currentQuestion === 0
+                    ? "hidden"
+                    : "visible";
+
+            nextBtn.innerText =
+                state.currentQuestion ===
+                    state.questions.length - 1
+                    ? "ثبت نهایی"
+                    : "بعدی";
+        }
+
+        function updateProgress() {
+
+            const progress =
+                (
+                    (state.currentQuestion + 1)
+                    / state.questions.length
+                ) * 100;
+
+            document.getElementById("progress-bar")
+                .style.width = `${progress}%`;
+        }
+
+        /* =========================================
+           SUBMIT
+        ========================================= */
 
         async function submitData() {
-            const btn = document.getElementById('btn-next'); btn.disabled = true; btn.innerText = "ارسال...";
-            const answersPayload = Object.keys(answers).map(k => ({ qId: k, answer: answers[k], time: timeLogs[k] || 0 }));
-            const payload = { name: document.getElementById('user-name').value, age: document.getElementById('user-age').value, source: sourceRef, answers: answersPayload };
+
+            const submitBtn =
+                document.getElementById("btn-next");
+
+            submitBtn.disabled = true;
+
+            submitBtn.innerText =
+                "در حال ارسال...";
+
+            const payload = {
+
+                name:
+                    document.getElementById("user-name")
+                        .value,
+
+                age:
+                    document.getElementById("user-age")
+                        .value,
+
+                ref:
+                    new URLSearchParams(
+                        window.location.search
+                    ).get("ref") || "direct",
+
+                theme:
+                    state.currentTheme,
+
+                answers:
+                    Object.entries(state.answers)
+                        .map(([qId, answer]) => ({
+
+                            qId,
+
+                            answer,
+
+                            time:
+                                state.timeLogs[qId]
+                                || 0
+                        }))
+            };
+
             try {
-                await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
-                const completedQuizzes = JSON.parse(localStorage.getItem('completed_quizzes') || "[]");
-                if (config.title && !completedQuizzes.includes(config.title)) {
-                    completedQuizzes.push(config.title); localStorage.setItem('completed_quizzes', JSON.stringify(completedQuizzes));
-                }
-                document.getElementById('quiz-screen').classList.add('hidden');
-                document.getElementById('end-screen').classList.remove('hidden');
-                renderSocialLinks();
-            } catch (e) { alert("خطا در ارسال."); btn.disabled = false; btn.innerText = "تلاش مجدد"; }
+
+                await fetch(API_URL, {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(payload)
+
+                });
+
+                generateReferralLink();
+
+                setScreen("end");
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert("خطا در ارسال اطلاعات");
+
+                submitBtn.disabled = false;
+
+                submitBtn.innerText =
+                    "تلاش مجدد";
+            }
         }
 
-        function renderSocialLinks() {
-            const container = document.getElementById('social-area'); let html = '';
-            if(config.link_twitter) html += `<a href="${config.link_twitter}" target="_blank" class="social-btn">Twitter</a>`;
-            if(config.link_telegram) html += `<a href="${config.link_telegram}" target="_blank" class="social-btn">Telegram</a>`;
-            if(config.link_linkedin) html += `<a href="${config.link_linkedin}" target="_blank" class="social-btn">LinkedIn</a>`;
-            if(html) { container.innerHTML = html; container.classList.remove('hidden'); }
+        /* =========================================
+           REFERRAL
+        ========================================= */
+
+        function generateReferralLink() {
+
+            const name =
+                document.getElementById("user-name")
+                    .value
+                    .trim();
+
+            const referralLink =
+                `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(name)}`;
+
+            document.getElementById("referral-link")
+                .value = referralLink;
         }
+
+        async function copyReferralLink() {
+
+            const input =
+                document.getElementById("referral-link");
+
+            try {
+
+                await navigator.clipboard
+                    .writeText(input.value);
+
+                alert("لینک کپی شد");
+
+            } catch {
+
+                input.select();
+
+                document.execCommand("copy");
+
+                alert("لینک کپی شد");
+            }
+        }
+
     </script>
+
 </body>
+
 </html>
