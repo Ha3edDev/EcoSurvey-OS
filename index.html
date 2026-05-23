@@ -2,175 +2,223 @@
 <html lang="fa" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8" />
+
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <title>Survey Web App</title>
+    <title>سامانه پژوهشی EconGraph</title>
 
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
         rel="stylesheet">
 
     <style>
-        /* =========================================
-           THEMES
-        ========================================= */
+
+        /* =========================================================
+           THEME SYSTEM
+        ========================================================= */
 
         :root {
+
             --font-main: 'Vazirmatn', sans-serif;
 
             --primary: #00d2d3;
-            --accent: #54a0ff;
+            --accent: #5f27cd;
 
-            --bg-body: #1e272e;
-            --card-bg: rgba(47, 54, 64, 0.95);
+            --bg-body: #0f1720;
+
+            --card-bg:
+                rgba(20, 25, 35, 0.78);
+
+            --card-border:
+                rgba(255,255,255,0.08);
 
             --text-main: #f5f6fa;
             --text-sub: #a4b0be;
 
-            --border-color: #576574;
-            --input-bg: rgba(0, 0, 0, 0.25);
+            --input-bg:
+                rgba(255,255,255,0.04);
 
-            --shadow-color: rgba(0, 0, 0, 0.4);
+            --border-color:
+                rgba(255,255,255,0.08);
+
+            --shadow:
+                0 25px 50px rgba(0,0,0,0.45);
 
             --blob-1: #00d2d3;
             --blob-2: #5f27cd;
 
-            --blob-opacity: 0.3;
-
-            --radius: 24px;
+            --radius: 28px;
         }
 
         body.theme-crimson {
-            --primary: #990033;
-            --accent: #ff4757;
 
-            --bg-body: #f8f9fa;
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --primary: #ff4757;
+            --accent: #990033;
 
-            --text-main: #2d3436;
-            --text-sub: #636e72;
+            --bg-body: #1c1114;
 
-            --border-color: #dfe6e9;
-            --input-bg: #f1f2f6;
+            --card-bg:
+                rgba(40,20,25,0.78);
 
-            --shadow-color: rgba(0, 0, 0, 0.08);
-
-            --blob-1: #ffcbd6;
-            --blob-2: #e0e7ff;
+            --blob-1: #ff4757;
+            --blob-2: #ff6b81;
         }
 
         body.theme-corporate {
+
             --primary: #0984e3;
             --accent: #74b9ff;
 
-            --bg-body: #f1f2f6;
-            --card-bg: #ffffff;
+            --bg-body: #0f172a;
 
-            --text-main: #2d3436;
-            --text-sub: #636e72;
+            --card-bg:
+                rgba(15,23,42,0.82);
 
-            --border-color: #dfe6e9;
-            --input-bg: #f8f9fa;
-
-            --shadow-color: rgba(0, 0, 0, 0.08);
-
-            --blob-1: #74b9ff;
-            --blob-2: #81ecec;
+            --blob-1: #0984e3;
+            --blob-2: #74b9ff;
         }
 
         body.theme-nature {
+
             --primary: #2d6a4f;
             --accent: #95d5b2;
 
-            --bg-body: #eaf4f4;
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --bg-body: #0b1913;
 
-            --text-main: #1b4332;
-            --text-sub: #52796f;
+            --card-bg:
+                rgba(18,35,28,0.82);
 
-            --border-color: #b7e4c7;
-            --input-bg: #f0fff4;
-
-            --shadow-color: rgba(45, 106, 79, 0.08);
-
-            --blob-1: #95d5b2;
-            --blob-2: #d8f3dc;
+            --blob-1: #2d6a4f;
+            --blob-2: #95d5b2;
         }
 
-        /* =========================================
+        /* =========================================================
            GLOBAL
-        ========================================= */
+        ========================================================= */
 
         * {
+
+            margin: 0;
+            padding: 0;
+
             box-sizing: border-box;
             outline: none;
         }
 
         body {
-            margin: 0;
+
+            font-family: var(--font-main);
+
             min-height: 100vh;
 
             padding: 20px;
 
             display: flex;
+            flex-direction: column;
+
             justify-content: center;
             align-items: center;
-            flex-direction: column;
 
             overflow-x: hidden;
 
-            background: var(--bg-body);
-
-            font-family: var(--font-main);
-
             color: var(--text-main);
 
-            transition: 0.4s ease;
+            background:
+
+                radial-gradient(
+                    circle at top left,
+                    rgba(0,210,211,0.15),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(95,39,205,0.15),
+                    transparent 30%
+                ),
+
+                var(--bg-body);
+
+            transition:
+                background .4s ease,
+                color .4s ease;
         }
 
+        /* =========================================================
+           BACKGROUND BLOBS
+        ========================================================= */
+
         .background-animation {
+
             position: fixed;
+
             inset: 0;
-            z-index: -1;
+
             overflow: hidden;
+
+            z-index: -1;
         }
 
         .blob {
+
             position: absolute;
-            width: 60vw;
-            height: 60vw;
+
+            width: 50vw;
+            height: 50vw;
+
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: var(--blob-opacity);
-            animation: float 25s infinite alternate linear;
+
+            filter: blur(90px);
+
+            opacity: 0.22;
+
+            animation:
+                float 18s infinite alternate ease-in-out;
         }
 
         .blob.one {
+
             top: -10%;
             left: -10%;
+
             background: var(--blob-1);
         }
 
         .blob.two {
+
             bottom: -10%;
             right: -10%;
+
             background: var(--blob-2);
         }
 
         @keyframes float {
+
             from {
-                transform: translate(0, 0);
+
+                transform:
+                    translate(0px,0px)
+                    scale(1);
             }
 
             to {
-                transform: translate(30px, -30px);
+
+                transform:
+                    translate(40px,-40px)
+                    scale(1.1);
             }
         }
 
+        /* =========================================================
+           CONTAINER
+        ========================================================= */
+
         .container {
+
             width: 100%;
-            max-width: 430px;
+            max-width: 440px;
 
             position: relative;
 
@@ -178,450 +226,728 @@
 
             border-radius: var(--radius);
 
-            background: var(--card-bg);
+            border:
+                1px solid var(--card-border);
 
-            border: 1px solid var(--border-color);
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(255,255,255,0.05),
+                    rgba(255,255,255,0.02)
+                );
 
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(18px);
+
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow: var(--shadow);
 
             padding: 35px 25px;
-
-            box-shadow: 0 25px 50px var(--shadow-color);
-
-            transition: 0.4s ease;
         }
 
+        /* =========================================================
+           PROGRESS
+        ========================================================= */
+
         .progress-wrapper {
+
             position: absolute;
+
             top: 0;
             right: 0;
 
             width: 100%;
             height: 5px;
 
-            background: rgba(255, 255, 255, 0.05);
+            background:
+                rgba(255,255,255,0.04);
         }
 
         .progress-bar {
+
             height: 100%;
             width: 0%;
 
-            background: linear-gradient(90deg,
+            background:
+                linear-gradient(
+                    90deg,
                     var(--primary),
-                    var(--accent));
+                    var(--accent)
+                );
 
-            transition: width 0.4s ease;
+            transition: width .35s ease;
+
+            box-shadow:
+                0 0 20px var(--primary);
         }
 
-        h1,
-        h2,
-        h3 {
-            margin-top: 0;
-        }
+        /* =========================================================
+           TYPOGRAPHY
+        ========================================================= */
 
         h1 {
+
             text-align: center;
-            font-size: 1.7rem;
-            margin-bottom: 10px;
+
+            font-size: 1.9rem;
+
+            margin-bottom: 12px;
+
+            font-weight: 900;
         }
 
         .subtitle {
+
             text-align: center;
+
             color: var(--text-sub);
 
-            line-height: 1.8;
+            line-height: 1.9;
 
             margin-bottom: 30px;
+
+            font-size: .95rem;
         }
 
+        h3 {
+
+            line-height: 2;
+
+            margin-bottom: 24px;
+
+            font-size: 1.05rem;
+        }
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
         .form-group {
+
             margin-bottom: 18px;
         }
 
         .label {
+
             display: block;
+
             margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
 
-        .form-control {
-            width: 100%;
+            font-size: .9rem;
 
-            border: 2px solid var(--border-color);
-
-            background: var(--input-bg);
-
-            color: var(--text-main);
-
-            border-radius: 14px;
-
-            padding: 14px;
-
-            font-family: inherit;
-            font-size: 1rem;
-
-            transition: 0.25s ease;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-        }
-
-        .form-control::placeholder {
             color: var(--text-sub);
         }
 
-        .radio-option {
-            display: flex;
-            align-items: center;
+        .form-control {
 
-            gap: 10px;
+            width: 100%;
 
-            padding: 14px;
+            border:
+                1px solid var(--border-color);
 
-            border-radius: 14px;
+            background:
+                var(--input-bg);
 
-            border: 2px solid var(--border-color);
+            color: var(--text-main);
 
-            margin-bottom: 12px;
-
-            cursor: pointer;
-
-            background: var(--input-bg);
-
-            transition: 0.25s ease;
-        }
-
-        .radio-option:hover {
-            transform: translateY(-2px);
-        }
-
-        .radio-option input {
-            display: none;
-        }
-
-        .radio-option:has(input:checked) {
-            border-color: var(--primary);
-
-            color: var(--primary);
-
-            font-weight: bold;
-
-            box-shadow: 0 0 0 1px var(--primary);
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 12px;
-
-            margin-top: 25px;
-        }
-
-        button {
-            border: none;
-
-            cursor: pointer;
-
-            border-radius: 14px;
+            border-radius: 16px;
 
             padding: 15px;
 
             font-family: inherit;
+
             font-size: 1rem;
-            font-weight: bold;
 
-            transition: 0.25s ease;
+            backdrop-filter: blur(12px);
+
+            transition: .25s ease;
         }
 
-        button:hover {
-            transform: translateY(-2px);
+        .form-control:focus {
+
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 4px rgba(0,210,211,0.1);
         }
 
-        .btn-primary {
-            flex: 2;
-
-            background: var(--primary);
-
-            color: #fff;
-        }
-
-        .btn-secondary {
-            flex: 1;
-
-            background: transparent;
-
-            border: 2px solid var(--border-color);
+        .form-control::placeholder {
 
             color: var(--text-sub);
         }
 
-        .screen {
-            animation: fadeIn 0.4s ease;
+        /* =========================================================
+           OPTIONS
+        ========================================================= */
+
+        .radio-option {
+
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+
+            padding: 16px;
+
+            margin-bottom: 12px;
+
+            border-radius: 18px;
+
+            border:
+                1px solid var(--border-color);
+
+            background:
+                rgba(255,255,255,0.03);
+
+            cursor: pointer;
+
+            transition: .25s ease;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
+        .radio-option:hover {
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            transform:
+                translateY(-2px);
+
+            border-color:
+                rgba(255,255,255,0.15);
         }
 
-        .hidden {
-            display: none !important;
+        .radio-option input {
+
+            display: none;
         }
 
-        .loader {
-            width: 40px;
-            height: 40px;
+        .radio-option:has(input:checked) {
 
-            border-radius: 50%;
+            border-color: var(--primary);
 
-            border: 4px solid var(--border-color);
-            border-top-color: var(--primary);
+            color: var(--primary);
 
-            animation: spin 0.8s linear infinite;
+            background:
+                rgba(0,210,211,0.06);
 
-            margin: auto;
+            box-shadow:
+                0 0 0 1px var(--primary);
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+        /* =========================================================
+           BUTTONS
+        ========================================================= */
+
+        .nav-buttons {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 28px;
         }
 
-        /* =========================================
-           THEME SELECTOR
-        ========================================= */
+        button {
+
+            border: none;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            transition: .25s ease;
+        }
+
+        button:hover {
+
+            transform:
+                translateY(-2px);
+        }
+
+        .btn-primary {
+
+            flex: 2;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 16px;
+
+            padding: 15px;
+
+            font-size: 1rem;
+
+            font-weight: 800;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--accent)
+                );
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.18);
+        }
+
+        .btn-primary::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    transparent,
+                    rgba(255,255,255,0.28),
+                    transparent
+                );
+
+            transform:
+                translateX(-100%);
+
+            transition: .7s;
+        }
+
+        .btn-primary:hover::before {
+
+            transform:
+                translateX(100%);
+        }
+
+        .btn-secondary {
+
+            flex: 1;
+
+            border-radius: 16px;
+
+            padding: 15px;
+
+            background:
+                transparent;
+
+            color: var(--text-sub);
+
+            border:
+                1px solid var(--border-color);
+        }
+
+        /* =========================================================
+           THEMES
+        ========================================================= */
 
         .theme-selector {
+
             margin-top: 25px;
         }
 
         .theme-title {
-            text-align: center;
 
-            margin-bottom: 14px;
+            text-align: center;
 
             color: var(--text-sub);
 
-            font-size: 0.9rem;
+            margin-bottom: 14px;
+
+            font-size: .9rem;
         }
 
         .theme-options {
+
             display: flex;
+
             justify-content: center;
+
             gap: 12px;
         }
 
         .theme-btn {
+
             width: 28px;
             height: 28px;
 
             border-radius: 50%;
 
-            border: 3px solid transparent;
+            border:
+                3px solid transparent;
 
             cursor: pointer;
         }
 
         .theme-btn.active {
-            border-color: #fff;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+
+            border-color: white;
+
+            box-shadow:
+                0 0 14px rgba(255,255,255,0.5);
         }
 
         .theme-btn.neon {
-            background: linear-gradient(135deg,
+
+            background:
+                linear-gradient(
+                    135deg,
                     #00d2d3,
-                    #5f27cd);
+                    #5f27cd
+                );
         }
 
         .theme-btn.crimson {
-            background: linear-gradient(135deg,
-                    #990033,
-                    #ff4757);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff4757,
+                    #990033
+                );
         }
 
         .theme-btn.corporate {
-            background: linear-gradient(135deg,
+
+            background:
+                linear-gradient(
+                    135deg,
                     #0984e3,
-                    #74b9ff);
+                    #74b9ff
+                );
         }
 
         .theme-btn.nature {
-            background: linear-gradient(135deg,
+
+            background:
+                linear-gradient(
+                    135deg,
                     #2d6a4f,
-                    #95d5b2);
+                    #95d5b2
+                );
         }
 
-        /* =========================================
+        /* =========================================================
            REFERRAL
-        ========================================= */
+        ========================================================= */
 
         .referral-box {
+
             margin-top: 25px;
+
             text-align: right;
         }
 
         .referral-box label {
+
             display: block;
+
             margin-bottom: 10px;
 
             color: var(--text-sub);
         }
 
         .referral-row {
+
             display: flex;
+
             gap: 10px;
         }
 
         .copy-btn {
+
             min-width: 90px;
 
-            background: var(--primary);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--accent)
+                );
 
             color: white;
-        }
 
-        .signature {
-            margin-top: 25px;
-
-            color: var(--text-sub);
-
-            font-size: 0.8rem;
-        }
-
-        .signature span {
-            color: var(--primary);
             font-weight: bold;
         }
 
-        @media (max-width: 480px) {
+        /* =========================================================
+           SCREENS
+        ========================================================= */
+
+        .hidden {
+
+            display: none !important;
+        }
+
+        .screen {
+
+            animation:
+                fade .45s ease;
+        }
+
+        @keyframes fade {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(12px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0px);
+            }
+        }
+
+        /* =========================================================
+           QUESTION BOX
+        ========================================================= */
+
+        #question-box {
+
+            min-height: 240px;
+        }
+
+        /* =========================================================
+           LOADER
+        ========================================================= */
+
+        .loader {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            border:
+                4px solid rgba(255,255,255,0.08);
+
+            border-top-color:
+                var(--primary);
+
+            margin: auto;
+
+            animation:
+                spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+
+            to {
+
+                transform:
+                    rotate(360deg);
+            }
+        }
+
+        /* =========================================================
+           SIGNATURE
+        ========================================================= */
+
+        .signature {
+
+            margin-top: 28px;
+
+            font-size: .8rem;
+
+            color: var(--text-sub);
+        }
+
+        .signature span {
+
+            color: var(--primary);
+
+            font-weight: bold;
+        }
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media(max-width:480px){
 
             body {
+
                 padding: 14px;
             }
 
             .container {
-                padding: 25px 18px;
+
+                padding: 26px 18px;
             }
 
             .referral-row {
+
                 flex-direction: column;
             }
+
+            h1 {
+
+                font-size: 1.6rem;
+            }
         }
+
     </style>
+
 </head>
 
 <body>
 
     <div class="background-animation">
+
         <div class="blob one"></div>
+
         <div class="blob two"></div>
+
     </div>
 
     <div class="container">
 
         <div class="progress-wrapper">
-            <div id="progress-bar" class="progress-bar"></div>
+
+            <div
+                id="progress-bar"
+                class="progress-bar"></div>
+
         </div>
 
-        <div id="loader" class="loader"></div>
+        <div
+            id="loader"
+            class="loader"></div>
 
-        <!-- START SCREEN -->
+        <!-- =====================================================
+             START SCREEN
+        ====================================================== -->
 
-        <div id="start-screen" class="screen hidden">
+        <div
+            id="start-screen"
+            class="screen hidden">
 
-            <h1 id="site-title">سامانه نظرسنجی</h1>
+            <h1 id="site-title">
+                سامانه پژوهشی EconGraph
+            </h1>
 
-            <p id="site-subtitle" class="subtitle">
+            <p
+                id="site-subtitle"
+                class="subtitle">
+
                 لطفاً اطلاعات خود را وارد کنید
             </p>
 
             <div class="form-group">
-                <label class="label">نام</label>
 
-                <input type="text"
+                <label class="label">
+                    نام شما
+                </label>
+
+                <input
+                    type="text"
                     id="user-name"
                     class="form-control"
-                    placeholder="نام شما">
+                    placeholder="مثلاً علی">
             </div>
 
             <div class="form-group">
-                <label class="label">سن</label>
 
-                <input type="number"
+                <label class="label">
+                    سن
+                </label>
+
+                <input
+                    type="number"
                     id="user-age"
                     class="form-control"
                     placeholder="مثلاً 22">
             </div>
 
-            <!-- THEMES -->
-
             <div class="theme-selector">
 
                 <div class="theme-title">
+
                     انتخاب تم
                 </div>
 
                 <div class="theme-options">
 
-                    <button class="theme-btn neon"
+                    <button
+                        class="theme-btn neon"
                         onclick="changeTheme('neon')"></button>
 
-                    <button class="theme-btn crimson"
+                    <button
+                        class="theme-btn crimson"
                         onclick="changeTheme('crimson')"></button>
 
-                    <button class="theme-btn corporate"
+                    <button
+                        class="theme-btn corporate"
                         onclick="changeTheme('corporate')"></button>
 
-                    <button class="theme-btn nature"
+                    <button
+                        class="theme-btn nature"
                         onclick="changeTheme('nature')"></button>
 
                 </div>
+
             </div>
 
             <div class="nav-buttons">
-                <button class="btn-primary"
+
+                <button
+                    class="btn-primary"
                     onclick="startQuiz()">
+
                     شروع آزمون
+
                 </button>
+
             </div>
 
         </div>
 
-        <!-- QUIZ SCREEN -->
+        <!-- =====================================================
+             QUIZ SCREEN
+        ====================================================== -->
 
-        <div id="quiz-screen" class="screen hidden">
+        <div
+            id="quiz-screen"
+            class="screen hidden">
 
             <div id="question-box"></div>
 
             <div class="nav-buttons">
 
-                <button class="btn-secondary"
+                <button
                     id="btn-prev"
+                    class="btn-secondary"
                     onclick="prevStep()">
+
                     قبلی
+
                 </button>
 
-                <button class="btn-primary"
+                <button
                     id="btn-next"
+                    class="btn-primary"
                     onclick="nextStep()">
+
                     بعدی
+
                 </button>
 
             </div>
 
         </div>
 
-        <!-- END SCREEN -->
+        <!-- =====================================================
+             END SCREEN
+        ====================================================== -->
 
-        <div id="end-screen"
+        <div
+            id="end-screen"
             class="screen hidden"
             style="text-align:center;">
 
@@ -629,32 +955,45 @@
                 🎉
             </div>
 
-            <h2 style="color:var(--primary);">
+            <h2 style="margin-top:10px;">
+
                 ثبت شد
+
             </h2>
 
-            <p style="color:var(--text-sub);">
-                پاسخ‌های شما با موفقیت ذخیره شد.
-            </p>
+            <p
+                style="
+                    color:var(--text-sub);
+                    margin-top:10px;
+                    line-height:1.9;
+                ">
 
-            <!-- REFERRAL -->
+                پاسخ‌های شما با موفقیت ذخیره شد.
+
+            </p>
 
             <div class="referral-box">
 
                 <label>
+
                     لینک دعوت اختصاصی شما
+
                 </label>
 
                 <div class="referral-row">
 
-                    <input type="text"
+                    <input
+                        type="text"
                         id="referral-link"
                         class="form-control"
                         readonly>
 
-                    <button class="copy-btn"
+                    <button
+                        class="copy-btn"
                         onclick="copyReferralLink()">
+
                         کپی
+
                     </button>
 
                 </div>
@@ -666,27 +1005,30 @@
     </div>
 
     <div class="signature">
-        Designed for <span>Economic Research</span>
+
+        Designed for
+        <span>Economic Research</span>
+
     </div>
 
     <script>
 
-        /* =========================================
-           CONFIG
-        ========================================= */
+        /* =========================================================
+           API
+        ========================================================= */
 
         const API_URL =
             "https://script.google.com/macros/s/AKfycbzxljrF2WvzSJ0xFtxEoFh8Y5QSwg-Kp2LxO-nSJzzoZ10JzYdqcWk3g0vwrHg4Dru0AA/exec";
 
-        /* =========================================
+        /* =========================================================
            STATE
-        ========================================= */
+        ========================================================= */
 
         const state = {
 
-            currentScreen: "start",
-
             currentQuestion: 0,
+
+            currentTheme: "neon",
 
             questions: [],
 
@@ -694,17 +1036,14 @@
 
             timeLogs: {},
 
-            config: {},
-
-            currentTheme: "neon"
-
+            config: {}
         };
 
         let questionStartTime = 0;
 
-        /* =========================================
+        /* =========================================================
            DOM
-        ========================================= */
+        ========================================================= */
 
         const screens = {
 
@@ -716,12 +1055,11 @@
 
             end:
                 document.getElementById("end-screen")
-
         };
 
-        /* =========================================
+        /* =========================================================
            INIT
-        ========================================= */
+        ========================================================= */
 
         window.addEventListener(
             "DOMContentLoaded",
@@ -750,119 +1088,127 @@
 
                 setScreen("start");
 
-            } catch (error) {
+            } catch(error){
 
                 console.error(error);
 
                 alert("خطا در اتصال");
+            }
 
-            } finally {
+            finally {
 
-                document.getElementById("loader")
-                    .classList.add("hidden");
-
+                document
+                    .getElementById("loader")
+                    .classList
+                    .add("hidden");
             }
         }
 
-        /* =========================================
+        /* =========================================================
            UI
-        ========================================= */
+        ========================================================= */
 
-        function setScreen(screenName) {
+        function setScreen(screen){
 
-            Object.values(screens)
-                .forEach(screen => {
+            Object
+                .values(screens)
+                .forEach(el=>{
 
-                    screen.classList.add("hidden");
-
+                    el.classList.add("hidden");
                 });
 
-            screens[screenName]
-                .classList.remove("hidden");
-
-            state.currentScreen = screenName;
+            screens[screen]
+                .classList
+                .remove("hidden");
         }
 
-        function initializeUI() {
+        function initializeUI(){
 
-            const config = state.config;
+            if(state.config.title){
 
-            if (config.title) {
-
-                document.getElementById("site-title")
-                    .innerText = config.title;
+                document
+                    .getElementById("site-title")
+                    .innerText =
+                    state.config.title;
             }
 
-            if (config.subtitle) {
+            if(state.config.subtitle){
 
-                document.getElementById("site-subtitle")
-                    .innerText = config.subtitle;
+                document
+                    .getElementById("site-subtitle")
+                    .innerText =
+                    state.config.subtitle;
             }
         }
 
-        /* =========================================
+        /* =========================================================
            THEMES
-        ========================================= */
+        ========================================================= */
 
-        function changeTheme(themeName) {
+        function changeTheme(theme){
 
             document.body.className = "";
 
-            if (themeName !== "neon") {
+            if(theme !== "neon"){
 
                 document.body.classList.add(
-                    `theme-${themeName}`
+                    `theme-${theme}`
                 );
             }
 
             localStorage.setItem(
-                "survey_theme",
-                themeName
+                "econ_theme",
+                theme
             );
 
-            state.currentTheme = themeName;
+            state.currentTheme = theme;
 
-            updateThemeButtons(themeName);
+            updateThemeButtons(theme);
         }
 
-        function loadTheme() {
+        function loadTheme(){
 
             const savedTheme =
-                localStorage.getItem("survey_theme")
+                localStorage.getItem("econ_theme")
                 || "neon";
 
             changeTheme(savedTheme);
         }
 
-        function updateThemeButtons(activeTheme) {
+        function updateThemeButtons(theme){
 
-            document.querySelectorAll(".theme-btn")
-                .forEach(btn => {
+            document
+                .querySelectorAll(".theme-btn")
+                .forEach(btn=>{
 
                     btn.classList.remove("active");
 
-                    if (btn.classList.contains(activeTheme)) {
+                    if(btn.classList.contains(theme)){
 
                         btn.classList.add("active");
                     }
                 });
         }
 
-        /* =========================================
+        /* =========================================================
            QUIZ
-        ========================================= */
+        ========================================================= */
 
-        function startQuiz() {
+        function startQuiz(){
 
             const name =
-                document.getElementById("user-name")
-                    .value.trim();
+                document
+                .getElementById("user-name")
+                .value
+                .trim();
 
             const age =
-                document.getElementById("user-age")
-                    .value.trim();
+                document
+                .getElementById("user-age")
+                .value
+                .trim();
 
-            if (!name || !age) {
+            if(!name || !age){
 
                 alert("لطفاً اطلاعات را کامل کنید");
 
@@ -876,34 +1222,40 @@
             showQuestion();
         }
 
-        function showQuestion() {
+        function showQuestion(){
 
             const question =
-                state.questions[state.currentQuestion];
+                state.questions[
+                    state.currentQuestion
+                ];
 
-            const questionBox =
-                document.getElementById("question-box");
+            const box =
+                document
+                .getElementById("question-box");
 
             updateProgress();
 
             questionStartTime = Date.now();
 
-            const savedAnswer =
-                state.answers[question.id] || "";
+            const saved =
+                state.answers[question.id]
+                || "";
 
-            let optionsHTML = "";
+            let html = "";
 
-            if (question.type === "radio") {
+            if(question.type === "radio"){
 
-                optionsHTML =
-                    question.options.map(option => {
+                html =
+                    question.options
+                    .map(option=>{
 
                         const checked =
-                            savedAnswer === option
-                                ? "checked"
-                                : "";
+                            saved === option
+                            ? "checked"
+                            : "";
 
                         return `
+
                             <label class="radio-option">
 
                                 <input
@@ -917,65 +1269,73 @@
                                 ${option}
 
                             </label>
-                        `;
 
-                    }).join("");
+                        `;
+                    })
+                    .join("");
             }
 
-            if (question.type === "text") {
+            if(question.type === "text"){
 
-                optionsHTML = `
+                html = `
+
                     <textarea
                         class="form-control"
                         rows="4"
                         placeholder="پاسخ خود را وارد کنید..."
                         oninput="saveAnswer('${question.id}', this.value)"
-                    >${savedAnswer}</textarea>
+                    >${saved}</textarea>
+
                 `;
             }
 
-            if (question.type === "number") {
+            if(question.type === "number"){
 
-                optionsHTML = `
+                html = `
+
                     <input
                         type="number"
                         class="form-control"
-                        value="${savedAnswer}"
+                        value="${saved}"
                         placeholder="عدد"
                         oninput="saveAnswer('${question.id}', this.value)"
                     >
+
                 `;
             }
 
-            questionBox.innerHTML = `
+            box.innerHTML = `
 
-                <h3 style="line-height:1.8; margin-bottom:20px;">
+                <h3>
 
                     ${state.currentQuestion + 1}.
                     ${question.text}
 
                 </h3>
 
-                ${optionsHTML}
+                ${html}
+
             `;
 
-            updateNavigationButtons();
+            updateButtons();
         }
 
-        function saveAnswer(questionId, value) {
+        function saveAnswer(id,value){
 
-            state.answers[questionId] = value;
+            state.answers[id] = value;
         }
 
-        function nextStep() {
+        function nextStep(){
 
             const question =
-                state.questions[state.currentQuestion];
+                state.questions[
+                    state.currentQuestion
+                ];
 
-            if (
+            if(
                 question.required &&
                 !state.answers[question.id]
-            ) {
+            ){
 
                 alert("این سوال الزامی است");
 
@@ -983,15 +1343,16 @@
             }
 
             state.timeLogs[question.id] =
+
                 (
                     (Date.now() - questionStartTime)
                     / 1000
                 ).toFixed(1);
 
-            if (
+            if(
                 state.currentQuestion >=
                 state.questions.length - 1
-            ) {
+            ){
 
                 submitData();
 
@@ -1003,9 +1364,9 @@
             showQuestion();
         }
 
-        function prevStep() {
+        function prevStep(){
 
-            if (state.currentQuestion <= 0)
+            if(state.currentQuestion <= 0)
                 return;
 
             state.currentQuestion--;
@@ -1013,82 +1374,95 @@
             showQuestion();
         }
 
-        function updateNavigationButtons() {
+        function updateButtons(){
 
-            const prevBtn =
+            const prev =
                 document.getElementById("btn-prev");
 
-            const nextBtn =
+            const next =
                 document.getElementById("btn-next");
 
-            prevBtn.style.visibility =
-                state.currentQuestion === 0
-                    ? "hidden"
-                    : "visible";
+            prev.style.visibility =
 
-            nextBtn.innerText =
+                state.currentQuestion === 0
+                ? "hidden"
+                : "visible";
+
+            next.innerText =
+
                 state.currentQuestion ===
-                    state.questions.length - 1
-                    ? "ثبت نهایی"
-                    : "بعدی";
+                state.questions.length - 1
+
+                ? "ثبت نهایی"
+
+                : "بعدی";
         }
 
-        function updateProgress() {
+        function updateProgress(){
 
             const progress =
+
                 (
                     (state.currentQuestion + 1)
                     / state.questions.length
                 ) * 100;
 
-            document.getElementById("progress-bar")
+            document
+                .getElementById("progress-bar")
                 .style.width = `${progress}%`;
         }
 
-        /* =========================================
+        /* =========================================================
            SUBMIT
-        ========================================= */
+        ========================================================= */
 
-        async function submitData() {
+        async function submitData(){
 
-            const submitBtn =
+            const btn =
                 document.getElementById("btn-next");
 
-            submitBtn.disabled = true;
+            btn.disabled = true;
 
-            submitBtn.innerText =
+            btn.innerText =
                 "در حال ارسال...";
 
             const payload = {
 
                 name:
-                    document.getElementById("user-name")
-                        .value,
+                    document
+                    .getElementById("user-name")
+                    .value,
 
                 age:
-                    document.getElementById("user-age")
-                        .value,
+                    document
+                    .getElementById("user-age")
+                    .value,
 
-                ref:
+                source:
                     new URLSearchParams(
                         window.location.search
-                    ).get("ref") || "direct",
+                    )
+                    .get("ref")
+                    || "direct",
 
                 theme:
                     state.currentTheme,
 
                 answers:
-                    Object.entries(state.answers)
-                        .map(([qId, answer]) => ({
 
-                            qId,
+                    Object
+                    .entries(state.answers)
 
-                            answer,
+                    .map(([qId,answer])=>({
 
-                            time:
-                                state.timeLogs[qId]
-                                || 0
-                        }))
+                        qId,
+
+                        answer,
+
+                        time:
+                            state.timeLogs[qId]
+                            || 0
+                    }))
             };
 
             try {
@@ -1097,59 +1471,59 @@
 
                     method: "POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
                     body:
                         JSON.stringify(payload)
-
                 });
 
                 generateReferralLink();
 
                 setScreen("end");
 
-            } catch (error) {
+            } catch(error){
 
                 console.error(error);
 
                 alert("خطا در ارسال اطلاعات");
 
-                submitBtn.disabled = false;
+                btn.disabled = false;
 
-                submitBtn.innerText =
+                btn.innerText =
                     "تلاش مجدد";
             }
         }
 
-        /* =========================================
+        /* =========================================================
            REFERRAL
-        ========================================= */
+        ========================================================= */
 
-        function generateReferralLink() {
+        function generateReferralLink(){
 
             const name =
-                document.getElementById("user-name")
-                    .value
-                    .trim();
 
-            const referralLink =
+                document
+                .getElementById("user-name")
+                .value
+                .trim();
+
+            const link =
+
                 `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(name)}`;
 
-            document.getElementById("referral-link")
-                .value = referralLink;
+            document
+                .getElementById("referral-link")
+                .value = link;
         }
 
-        async function copyReferralLink() {
+        async function copyReferralLink(){
 
             const input =
-                document.getElementById("referral-link");
+                document
+                .getElementById("referral-link");
 
             try {
 
-                await navigator.clipboard
+                await navigator
+                    .clipboard
                     .writeText(input.value);
 
                 alert("لینک کپی شد");
