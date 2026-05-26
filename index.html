@@ -1,1545 +1,634 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
-
-    <meta charset="UTF-8" />
-
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-    <title>سامانه پژوهشی EconGraph</title>
-
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
-        rel="stylesheet">
-
-    <style>
-
-        /* =========================================================
-           THEME SYSTEM
-        ========================================================= */
-
-        :root {
-
-            --font-main: 'Vazirmatn', sans-serif;
-
-            --primary: #00d2d3;
-            --accent: #5f27cd;
-
-            --bg-body: #0f1720;
-
-            --card-bg:
-                rgba(20, 25, 35, 0.78);
-
-            --card-border:
-                rgba(255,255,255,0.08);
-
-            --text-main: #f5f6fa;
-            --text-sub: #a4b0be;
-
-            --input-bg:
-                rgba(255,255,255,0.04);
-
-            --border-color:
-                rgba(255,255,255,0.08);
-
-            --shadow:
-                0 25px 50px rgba(0,0,0,0.45);
-
-            --blob-1: #00d2d3;
-            --blob-2: #5f27cd;
-
-            --radius: 28px;
-        }
-
-        body.theme-crimson {
-
-            --primary: #ff4757;
-            --accent: #990033;
-
-            --bg-body: #1c1114;
-
-            --card-bg:
-                rgba(40,20,25,0.78);
-
-            --blob-1: #ff4757;
-            --blob-2: #ff6b81;
-        }
-
-        body.theme-corporate {
-
-            --primary: #0984e3;
-            --accent: #74b9ff;
-
-            --bg-body: #0f172a;
-
-            --card-bg:
-                rgba(15,23,42,0.82);
-
-            --blob-1: #0984e3;
-            --blob-2: #74b9ff;
-        }
-
-        body.theme-nature {
-
-            --primary: #2d6a4f;
-            --accent: #95d5b2;
-
-            --bg-body: #0b1913;
-
-            --card-bg:
-                rgba(18,35,28,0.82);
-
-            --blob-1: #2d6a4f;
-            --blob-2: #95d5b2;
-        }
-
-        /* =========================================================
-           GLOBAL
-        ========================================================= */
-
-        * {
-
-            margin: 0;
-            padding: 0;
-
-            box-sizing: border-box;
-            outline: none;
-        }
-
-        body {
-
-            font-family: var(--font-main);
-
-            min-height: 100vh;
-
-            padding: 20px;
-
-            display: flex;
-            flex-direction: column;
-
-            justify-content: center;
-            align-items: center;
-
-            overflow-x: hidden;
-
-            color: var(--text-main);
-
-            background:
-
-                radial-gradient(
-                    circle at top left,
-                    rgba(0,210,211,0.15),
-                    transparent 30%
-                ),
-
-                radial-gradient(
-                    circle at bottom right,
-                    rgba(95,39,205,0.15),
-                    transparent 30%
-                ),
-
-                var(--bg-body);
-
-            transition:
-                background .4s ease,
-                color .4s ease;
-        }
-
-        /* =========================================================
-           BACKGROUND BLOBS
-        ========================================================= */
-
-        .background-animation {
-
-            position: fixed;
-
-            inset: 0;
-
-            overflow: hidden;
-
-            z-index: -1;
-        }
-
-        .blob {
-
-            position: absolute;
-
-            width: 50vw;
-            height: 50vw;
-
-            border-radius: 50%;
-
-            filter: blur(90px);
-
-            opacity: 0.22;
-
-            animation:
-                float 18s infinite alternate ease-in-out;
-        }
-
-        .blob.one {
-
-            top: -10%;
-            left: -10%;
-
-            background: var(--blob-1);
-        }
-
-        .blob.two {
-
-            bottom: -10%;
-            right: -10%;
-
-            background: var(--blob-2);
-        }
-
-        @keyframes float {
-
-            from {
-
-                transform:
-                    translate(0px,0px)
-                    scale(1);
-            }
-
-            to {
-
-                transform:
-                    translate(40px,-40px)
-                    scale(1.1);
-            }
-        }
-
-        /* =========================================================
-           CONTAINER
-        ========================================================= */
-
-        .container {
-
-            width: 100%;
-            max-width: 440px;
-
-            position: relative;
-
-            overflow: hidden;
-
-            border-radius: var(--radius);
-
-            border:
-                1px solid var(--card-border);
-
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(255,255,255,0.05),
-                    rgba(255,255,255,0.02)
-                );
-
-            backdrop-filter: blur(18px);
-
-            -webkit-backdrop-filter: blur(18px);
-
-            box-shadow: var(--shadow);
-
-            padding: 35px 25px;
-        }
-
-        /* =========================================================
-           PROGRESS
-        ========================================================= */
-
-        .progress-wrapper {
-
-            position: absolute;
-
-            top: 0;
-            right: 0;
-
-            width: 100%;
-            height: 5px;
-
-            background:
-                rgba(255,255,255,0.04);
-        }
-
-        .progress-bar {
-
-            height: 100%;
-            width: 0%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--primary),
-                    var(--accent)
-                );
-
-            transition: width .35s ease;
-
-            box-shadow:
-                0 0 20px var(--primary);
-        }
-
-        /* =========================================================
-           TYPOGRAPHY
-        ========================================================= */
-
-        h1 {
-
-            text-align: center;
-
-            font-size: 1.9rem;
-
-            margin-bottom: 12px;
-
-            font-weight: 900;
-        }
-
-        .subtitle {
-
-            text-align: center;
-
-            color: var(--text-sub);
-
-            line-height: 1.9;
-
-            margin-bottom: 30px;
-
-            font-size: .95rem;
-        }
-
-        h3 {
-
-            line-height: 2;
-
-            margin-bottom: 24px;
-
-            font-size: 1.05rem;
-        }
-
-        /* =========================================================
-           FORM
-        ========================================================= */
-
-        .form-group {
-
-            margin-bottom: 18px;
-        }
-
-        .label {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            font-size: .9rem;
-
-            color: var(--text-sub);
-        }
-
-        .form-control {
-
-            width: 100%;
-
-            border:
-                1px solid var(--border-color);
-
-            background:
-                var(--input-bg);
-
-            color: var(--text-main);
-
-            border-radius: 16px;
-
-            padding: 15px;
-
-            font-family: inherit;
-
-            font-size: 1rem;
-
-            backdrop-filter: blur(12px);
-
-            transition: .25s ease;
-        }
-
-        .form-control:focus {
-
-            border-color: var(--primary);
-
-            box-shadow:
-                0 0 0 4px rgba(0,210,211,0.1);
-        }
-
-        .form-control::placeholder {
-
-            color: var(--text-sub);
-        }
-
-        /* =========================================================
-           OPTIONS
-        ========================================================= */
-
-        .radio-option {
-
-            display: flex;
-            align-items: center;
-
-            width: 100%;
-
-            padding: 16px;
-
-            margin-bottom: 12px;
-
-            border-radius: 18px;
-
-            border:
-                1px solid var(--border-color);
-
-            background:
-                rgba(255,255,255,0.03);
-
-            cursor: pointer;
-
-            transition: .25s ease;
-        }
-
-        .radio-option:hover {
-
-            transform:
-                translateY(-2px);
-
-            border-color:
-                rgba(255,255,255,0.15);
-        }
-
-        .radio-option input {
-
-            display: none;
-        }
-
-        .radio-option:has(input:checked) {
-
-            border-color: var(--primary);
-
-            color: var(--primary);
-
-            background:
-                rgba(0,210,211,0.06);
-
-            box-shadow:
-                0 0 0 1px var(--primary);
-        }
-
-        /* =========================================================
-           BUTTONS
-        ========================================================= */
-
-        .nav-buttons {
-
-            display: flex;
-
-            gap: 12px;
-
-            margin-top: 28px;
-        }
-
-        button {
-
-            border: none;
-
-            cursor: pointer;
-
-            font-family: inherit;
-
-            transition: .25s ease;
-        }
-
-        button:hover {
-
-            transform:
-                translateY(-2px);
-        }
-
-        .btn-primary {
-
-            flex: 2;
-
-            position: relative;
-
-            overflow: hidden;
-
-            border-radius: 16px;
-
-            padding: 15px;
-
-            font-size: 1rem;
-
-            font-weight: 800;
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--primary),
-                    var(--accent)
-                );
-
-            box-shadow:
-                0 10px 30px rgba(0,0,0,0.18);
-        }
-
-        .btn-primary::before {
-
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    120deg,
-                    transparent,
-                    rgba(255,255,255,0.28),
-                    transparent
-                );
-
-            transform:
-                translateX(-100%);
-
-            transition: .7s;
-        }
-
-        .btn-primary:hover::before {
-
-            transform:
-                translateX(100%);
-        }
-
-        .btn-secondary {
-
-            flex: 1;
-
-            border-radius: 16px;
-
-            padding: 15px;
-
-            background:
-                transparent;
-
-            color: var(--text-sub);
-
-            border:
-                1px solid var(--border-color);
-        }
-
-        /* =========================================================
-           THEMES
-        ========================================================= */
-
-        .theme-selector {
-
-            margin-top: 25px;
-        }
-
-        .theme-title {
-
-            text-align: center;
-
-            color: var(--text-sub);
-
-            margin-bottom: 14px;
-
-            font-size: .9rem;
-        }
-
-        .theme-options {
-
-            display: flex;
-
-            justify-content: center;
-
-            gap: 12px;
-        }
-
-        .theme-btn {
-
-            width: 28px;
-            height: 28px;
-
-            border-radius: 50%;
-
-            border:
-                3px solid transparent;
-
-            cursor: pointer;
-        }
-
-        .theme-btn.active {
-
-            border-color: white;
-
-            box-shadow:
-                0 0 14px rgba(255,255,255,0.5);
-        }
-
-        .theme-btn.neon {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #00d2d3,
-                    #5f27cd
-                );
-        }
-
-        .theme-btn.crimson {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff4757,
-                    #990033
-                );
-        }
-
-        .theme-btn.corporate {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0984e3,
-                    #74b9ff
-                );
-        }
-
-        .theme-btn.nature {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #2d6a4f,
-                    #95d5b2
-                );
-        }
-
-        /* =========================================================
-           REFERRAL
-        ========================================================= */
-
-        .referral-box {
-
-            margin-top: 25px;
-
-            text-align: right;
-        }
-
-        .referral-box label {
-
-            display: block;
-
-            margin-bottom: 10px;
-
-            color: var(--text-sub);
-        }
-
-        .referral-row {
-
-            display: flex;
-
-            gap: 10px;
-        }
-
-        .copy-btn {
-
-            min-width: 90px;
-
-            border-radius: 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--primary),
-                    var(--accent)
-                );
-
-            color: white;
-
-            font-weight: bold;
-        }
-
-        /* =========================================================
-           SCREENS
-        ========================================================= */
-
-        .hidden {
-
-            display: none !important;
-        }
-
-        .screen {
-
-            animation:
-                fade .45s ease;
-        }
-
-        @keyframes fade {
-
-            from {
-
-                opacity: 0;
-
-                transform:
-                    translateY(12px);
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0px);
-            }
-        }
-
-        /* =========================================================
-           QUESTION BOX
-        ========================================================= */
-
-        #question-box {
-
-            min-height: 240px;
-        }
-
-        /* =========================================================
-           LOADER
-        ========================================================= */
-
-        .loader {
-
-            width: 42px;
-            height: 42px;
-
-            border-radius: 50%;
-
-            border:
-                4px solid rgba(255,255,255,0.08);
-
-            border-top-color:
-                var(--primary);
-
-            margin: auto;
-
-            animation:
-                spin .8s linear infinite;
-        }
-
-        @keyframes spin {
-
-            to {
-
-                transform:
-                    rotate(360deg);
-            }
-        }
-
-        /* =========================================================
-           SIGNATURE
-        ========================================================= */
-
-        .signature {
-
-            margin-top: 28px;
-
-            font-size: .8rem;
-
-            color: var(--text-sub);
-        }
-
-        .signature span {
-
-            color: var(--primary);
-
-            font-weight: bold;
-        }
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media(max-width:480px){
-
-            body {
-
-                padding: 14px;
-            }
-
-            .container {
-
-                padding: 26px 18px;
-            }
-
-            .referral-row {
-
-                flex-direction: column;
-            }
-
-            h1 {
-
-                font-size: 1.6rem;
-            }
-        }
-
-    </style>
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>سامانه پژوهشی EconGraph</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root {
+  --primary: #00d2d3;
+  --accent: #5f27cd;
+  --bg-body: #0f1720;
+  --card-bg: rgba(20,25,35,0.78);
+  --card-border: rgba(255,255,255,0.08);
+  --text-main: #f5f6fa;
+  --text-sub: #a4b0be;
+  --input-bg: rgba(255,255,255,0.05);
+  --border-color: rgba(255,255,255,0.08);
+  --shadow: 0 25px 50px rgba(0,0,0,0.45);
+  --blob-1: #00d2d3;
+  --blob-2: #5f27cd;
+  --radius: 28px;
+}
+body.theme-crimson { --primary:#ff4757; --accent:#ff6b81; --bg-body:#1c1114; --card-bg:rgba(40,20,25,0.78); --blob-1:#ff4757; --blob-2:#ff6b81; }
+body.theme-corporate { --primary:#0984e3; --accent:#74b9ff; --bg-body:#0f172a; --card-bg:rgba(15,23,42,0.82); --blob-1:#0984e3; --blob-2:#74b9ff; }
+body.theme-nature { --primary:#2d6a4f; --accent:#95d5b2; --bg-body:#0b1913; --card-bg:rgba(18,35,28,0.82); --blob-1:#2d6a4f; --blob-2:#95d5b2; }
+body.theme-sunset { --primary:#f0932b; --accent:#e55039; --bg-body:#1a0e0a; --card-bg:rgba(35,18,12,0.82); --blob-1:#f0932b; --blob-2:#e55039; }
+
+*{ margin:0; padding:0; box-sizing:border-box; outline:none; }
+
+body {
+  font-family:'Vazirmatn',sans-serif;
+  min-height:100vh;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  overflow-x:hidden;
+  color:var(--text-main);
+  background:
+    radial-gradient(circle at top left, rgba(0,210,211,0.12), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(95,39,205,0.12), transparent 35%),
+    var(--bg-body);
+  transition:background .4s ease, color .4s ease;
+}
+
+.background-animation { position:fixed; inset:0; overflow:hidden; z-index:-1; }
+.blob { position:absolute; width:50vw; height:50vw; border-radius:50%; filter:blur(90px); opacity:.18; animation:float 18s infinite alternate ease-in-out; }
+.blob.one { top:-10%; left:-10%; background:var(--blob-1); }
+.blob.two { bottom:-10%; right:-10%; background:var(--blob-2); }
+@keyframes float { from { transform:translate(0,0) scale(1); } to { transform:translate(40px,-40px) scale(1.1); } }
+
+.container {
+  width:100%;
+  max-width:460px;
+  position:relative;
+  overflow:hidden;
+  border-radius:var(--radius);
+  border:1px solid var(--card-border);
+  background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+  padding:35px 25px;
+}
+
+.progress-wrapper { position:absolute; top:0; right:0; width:100%; height:4px; background:rgba(255,255,255,0.04); }
+.progress-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--primary), var(--accent)); transition:width .35s ease; box-shadow:0 0 12px var(--primary); }
+
+h1 { text-align:center; font-size:1.85rem; margin-bottom:10px; font-weight:900; }
+.subtitle { text-align:center; color:var(--text-sub); line-height:1.9; margin-bottom:28px; font-size:.9rem; }
+h3 { line-height:1.8; margin-bottom:20px; font-size:1rem; font-weight:700; }
+
+.form-group { margin-bottom:16px; }
+.label { display:block; margin-bottom:7px; font-size:.88rem; color:var(--text-sub); }
+
+.form-control {
+  width:100%;
+  border:1px solid var(--border-color);
+  background:var(--input-bg);
+  color:var(--text-main);
+  border-radius:14px;
+  padding:13px 15px;
+  font-family:inherit;
+  font-size:.95rem;
+  backdrop-filter:blur(12px);
+  transition:.25s ease;
+}
+.form-control:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(0,210,211,0.1); }
+.form-control::placeholder { color:var(--text-sub); }
+
+textarea.form-control { resize:none; min-height:72px; }
+
+.radio-option {
+  display:flex;
+  align-items:center;
+  width:100%;
+  padding:14px 16px;
+  margin-bottom:10px;
+  border-radius:16px;
+  border:1px solid var(--border-color);
+  background:rgba(255,255,255,0.02);
+  cursor:pointer;
+  transition:.2s ease;
+  font-size:.93rem;
+  line-height:1.5;
+}
+.radio-option:hover { transform:translateY(-1px); border-color:rgba(255,255,255,0.14); background:rgba(255,255,255,0.04); }
+.radio-option input { display:none; }
+.radio-option:has(input:checked) {
+  border-color:var(--primary);
+  color:var(--primary);
+  background:rgba(0,210,211,0.06);
+  box-shadow:0 0 0 1px var(--primary);
+}
+
+.comment-box {
+  margin-top:6px;
+  margin-bottom:4px;
+}
+.comment-box textarea {
+  font-size:.85rem;
+  padding:10px 13px;
+  min-height:58px;
+  border-radius:12px;
+  color:var(--text-sub);
+}
+.comment-box textarea:focus { color:var(--text-main); }
+
+.nav-buttons { display:flex; gap:12px; margin-top:26px; }
+
+button { border:none; cursor:pointer; font-family:inherit; transition:.25s ease; }
+button:hover { transform:translateY(-2px); }
+
+.btn-primary {
+  flex:2;
+  position:relative;
+  overflow:hidden;
+  border-radius:14px;
+  padding:14px;
+  font-size:.95rem;
+  font-weight:800;
+  color:white;
+  background:linear-gradient(135deg, var(--primary), var(--accent));
+  box-shadow:0 8px 24px rgba(0,0,0,0.18);
+}
+.btn-primary::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg, transparent, rgba(255,255,255,0.22), transparent);
+  transform:translateX(-100%);
+  transition:.6s;
+}
+.btn-primary:hover::before { transform:translateX(100%); }
+
+.btn-secondary {
+  flex:1;
+  border-radius:14px;
+  padding:14px;
+  background:transparent;
+  color:var(--text-sub);
+  border:1px solid var(--border-color);
+}
+
+/* ── THEME SELECTOR ── */
+.theme-selector { margin-top:22px; }
+.theme-title { text-align:center; color:var(--text-sub); margin-bottom:12px; font-size:.85rem; }
+.theme-options { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+
+.theme-card {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  cursor:pointer;
+  padding:8px 10px;
+  border-radius:12px;
+  border:1.5px solid transparent;
+  transition:.2s ease;
+  background:rgba(255,255,255,0.03);
+}
+.theme-card:hover { background:rgba(255,255,255,0.06); }
+.theme-card.active { border-color:var(--primary); background:rgba(255,255,255,0.06); }
+.theme-dot { width:26px; height:26px; border-radius:50%; }
+.theme-dot.neon    { background:linear-gradient(135deg,#00d2d3,#5f27cd); }
+.theme-dot.crimson { background:linear-gradient(135deg,#ff4757,#ff6b81); }
+.theme-dot.corporate { background:linear-gradient(135deg,#0984e3,#74b9ff); }
+.theme-dot.nature  { background:linear-gradient(135deg,#2d6a4f,#95d5b2); }
+.theme-dot.sunset  { background:linear-gradient(135deg,#f0932b,#e55039); }
+.theme-name { font-size:.72rem; color:var(--text-sub); }
+.theme-card.active .theme-name { color:var(--primary); }
+
+/* ── AVATAR SECTION ── */
+.avatar-section { margin-bottom:26px; }
+.avatar-title { text-align:center; color:var(--text-sub); margin-bottom:14px; font-size:.88rem; }
+.avatar-grid { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
+.av-item { display:flex; flex-direction:column; align-items:center; gap:7px; cursor:pointer; }
+.av-ring {
+  width:74px; height:74px; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.04);
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color .2s, transform .15s, background .2s;
+}
+.av-item:hover .av-ring { transform:translateY(-3px); border-color:rgba(255,255,255,0.25); background:rgba(255,255,255,0.07); }
+.av-item.selected .av-ring { border:2px solid var(--primary); background:rgba(0,210,211,0.08); box-shadow:0 0 0 3px rgba(0,210,211,0.12); }
+.av-name { font-size:.75rem; color:var(--text-sub); }
+.av-item.selected .av-name { color:var(--primary); font-weight:700; }
+
+/* ── SCREENS ── */
+.hidden { display:none !important; }
+.screen { animation:fade .4s ease; }
+@keyframes fade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+#question-box { min-height:220px; }
+
+.loader { width:40px; height:40px; border-radius:50%; border:3px solid rgba(255,255,255,0.08); border-top-color:var(--primary); margin:auto; animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── REFERRAL ── */
+.referral-box { margin-top:22px; text-align:right; }
+.referral-box label { display:block; margin-bottom:9px; color:var(--text-sub); font-size:.88rem; }
+.referral-row { display:flex; gap:10px; }
+.copy-btn { min-width:80px; border-radius:14px; background:linear-gradient(135deg,var(--primary),var(--accent)); color:white; font-weight:bold; padding:12px; font-size:.88rem; }
+
+.signature { margin-top:24px; font-size:.78rem; color:var(--text-sub); }
+.signature span { color:var(--primary); font-weight:bold; }
+
+@media(max-width:480px){
+  body { padding:12px; }
+  .container { padding:24px 16px; }
+  .referral-row { flex-direction:column; }
+  h1 { font-size:1.55rem; }
+  .av-ring { width:62px; height:62px; }
+}
+</style>
 </head>
-
 <body>
 
-    <div class="background-animation">
+<div class="background-animation">
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+</div>
 
-        <div class="blob one"></div>
+<div class="container">
+  <div class="progress-wrapper"><div id="progress-bar" class="progress-bar"></div></div>
+  <div id="loader" class="loader"></div>
 
-        <div class="blob two"></div>
+  <!-- START SCREEN -->
+  <div id="start-screen" class="screen hidden">
+    <h1 id="site-title">سامانه پژوهشی EconGraph</h1>
+    <p id="site-subtitle" class="subtitle">لطفاً اطلاعات خود را وارد کنید</p>
 
+    <!-- AVATAR -->
+    <div class="avatar-section">
+      <div class="avatar-title">شخصیت خود را انتخاب کنید (اختیاری)</div>
+      <div class="avatar-grid" id="avatarGrid">
+
+        <!-- رسمی -->
+        <div class="av-item" onclick="pickAvatar(this,'رسمی')">
+          <div class="av-ring">
+            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
+              <circle cx="25" cy="17" r="12" fill="#FDDBB4"/>
+              <path d="M13 14 Q14 3 25 3 Q36 3 37 14 Q33 7 25 7 Q17 7 13 14Z" fill="#2C1810"/>
+              <ellipse cx="21" cy="18" rx="1.9" ry="2.3" fill="#111"/>
+              <ellipse cx="29" cy="18" rx="1.9" ry="2.3" fill="#111"/>
+              <path d="M21 23 Q25 27 29 23" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <rect x="21" y="28" width="8" height="9" rx="4" fill="#FDDBB4"/>
+              <path d="M7 62 Q7 44 25 42 Q43 44 43 62Z" fill="#1B2A4A"/>
+              <path d="M19 42 L25 48 L31 42" fill="#f0f0f0"/>
+              <rect x="23" y="42" width="4" height="12" rx="1" fill="#C0392B"/>
+            </svg>
+          </div>
+          <span class="av-name">رسمی</span>
+        </div>
+
+        <!-- موبلند فر سبز -->
+        <div class="av-item" onclick="pickAvatar(this,'آزاد')">
+          <div class="av-ring">
+            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
+              <path d="M10 36 Q8 52 14 60 Q18 48 25 46 Q32 48 36 60 Q42 52 40 36 Q36 44 25 44 Q14 44 10 36Z" fill="#27AE60"/>
+              <path d="M9 22 Q10 4 25 4 Q40 4 41 22 Q39 30 35 34 Q30 38 25 38 Q20 38 15 34 Q11 30 9 22Z" fill="#27AE60"/>
+              <path d="M10 20 Q8 10 10 6" stroke="#1E8449" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path d="M40 20 Q42 10 40 6" stroke="#1E8449" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path d="M11 18 Q9 12 12 8 Q10 14 13 16Z" fill="#1E8449"/>
+              <path d="M39 18 Q41 12 38 8 Q40 14 37 16Z" fill="#1E8449"/>
+              <circle cx="25" cy="21" r="12" fill="#FDDBB4"/>
+              <ellipse cx="21" cy="21" rx="1.9" ry="2.3" fill="#111"/>
+              <ellipse cx="29" cy="21" rx="1.9" ry="2.3" fill="#111"/>
+              <path d="M21 27 Q25 31 29 27" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <rect x="21" y="32" width="8" height="8" rx="3" fill="#FDDBB4"/>
+            </svg>
+          </div>
+          <span class="av-name">آزاد</span>
+        </div>
+
+        <!-- ریسک‌پذیر -->
+        <div class="av-item" onclick="pickAvatar(this,'ریسک‌پذیر')">
+          <div class="av-ring">
+            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
+              <circle cx="25" cy="17" r="12" fill="#FDDBB4"/>
+              <path d="M13 11 Q17 1 25 2 Q33 1 37 11 Q33 5 25 6 Q17 5 13 11Z" fill="#111"/>
+              <path d="M13 13 Q11 7 13 5" stroke="#111" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+              <path d="M37 13 Q39 7 37 5" stroke="#111" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+              <ellipse cx="21" cy="17" rx="1.9" ry="2.3" fill="#111"/>
+              <ellipse cx="29" cy="17" rx="1.9" ry="2.3" fill="#111"/>
+              <path d="M20 23 Q25 28 30 23" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <rect x="21" y="28" width="8" height="9" rx="4" fill="#FDDBB4"/>
+              <path d="M7 62 Q7 44 25 42 Q43 44 43 62Z" fill="#C0392B"/>
+              <path d="M19 42 Q25 48 31 42" stroke="#922B21" stroke-width="2.2" fill="none"/>
+            </svg>
+          </div>
+          <span class="av-name">ریسک‌پذیر</span>
+        </div>
+
+        <!-- تحلیلگر -->
+        <div class="av-item" onclick="pickAvatar(this,'تحلیلگر')">
+          <div class="av-ring">
+            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
+              <circle cx="25" cy="17" r="12" fill="#F5CBA7"/>
+              <path d="M14 13 Q16 4 25 4 Q34 4 36 13 Q32 7 25 7 Q18 7 14 13Z" fill="#6D4C41"/>
+              <rect x="17" y="14" width="7" height="5.5" rx="2.8" fill="none" stroke="#555" stroke-width="1.2"/>
+              <rect x="26" y="14" width="7" height="5.5" rx="2.8" fill="none" stroke="#555" stroke-width="1.2"/>
+              <line x1="24" y1="16.5" x2="26" y2="16.5" stroke="#555" stroke-width="1"/>
+              <line x1="17" y1="16.5" x2="15" y2="15.5" stroke="#555" stroke-width="1"/>
+              <line x1="33" y1="16.5" x2="35" y2="15.5" stroke="#555" stroke-width="1"/>
+              <ellipse cx="20.5" cy="16.5" rx="1.5" ry="1.8" fill="#111"/>
+              <ellipse cx="29.5" cy="16.5" rx="1.5" ry="1.8" fill="#111"/>
+              <path d="M21 23 Q25 27 29 23" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <rect x="21" y="28" width="8" height="9" rx="4" fill="#F5CBA7"/>
+              <path d="M7 62 Q7 44 25 42 Q43 44 43 62Z" fill="#2471A3"/>
+              <path d="M19 42 L25 48 L31 42" fill="#f0f0f0"/>
+            </svg>
+          </div>
+          <span class="av-name">تحلیلگر</span>
+        </div>
+
+        <!-- محافظه‌کار -->
+        <div class="av-item" onclick="pickAvatar(this,'محافظه‌کار')">
+          <div class="av-ring">
+            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
+              <path d="M12 19 Q12 1 25 1 Q38 1 38 19 Q35 9 25 9 Q15 9 12 19Z" fill="#D4AC0D"/>
+              <path d="M12 19 Q12 38 18 46 Q21 34 25 34 Q29 34 32 46 Q38 38 38 19 Q35 30 25 30 Q15 30 12 19Z" fill="#D4AC0D"/>
+              <circle cx="25" cy="20" r="12" fill="#FDDBB4"/>
+              <ellipse cx="21" cy="20" rx="1.9" ry="2.3" fill="#111"/>
+              <ellipse cx="29" cy="20" rx="1.9" ry="2.3" fill="#111"/>
+              <path d="M21 26 Q25 30 29 26" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <rect x="21" y="31" width="8" height="8" rx="3" fill="#FDDBB4"/>
+              <path d="M7 62 Q7 46 25 44 Q43 46 43 62Z" fill="#7D3C98"/>
+              <path d="M19 44 Q25 50 31 44" stroke="#5B2C6F" stroke-width="2.2" fill="none"/>
+            </svg>
+          </div>
+          <span class="av-name">محافظه‌کار</span>
+        </div>
+
+      </div>
     </div>
 
-    <div class="container">
-
-        <div class="progress-wrapper">
-
-            <div
-                id="progress-bar"
-                class="progress-bar"></div>
-
-        </div>
-
-        <div
-            id="loader"
-            class="loader"></div>
-
-        <!-- =====================================================
-             START SCREEN
-        ====================================================== -->
-
-        <div
-            id="start-screen"
-            class="screen hidden">
-
-            <h1 id="site-title">
-                سامانه پژوهشی EconGraph
-            </h1>
-
-            <p
-                id="site-subtitle"
-                class="subtitle">
-
-                لطفاً اطلاعات خود را وارد کنید
-            </p>
-
-            <div class="form-group">
-
-                <label class="label">
-                    نام شما
-                </label>
-
-                <input
-                    type="text"
-                    id="user-name"
-                    class="form-control"
-                    placeholder="مثلاً علی">
-            </div>
-
-            <div class="form-group">
-
-                <label class="label">
-                    سن
-                </label>
-
-                <input
-                    type="number"
-                    id="user-age"
-                    class="form-control"
-                    placeholder="مثلاً 22">
-            </div>
-
-            <div class="theme-selector">
-
-                <div class="theme-title">
-
-                    انتخاب تم
-                </div>
-
-                <div class="theme-options">
-
-                    <button
-                        class="theme-btn neon"
-                        onclick="changeTheme('neon')"></button>
-
-                    <button
-                        class="theme-btn crimson"
-                        onclick="changeTheme('crimson')"></button>
-
-                    <button
-                        class="theme-btn corporate"
-                        onclick="changeTheme('corporate')"></button>
-
-                    <button
-                        class="theme-btn nature"
-                        onclick="changeTheme('nature')"></button>
-
-                </div>
-
-            </div>
-
-            <div class="nav-buttons">
-
-                <button
-                    class="btn-primary"
-                    onclick="startQuiz()">
-
-                    شروع آزمون
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- =====================================================
-             QUIZ SCREEN
-        ====================================================== -->
-
-        <div
-            id="quiz-screen"
-            class="screen hidden">
-
-            <div id="question-box"></div>
-
-            <div class="nav-buttons">
-
-                <button
-                    id="btn-prev"
-                    class="btn-secondary"
-                    onclick="prevStep()">
-
-                    قبلی
-
-                </button>
-
-                <button
-                    id="btn-next"
-                    class="btn-primary"
-                    onclick="nextStep()">
-
-                    بعدی
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- =====================================================
-             END SCREEN
-        ====================================================== -->
-
-        <div
-            id="end-screen"
-            class="screen hidden"
-            style="text-align:center;">
-
-            <div style="font-size:4rem;">
-                🎉
-            </div>
-
-            <h2 style="margin-top:10px;">
-
-                ثبت شد
-
-            </h2>
-
-            <p
-                style="
-                    color:var(--text-sub);
-                    margin-top:10px;
-                    line-height:1.9;
-                ">
-
-                پاسخ‌های شما با موفقیت ذخیره شد.
-
-            </p>
-
-            <div class="referral-box">
-
-                <label>
-
-                    لینک دعوت اختصاصی شما
-
-                </label>
-
-                <div class="referral-row">
-
-                    <input
-                        type="text"
-                        id="referral-link"
-                        class="form-control"
-                        readonly>
-
-                    <button
-                        class="copy-btn"
-                        onclick="copyReferralLink()">
-
-                        کپی
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
+    <div class="form-group">
+      <label class="label">نام شما</label>
+      <input type="text" id="user-name" class="form-control" placeholder="مثلاً علی">
+    </div>
+    <div class="form-group">
+      <label class="label">سن</label>
+      <input type="number" id="user-age" class="form-control" placeholder="مثلاً ۲۲">
     </div>
 
-    <div class="signature">
-
-        Designed for
-        <span>Economic Research</span>
-
+    <div class="theme-selector">
+      <div class="theme-title">انتخاب پوسته</div>
+      <div class="theme-options">
+        <div class="theme-card" onclick="changeTheme('neon')">
+          <div class="theme-dot neon"></div>
+          <span class="theme-name">نئون</span>
+        </div>
+        <div class="theme-card" onclick="changeTheme('crimson')">
+          <div class="theme-dot crimson"></div>
+          <span class="theme-name">قرمز</span>
+        </div>
+        <div class="theme-card" onclick="changeTheme('corporate')">
+          <div class="theme-dot corporate"></div>
+          <span class="theme-name">آبی</span>
+        </div>
+        <div class="theme-card" onclick="changeTheme('nature')">
+          <div class="theme-dot nature"></div>
+          <span class="theme-name">طبیعت</span>
+        </div>
+        <div class="theme-card" onclick="changeTheme('sunset')">
+          <div class="theme-dot sunset"></div>
+          <span class="theme-name">غروب</span>
+        </div>
+      </div>
     </div>
 
-    <script>
-
-        /* =========================================================
-           API
-        ========================================================= */
-
-        const API_URL =
-            "https://script.google.com/macros/s/AKfycbzxljrF2WvzSJ0xFtxEoFh8Y5QSwg-Kp2LxO-nSJzzoZ10JzYdqcWk3g0vwrHg4Dru0AA/exec";
-
-        /* =========================================================
-           STATE
-        ========================================================= */
-
-        const state = {
-
-            currentQuestion: 0,
-
-            currentTheme: "neon",
-
-            questions: [],
-
-            answers: {},
-
-            timeLogs: {},
-
-            config: {}
-        };
-
-        let questionStartTime = 0;
-
-        /* =========================================================
-           DOM
-        ========================================================= */
-
-        const screens = {
-
-            start:
-                document.getElementById("start-screen"),
-
-            quiz:
-                document.getElementById("quiz-screen"),
-
-            end:
-                document.getElementById("end-screen")
-        };
-
-        /* =========================================================
-           INIT
-        ========================================================= */
-
-        window.addEventListener(
-            "DOMContentLoaded",
-            initApp
-        );
-
-        async function initApp() {
-
-            loadTheme();
-
-            try {
-
-                const response =
-                    await fetch(API_URL);
-
-                const data =
-                    await response.json();
-
-                state.questions =
-                    data.questions || [];
-
-                state.config =
-                    data.config || {};
-
-                initializeUI();
-
-                setScreen("start");
-
-            } catch(error){
-
-                console.error(error);
-
-                alert("خطا در اتصال");
-            }
-
-            finally {
-
-                document
-                    .getElementById("loader")
-                    .classList
-                    .add("hidden");
-            }
-        }
-
-        /* =========================================================
-           UI
-        ========================================================= */
-
-        function setScreen(screen){
-
-            Object
-                .values(screens)
-                .forEach(el=>{
-
-                    el.classList.add("hidden");
-                });
-
-            screens[screen]
-                .classList
-                .remove("hidden");
-        }
-
-        function initializeUI(){
-
-            if(state.config.title){
-
-                document
-                    .getElementById("site-title")
-                    .innerText =
-                    state.config.title;
-            }
-
-            if(state.config.subtitle){
-
-                document
-                    .getElementById("site-subtitle")
-                    .innerText =
-                    state.config.subtitle;
-            }
-        }
-
-        /* =========================================================
-           THEMES
-        ========================================================= */
-
-        function changeTheme(theme){
-
-            document.body.className = "";
-
-            if(theme !== "neon"){
-
-                document.body.classList.add(
-                    `theme-${theme}`
-                );
-            }
-
-            localStorage.setItem(
-                "econ_theme",
-                theme
-            );
-
-            state.currentTheme = theme;
-
-            updateThemeButtons(theme);
-        }
-
-        function loadTheme(){
-
-            const savedTheme =
-                localStorage.getItem("econ_theme")
-                || "neon";
-
-            changeTheme(savedTheme);
-        }
-
-        function updateThemeButtons(theme){
-
-            document
-                .querySelectorAll(".theme-btn")
-                .forEach(btn=>{
-
-                    btn.classList.remove("active");
-
-                    if(btn.classList.contains(theme)){
-
-                        btn.classList.add("active");
-                    }
-                });
-        }
-
-        /* =========================================================
-           QUIZ
-        ========================================================= */
-
-        function startQuiz(){
-
-            const name =
-                document
-                .getElementById("user-name")
-                .value
-                .trim();
-
-            const age =
-                document
-                .getElementById("user-age")
-                .value
-                .trim();
-
-            if(!name || !age){
-
-                alert("لطفاً اطلاعات را کامل کنید");
-
-                return;
-            }
-
-            state.currentQuestion = 0;
-
-            setScreen("quiz");
-
-            showQuestion();
-        }
-
-        function showQuestion(){
-
-            const question =
-                state.questions[
-                    state.currentQuestion
-                ];
-
-            const box =
-                document
-                .getElementById("question-box");
-
-            updateProgress();
-
-            questionStartTime = Date.now();
-
-            const saved =
-                state.answers[question.id]
-                || "";
-
-            let html = "";
-
-            if(question.type === "radio"){
-
-                html =
-                    question.options
-                    .map(option=>{
-
-                        const checked =
-                            saved === option
-                            ? "checked"
-                            : "";
-
-                        return `
-
-                            <label class="radio-option">
-
-                                <input
-                                    type="radio"
-                                    name="question"
-                                    value="${option}"
-                                    ${checked}
-                                    onchange="saveAnswer('${question.id}','${option}')"
-                                >
-
-                                ${option}
-
-                            </label>
-
-                        `;
-                    })
-                    .join("");
-            }
-
-            if(question.type === "text"){
-
-                html = `
-
-                    <textarea
-                        class="form-control"
-                        rows="4"
-                        placeholder="پاسخ خود را وارد کنید..."
-                        oninput="saveAnswer('${question.id}', this.value)"
-                    >${saved}</textarea>
-
-                `;
-            }
-
-            if(question.type === "number"){
-
-                html = `
-
-                    <input
-                        type="number"
-                        class="form-control"
-                        value="${saved}"
-                        placeholder="عدد"
-                        oninput="saveAnswer('${question.id}', this.value)"
-                    >
-
-                `;
-            }
-
-            box.innerHTML = `
-
-                <h3>
-
-                    ${state.currentQuestion + 1}.
-                    ${question.text}
-
-                </h3>
-
-                ${html}
-
-            `;
-
-            updateButtons();
-        }
-
-        function saveAnswer(id,value){
-
-            state.answers[id] = value;
-        }
-
-        function nextStep(){
-
-            const question =
-                state.questions[
-                    state.currentQuestion
-                ];
-
-            if(
-                question.required &&
-                !state.answers[question.id]
-            ){
-
-                alert("این سوال الزامی است");
-
-                return;
-            }
-
-            state.timeLogs[question.id] =
-
-                (
-                    (Date.now() - questionStartTime)
-                    / 1000
-                ).toFixed(1);
-
-            if(
-                state.currentQuestion >=
-                state.questions.length - 1
-            ){
-
-                submitData();
-
-                return;
-            }
-
-            state.currentQuestion++;
-
-            showQuestion();
-        }
-
-        function prevStep(){
-
-            if(state.currentQuestion <= 0)
-                return;
-
-            state.currentQuestion--;
-
-            showQuestion();
-        }
-
-        function updateButtons(){
-
-            const prev =
-                document.getElementById("btn-prev");
-
-            const next =
-                document.getElementById("btn-next");
-
-            prev.style.visibility =
-
-                state.currentQuestion === 0
-                ? "hidden"
-                : "visible";
-
-            next.innerText =
-
-                state.currentQuestion ===
-                state.questions.length - 1
-
-                ? "ثبت نهایی"
-
-                : "بعدی";
-        }
-
-        function updateProgress(){
-
-            const progress =
-
-                (
-                    (state.currentQuestion + 1)
-                    / state.questions.length
-                ) * 100;
-
-            document
-                .getElementById("progress-bar")
-                .style.width = `${progress}%`;
-        }
-
-        /* =========================================================
-           SUBMIT
-        ========================================================= */
-
-        async function submitData(){
-
-            const btn =
-                document.getElementById("btn-next");
-
-            btn.disabled = true;
-
-            btn.innerText =
-                "در حال ارسال...";
-
-            const payload = {
-
-                name:
-                    document
-                    .getElementById("user-name")
-                    .value,
-
-                age:
-                    document
-                    .getElementById("user-age")
-                    .value,
-
-                source:
-                    new URLSearchParams(
-                        window.location.search
-                    )
-                    .get("ref")
-                    || "direct",
-
-                theme:
-                    state.currentTheme,
-
-                answers:
-
-                    Object
-                    .entries(state.answers)
-
-                    .map(([qId,answer])=>({
-
-                        qId,
-
-                        answer,
-
-                        time:
-                            state.timeLogs[qId]
-                            || 0
-                    }))
-            };
-
-            try {
-
-                await fetch(API_URL, {
-
-                    method: "POST",
-
-                    body:
-                        JSON.stringify(payload)
-                });
-
-                generateReferralLink();
-
-                setScreen("end");
-
-            } catch(error){
-
-                console.error(error);
-
-                alert("خطا در ارسال اطلاعات");
-
-                btn.disabled = false;
-
-                btn.innerText =
-                    "تلاش مجدد";
-            }
-        }
-
-        /* =========================================================
-           REFERRAL
-        ========================================================= */
-
-        function generateReferralLink(){
-
-            const name =
-
-                document
-                .getElementById("user-name")
-                .value
-                .trim();
-
-            const link =
-
-                `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(name)}`;
-
-            document
-                .getElementById("referral-link")
-                .value = link;
-        }
-
-        async function copyReferralLink(){
-
-            const input =
-                document
-                .getElementById("referral-link");
-
-            try {
-
-                await navigator
-                    .clipboard
-                    .writeText(input.value);
-
-                alert("لینک کپی شد");
-
-            } catch {
-
-                input.select();
-
-                document.execCommand("copy");
-
-                alert("لینک کپی شد");
-            }
-        }
-
-    </script>
-
+    <div class="nav-buttons">
+      <button class="btn-primary" onclick="startQuiz()">شروع آزمون</button>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen hidden">
+    <div id="question-box"></div>
+    <div class="nav-buttons">
+      <button id="btn-prev" class="btn-secondary" onclick="prevStep()">قبلی</button>
+      <button id="btn-next" class="btn-primary" onclick="nextStep()">بعدی</button>
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div id="end-screen" class="screen hidden" style="text-align:center;">
+    <div style="font-size:3.5rem;">🎉</div>
+    <h2 style="margin-top:10px;">ثبت شد</h2>
+    <p style="color:var(--text-sub);margin-top:10px;line-height:1.9;">پاسخ‌های شما با موفقیت ذخیره شد.</p>
+    <div class="referral-box">
+      <label>لینک دعوت اختصاصی شما</label>
+      <div class="referral-row">
+        <input type="text" id="referral-link" class="form-control" readonly>
+        <button class="copy-btn" onclick="copyReferralLink()">کپی</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="signature">Designed for <span>Economic Research</span></div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbzxljrF2WvzSJ0xFtxEoFh8Y5QSwg-Kp2LxO-nSJzzoZ10JzYdqcWk3g0vwrHg4Dru0AA/exec";
+
+const state = {
+  currentQuestion: 0,
+  currentTheme: "neon",
+  selectedAvatar: "",
+  questions: [],
+  answers: {},
+  comments: {},
+  timeLogs: {},
+  config: {}
+};
+
+let questionStartTime = 0;
+
+const screens = {
+  start: document.getElementById("start-screen"),
+  quiz:  document.getElementById("quiz-screen"),
+  end:   document.getElementById("end-screen")
+};
+
+window.addEventListener("DOMContentLoaded", initApp);
+
+async function initApp() {
+  loadTheme();
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    state.questions = data.questions || [];
+    state.config = data.config || {};
+    initializeUI();
+    setScreen("start");
+  } catch(e) {
+    console.error(e);
+    alert("خطا در اتصال");
+  } finally {
+    document.getElementById("loader").classList.add("hidden");
+  }
+}
+
+function setScreen(s) {
+  Object.values(screens).forEach(el => el.classList.add("hidden"));
+  screens[s].classList.remove("hidden");
+}
+
+function initializeUI() {
+  if(state.config.title) document.getElementById("site-title").innerText = state.config.title;
+  if(state.config.subtitle) document.getElementById("site-subtitle").innerText = state.config.subtitle;
+}
+
+function pickAvatar(el, name) {
+  document.querySelectorAll(".av-item").forEach(i => i.classList.remove("selected"));
+  el.classList.add("selected");
+  state.selectedAvatar = name;
+}
+
+function changeTheme(theme) {
+  document.body.className = "";
+  if(theme !== "neon") document.body.classList.add("theme-" + theme);
+  localStorage.setItem("econ_theme", theme);
+  state.currentTheme = theme;
+  document.querySelectorAll(".theme-card").forEach(btn => {
+    btn.classList.remove("active");
+    if(btn.querySelector("." + theme)) btn.classList.add("active");
+  });
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem("econ_theme") || "neon";
+  changeTheme(saved);
+}
+
+function startQuiz() {
+  const name = document.getElementById("user-name").value.trim();
+  const age  = document.getElementById("user-age").value.trim();
+  if(!name || !age) { alert("لطفاً اطلاعات را کامل کنید"); return; }
+  state.currentQuestion = 0;
+  setScreen("quiz");
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = state.questions[state.currentQuestion];
+  const box = document.getElementById("question-box");
+  updateProgress();
+  questionStartTime = Date.now();
+  const saved = state.answers[q.id] || "";
+  const savedComment = state.comments[q.id] || "";
+
+  let html = "";
+
+  if(q.type === "radio") {
+    html = q.options.map(opt => {
+      const checked = saved === opt ? "checked" : "";
+      const safeOpt = opt.replace(/"/g, "&quot;");
+      return `<label class="radio-option"><input type="radio" name="question" value="${safeOpt}" ${checked} onchange="saveAnswer('${q.id}','${safeOpt}')"> ${opt}</label>`;
+    }).join("");
+  }
+
+  if(q.type === "text") {
+    html = `<textarea class="form-control" rows="4" placeholder="پاسخ خود را وارد کنید..." oninput="saveAnswer('${q.id}',this.value)">${saved}</textarea>`;
+  }
+
+  if(q.type === "number") {
+    html = `<input type="number" class="form-control" value="${saved}" placeholder="عدد" oninput="saveAnswer('${q.id}',this.value)">`;
+  }
+
+  box.innerHTML = `
+    <h3>${state.currentQuestion + 1}. ${q.text}</h3>
+    ${html}
+    <div class="comment-box">
+      <textarea class="form-control" placeholder="نظر یا توضیح اضافه‌ای دارید؟ (اختیاری)" oninput="saveComment('${q.id}',this.value)">${savedComment}</textarea>
+    </div>
+  `;
+
+  updateButtons();
+}
+
+function saveAnswer(id, value) { state.answers[id] = value; }
+function saveComment(id, value) { state.comments[id] = value; }
+
+function nextStep() {
+  const q = state.questions[state.currentQuestion];
+  if(q.required && !state.answers[q.id]) { alert("این سوال الزامی است"); return; }
+  state.timeLogs[q.id] = ((Date.now() - questionStartTime) / 1000).toFixed(1);
+  if(state.currentQuestion >= state.questions.length - 1) { submitData(); return; }
+  state.currentQuestion++;
+  showQuestion();
+}
+
+function prevStep() {
+  if(state.currentQuestion <= 0) return;
+  state.currentQuestion--;
+  showQuestion();
+}
+
+function updateButtons() {
+  const prev = document.getElementById("btn-prev");
+  const next = document.getElementById("btn-next");
+  prev.style.visibility = state.currentQuestion === 0 ? "hidden" : "visible";
+  next.innerText = state.currentQuestion === state.questions.length - 1 ? "ثبت نهایی" : "بعدی";
+}
+
+function updateProgress() {
+  const pct = ((state.currentQuestion + 1) / state.questions.length) * 100;
+  document.getElementById("progress-bar").style.width = pct + "%";
+}
+
+async function submitData() {
+  const btn = document.getElementById("btn-next");
+  btn.disabled = true;
+  btn.innerText = "در حال ارسال...";
+
+  const answersArr = state.questions.map((q, i) => ({
+    questionIndex: i + 1,
+    qId: q.id,
+    answer:  state.answers[q.id]  || "",
+    comment: state.comments[q.id] || "",
+    time:    state.timeLogs[q.id] || 0
+  }));
+
+  const totalTime = Object.values(state.timeLogs).reduce((sum, t) => sum + parseFloat(t || 0), 0).toFixed(1);
+
+  const payload = {
+    surveyName: state.config.title || "EconGraph",
+    name:       document.getElementById("user-name").value,
+    age:        document.getElementById("user-age").value,
+    avatar:     state.selectedAvatar,
+    source:     new URLSearchParams(window.location.search).get("ref") || "direct",
+    theme:      state.currentTheme,
+    totalTime:  totalTime,
+    answers:    answersArr
+  };
+
+  try {
+    await fetch(API_URL, { method:"POST", body:JSON.stringify(payload) });
+    generateReferralLink();
+    setScreen("end");
+  } catch(e) {
+    console.error(e);
+    alert("خطا در ارسال اطلاعات");
+    btn.disabled = false;
+    btn.innerText = "تلاش مجدد";
+  }
+}
+
+function generateReferralLink() {
+  const name = document.getElementById("user-name").value.trim();
+  document.getElementById("referral-link").value =
+    window.location.origin + window.location.pathname + "?ref=" + encodeURIComponent(name);
+}
+
+async function copyReferralLink() {
+  const input = document.getElementById("referral-link");
+  try {
+    await navigator.clipboard.writeText(input.value);
+    alert("لینک کپی شد");
+  } catch {
+    input.select();
+    document.execCommand("copy");
+    alert("لینک کپی شد");
+  }
+}
+</script>
 </body>
-
 </html>
