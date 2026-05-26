@@ -9,354 +9,729 @@
 :root {
   --primary: #00d2d3;
   --accent: #5f27cd;
-  --bg-body: #0f1720;
-  --card-bg: rgba(20,25,35,0.78);
-  --card-border: rgba(255,255,255,0.08);
-  --text-main: #f5f6fa;
-  --text-sub: #a4b0be;
-  --input-bg: rgba(255,255,255,0.05);
-  --border-color: rgba(255,255,255,0.08);
-  --shadow: 0 25px 50px rgba(0,0,0,0.45);
-  --blob-1: #00d2d3;
-  --blob-2: #5f27cd;
-  --radius: 28px;
+  --bg-body: #0a0e17;
+  --card-bg: rgba(14,20,32,0.85);
+  --card-border: rgba(255,255,255,0.07);
+  --text-main: #f0f2fa;
+  --text-sub: #8892a4;
+  --input-bg: rgba(255,255,255,0.04);
+  --border-color: rgba(255,255,255,0.07);
+  --shadow: 0 32px 64px rgba(0,0,0,0.6);
+  --radius: 24px;
+  --pixel: 3px;
 }
-body.theme-crimson { --primary:#ff4757; --accent:#ff6b81; --bg-body:#1c1114; --card-bg:rgba(40,20,25,0.78); --blob-1:#ff4757; --blob-2:#ff6b81; }
-body.theme-corporate { --primary:#0984e3; --accent:#74b9ff; --bg-body:#0f172a; --card-bg:rgba(15,23,42,0.82); --blob-1:#0984e3; --blob-2:#74b9ff; }
-body.theme-nature { --primary:#2d6a4f; --accent:#95d5b2; --bg-body:#0b1913; --card-bg:rgba(18,35,28,0.82); --blob-1:#2d6a4f; --blob-2:#95d5b2; }
-body.theme-sunset { --primary:#f0932b; --accent:#e55039; --bg-body:#1a0e0a; --card-bg:rgba(35,18,12,0.82); --blob-1:#f0932b; --blob-2:#e55039; }
+body.theme-crimson  { --primary:#ff4757; --accent:#c0392b; --bg-body:#100a0a; }
+body.theme-corporate{ --primary:#2980b9; --accent:#1abc9c; --bg-body:#080f1a; }
+body.theme-nature   { --primary:#27ae60; --accent:#f39c12; --bg-body:#060f09; }
+body.theme-sunset   { --primary:#e67e22; --accent:#e74c3c; --bg-body:#100808; }
 
 *{ margin:0; padding:0; box-sizing:border-box; outline:none; }
 
 body {
   font-family:'Vazirmatn',sans-serif;
   min-height:100vh;
-  padding:20px;
   display:flex;
   flex-direction:column;
-  justify-content:center;
   align-items:center;
-  overflow-x:hidden;
+  justify-content:center;
+  padding:20px;
   color:var(--text-main);
-  background:
-    radial-gradient(circle at top left, rgba(0,210,211,0.12), transparent 35%),
-    radial-gradient(circle at bottom right, rgba(95,39,205,0.12), transparent 35%),
-    var(--bg-body);
-  transition:background .4s ease, color .4s ease;
+  background:var(--bg-body);
+  overflow-x:hidden;
 }
 
-.background-animation { position:fixed; inset:0; overflow:hidden; z-index:-1; }
-.blob { position:absolute; width:50vw; height:50vw; border-radius:50%; filter:blur(90px); opacity:.18; animation:float 18s infinite alternate ease-in-out; }
-.blob.one { top:-10%; left:-10%; background:var(--blob-1); }
-.blob.two { bottom:-10%; right:-10%; background:var(--blob-2); }
-@keyframes float { from { transform:translate(0,0) scale(1); } to { transform:translate(40px,-40px) scale(1.1); } }
+/* ═══════════════════════════════════════
+   ANIMATED BACKGROUND
+═══════════════════════════════════════ */
+.bg-canvas {
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
 
+/* grid lines */
+.bg-canvas::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(0,210,211,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,210,211,0.04) 1px, transparent 1px);
+  background-size:40px 40px;
+  animation:gridMove 20s linear infinite;
+}
+@keyframes gridMove {
+  from { transform:translateY(0); }
+  to   { transform:translateY(40px); }
+}
+
+/* floating orbs */
+.orb {
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.2;
+  animation:orbFloat 15s ease-in-out infinite alternate;
+}
+.orb-1 { width:500px; height:500px; background:var(--primary); top:-200px; right:-150px; animation-delay:0s; }
+.orb-2 { width:400px; height:400px; background:var(--accent);  bottom:-150px; left:-100px; animation-delay:-5s; }
+.orb-3 { width:200px; height:200px; background:var(--primary); top:50%; left:50%; animation-delay:-10s; opacity:.08; }
+@keyframes orbFloat {
+  from { transform:translate(0,0) scale(1); }
+  to   { transform:translate(30px,-40px) scale(1.15); }
+}
+
+/* particles */
+.particle {
+  position:absolute;
+  width:2px; height:2px;
+  background:var(--primary);
+  border-radius:50%;
+  opacity:0;
+  animation:particleFly 8s linear infinite;
+}
+@keyframes particleFly {
+  0%   { opacity:0; transform:translateY(100vh) translateX(0); }
+  10%  { opacity:.6; }
+  90%  { opacity:.3; }
+  100% { opacity:0; transform:translateY(-20px) translateX(20px); }
+}
+
+/* ═══════════════════════════════════════
+   CARD
+═══════════════════════════════════════ */
 .container {
+  position:relative;
+  z-index:10;
   width:100%;
-  max-width:460px;
+  max-width:480px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  box-shadow:var(--shadow), 0 0 0 1px rgba(0,210,211,0.05), inset 0 1px 0 rgba(255,255,255,0.05);
+  overflow:hidden;
+  padding:32px 24px;
+}
+
+/* top glow line */
+.container::before {
+  content:"";
+  position:absolute;
+  top:0; left:10%; right:10%;
+  height:1px;
+  background:linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity:.6;
+}
+
+/* ═══════════════════════════════════════
+   PROGRESS
+═══════════════════════════════════════ */
+.progress-track {
+  position:absolute;
+  top:0; left:0; right:0;
+  height:3px;
+  background:rgba(255,255,255,0.04);
+}
+.progress-fill {
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, var(--primary), var(--accent));
+  transition:width .4s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 12px var(--primary);
+  position:relative;
+}
+.progress-fill::after {
+  content:"";
+  position:absolute;
+  right:0; top:-2px;
+  width:6px; height:7px;
+  background:white;
+  border-radius:50%;
+  box-shadow:0 0 8px var(--primary);
+}
+
+.progress-label {
+  position:absolute;
+  top:8px; left:24px;
+  font-size:.72rem;
+  color:var(--text-sub);
+  letter-spacing:.05em;
+  display:none;
+}
+
+/* ═══════════════════════════════════════
+   LOADER
+═══════════════════════════════════════ */
+.loader {
+  width:36px; height:36px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,0.06);
+  border-top-color:var(--primary);
+  margin:40px auto;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ═══════════════════════════════════════
+   SCREENS
+═══════════════════════════════════════ */
+.screen { animation:screenIn .35s ease; }
+@keyframes screenIn {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.hidden { display:none !important; }
+
+/* ═══════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════ */
+.site-title {
+  text-align:center;
+  font-size:1.7rem;
+  font-weight:900;
+  margin-bottom:6px;
+  background:linear-gradient(135deg, var(--text-main), var(--primary));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.site-subtitle {
+  text-align:center;
+  color:var(--text-sub);
+  font-size:.85rem;
+  line-height:1.9;
+  margin-bottom:8px;
+}
+.participants-badge {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin-bottom:24px;
+  font-size:.78rem;
+  color:var(--primary);
+  opacity:.8;
+}
+.participants-badge .dot {
+  width:6px; height:6px;
+  background:var(--primary);
+  border-radius:50%;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:.4; transform:scale(1.4); }
+}
+
+/* ═══════════════════════════════════════
+   PIXEL AVATARS (Minecraft style)
+═══════════════════════════════════════ */
+.avatar-section { margin-bottom:24px; }
+.avatar-title {
+  text-align:center;
+  color:var(--text-sub);
+  font-size:.8rem;
+  margin-bottom:14px;
+  letter-spacing:.05em;
+}
+.avatar-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.av-item {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+}
+.av-ring {
+  width:64px; height:64px;
+  border-radius:10px;
+  border:2px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.03);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .2s ease;
+  image-rendering:pixelated;
   position:relative;
   overflow:hidden;
-  border-radius:var(--radius);
-  border:1px solid var(--card-border);
-  background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  box-shadow:var(--shadow);
-  padding:35px 25px;
+}
+.av-item:hover .av-ring {
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.06);
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+.av-item.selected .av-ring {
+  border-color:var(--primary);
+  background:rgba(0,210,211,0.08);
+  box-shadow:0 0 0 3px rgba(0,210,211,0.15), 0 8px 20px rgba(0,210,211,0.2);
+}
+.av-name {
+  font-size:.68rem;
+  color:var(--text-sub);
+  text-align:center;
+}
+.av-item.selected .av-name {
+  color:var(--primary);
+  font-weight:700;
 }
 
-.progress-wrapper { position:absolute; top:0; right:0; width:100%; height:4px; background:rgba(255,255,255,0.04); }
-.progress-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--primary), var(--accent)); transition:width .35s ease; box-shadow:0 0 12px var(--primary); }
+/* pixel canvas avatars */
+.px-avatar {
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+}
 
-h1 { text-align:center; font-size:1.85rem; margin-bottom:10px; font-weight:900; }
-.subtitle { text-align:center; color:var(--text-sub); line-height:1.9; margin-bottom:28px; font-size:.9rem; }
-h3 { line-height:1.8; margin-bottom:20px; font-size:1rem; font-weight:700; }
+/* ═══════════════════════════════════════
+   FLOATING AVATAR (during quiz)
+═══════════════════════════════════════ */
+.floating-avatar {
+  position:absolute;
+  top:14px; left:16px;
+  width:36px; height:36px;
+  border-radius:8px;
+  border:1.5px solid var(--primary);
+  background:rgba(0,210,211,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  display:none;
+  image-rendering:pixelated;
+  z-index:5;
+}
+.floating-avatar.visible { display:flex; }
 
-.form-group { margin-bottom:16px; }
-.label { display:block; margin-bottom:7px; font-size:.88rem; color:var(--text-sub); }
-
+/* ═══════════════════════════════════════
+   FORM INPUTS
+═══════════════════════════════════════ */
+.form-group { margin-bottom:14px; }
+.label {
+  display:block;
+  margin-bottom:6px;
+  font-size:.82rem;
+  color:var(--text-sub);
+}
 .form-control {
   width:100%;
   border:1px solid var(--border-color);
   background:var(--input-bg);
   color:var(--text-main);
-  border-radius:14px;
-  padding:13px 15px;
+  border-radius:12px;
+  padding:12px 14px;
   font-family:inherit;
-  font-size:.95rem;
-  backdrop-filter:blur(12px);
-  transition:.25s ease;
+  font-size:.92rem;
+  transition:.2s ease;
 }
-.form-control:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(0,210,211,0.1); }
-.form-control::placeholder { color:var(--text-sub); }
+.form-control:focus {
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(0,210,211,0.08);
+  background:rgba(0,210,211,0.04);
+}
+.form-control::placeholder { color:var(--text-sub); opacity:.6; }
+textarea.form-control { resize:none; min-height:70px; }
 
-textarea.form-control { resize:none; min-height:72px; }
+/* ═══════════════════════════════════════
+   THEME SELECTOR
+═══════════════════════════════════════ */
+.theme-selector { margin-top:20px; }
+.theme-title {
+  text-align:center;
+  color:var(--text-sub);
+  font-size:.78rem;
+  margin-bottom:10px;
+}
+.theme-options {
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.theme-card {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  cursor:pointer;
+  padding:7px 9px;
+  border-radius:10px;
+  border:1.5px solid transparent;
+  background:rgba(255,255,255,0.03);
+  transition:.2s ease;
+}
+.theme-card:hover { background:rgba(255,255,255,0.06); }
+.theme-card.active { border-color:var(--primary); }
+.theme-dot { width:22px; height:22px; border-radius:50%; }
+.theme-dot.neon      { background:linear-gradient(135deg,#00d2d3,#5f27cd); }
+.theme-dot.crimson   { background:linear-gradient(135deg,#ff4757,#c0392b); }
+.theme-dot.corporate { background:linear-gradient(135deg,#2980b9,#1abc9c); }
+.theme-dot.nature    { background:linear-gradient(135deg,#27ae60,#f39c12); }
+.theme-dot.sunset    { background:linear-gradient(135deg,#e67e22,#e74c3c); }
+.theme-name { font-size:.68rem; color:var(--text-sub); }
+.theme-card.active .theme-name { color:var(--primary); }
 
-.radio-option {
+/* ═══════════════════════════════════════
+   QUIZ QUESTION CARD
+═══════════════════════════════════════ */
+.question-header {
   display:flex;
   align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--border-color);
+}
+.q-counter {
+  font-size:.78rem;
+  color:var(--primary);
+  font-weight:700;
+  background:rgba(0,210,211,0.1);
+  padding:4px 10px;
+  border-radius:20px;
+  border:1px solid rgba(0,210,211,0.2);
+}
+.q-text {
+  font-size:.96rem;
+  font-weight:700;
+  line-height:1.85;
+  margin-bottom:16px;
+  color:var(--text-main);
+}
+
+/* radio options */
+.radio-option {
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
   width:100%;
-  padding:14px 16px;
-  margin-bottom:10px;
-  border-radius:16px;
+  padding:12px 14px;
+  margin-bottom:8px;
+  border-radius:12px;
   border:1px solid var(--border-color);
   background:rgba(255,255,255,0.02);
   cursor:pointer;
   transition:.2s ease;
-  font-size:.93rem;
-  line-height:1.5;
+  font-size:.88rem;
+  line-height:1.6;
 }
-.radio-option:hover { transform:translateY(-1px); border-color:rgba(255,255,255,0.14); background:rgba(255,255,255,0.04); }
+.radio-option:hover {
+  border-color:rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.04);
+  transform:translateX(-2px);
+}
 .radio-option input { display:none; }
+.radio-dot {
+  width:16px; height:16px; min-width:16px;
+  border-radius:50%;
+  border:2px solid var(--border-color);
+  margin-top:2px;
+  transition:.2s ease;
+  display:flex; align-items:center; justify-content:center;
+}
 .radio-option:has(input:checked) {
   border-color:var(--primary);
   color:var(--primary);
-  background:rgba(0,210,211,0.06);
-  box-shadow:0 0 0 1px var(--primary);
+  background:rgba(0,210,211,0.05);
+}
+.radio-option:has(input:checked) .radio-dot {
+  border-color:var(--primary);
+  background:var(--primary);
+  box-shadow:0 0 0 3px rgba(0,210,211,0.15);
+}
+.radio-option:has(input:checked) .radio-dot::after {
+  content:"";
+  width:5px; height:5px;
+  background:white;
+  border-radius:50%;
 }
 
-.comment-box {
-  margin-top:6px;
-  margin-bottom:4px;
-}
-.comment-box textarea {
-  font-size:.85rem;
-  padding:10px 13px;
-  min-height:58px;
-  border-radius:12px;
+/* comment box */
+.comment-box { margin-top:10px; }
+.comment-label {
+  font-size:.75rem;
   color:var(--text-sub);
+  margin-bottom:5px;
+  display:block;
+  opacity:.7;
 }
-.comment-box textarea:focus { color:var(--text-main); }
 
-.nav-buttons { display:flex; gap:12px; margin-top:26px; }
-
-button { border:none; cursor:pointer; font-family:inherit; transition:.25s ease; }
+/* ═══════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════ */
+.nav-buttons {
+  display:flex;
+  gap:10px;
+  margin-top:22px;
+}
+button {
+  border:none;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .2s ease;
+}
 button:hover { transform:translateY(-2px); }
+button:active { transform:translateY(0); }
 
 .btn-primary {
   flex:2;
   position:relative;
   overflow:hidden;
-  border-radius:14px;
-  padding:14px;
-  font-size:.95rem;
+  border-radius:12px;
+  padding:13px;
+  font-size:.92rem;
   font-weight:800;
   color:white;
   background:linear-gradient(135deg, var(--primary), var(--accent));
-  box-shadow:0 8px 24px rgba(0,0,0,0.18);
+  box-shadow:0 6px 20px rgba(0,0,0,0.2);
 }
 .btn-primary::before {
   content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(120deg, transparent, rgba(255,255,255,0.22), transparent);
+  position:absolute; inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.18),transparent);
   transform:translateX(-100%);
-  transition:.6s;
+  transition:.5s;
 }
 .btn-primary:hover::before { transform:translateX(100%); }
-
 .btn-secondary {
   flex:1;
-  border-radius:14px;
-  padding:14px;
+  border-radius:12px;
+  padding:13px;
   background:transparent;
   color:var(--text-sub);
   border:1px solid var(--border-color);
+  font-size:.88rem;
+}
+.btn-secondary:hover {
+  border-color:rgba(255,255,255,0.18);
+  color:var(--text-main);
 }
 
-/* ── THEME SELECTOR ── */
-.theme-selector { margin-top:22px; }
-.theme-title { text-align:center; color:var(--text-sub); margin-bottom:12px; font-size:.85rem; }
-.theme-options { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+/* ═══════════════════════════════════════
+   CONFIRM SCREEN
+═══════════════════════════════════════ */
+#confirm-screen .confirm-title {
+  font-size:1.1rem;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:6px;
+}
+#confirm-screen .confirm-sub {
+  text-align:center;
+  font-size:.8rem;
+  color:var(--text-sub);
+  margin-bottom:18px;
+}
+.answer-summary {
+  max-height:280px;
+  overflow-y:auto;
+  padding-left:4px;
+}
+.answer-summary::-webkit-scrollbar { width:3px; }
+.answer-summary::-webkit-scrollbar-thumb { background:var(--primary); border-radius:3px; }
 
-.theme-card {
+.summary-item {
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border-color);
+  background:rgba(255,255,255,0.02);
+  margin-bottom:7px;
+}
+.summary-q {
+  font-size:.75rem;
+  color:var(--text-sub);
+  margin-bottom:4px;
+}
+.summary-a {
+  font-size:.84rem;
+  color:var(--primary);
+  font-weight:600;
+  line-height:1.5;
+}
+.summary-empty {
+  color:var(--text-sub);
+  font-style:italic;
+  opacity:.6;
+}
+
+/* ═══════════════════════════════════════
+   END SCREEN
+═══════════════════════════════════════ */
+#end-screen {
+  text-align:center;
+}
+.end-emoji {
+  font-size:3rem;
+  margin-bottom:10px;
+  display:block;
+  animation:bounceIn .5s ease;
+}
+@keyframes bounceIn {
+  0%   { transform:scale(0); }
+  60%  { transform:scale(1.2); }
+  100% { transform:scale(1); }
+}
+.end-title {
+  font-size:1.4rem;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.end-sub {
+  color:var(--text-sub);
+  font-size:.85rem;
+  line-height:1.8;
+  margin-bottom:20px;
+}
+
+/* mini chart */
+.mini-chart {
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--border-color);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:18px;
+  text-align:right;
+}
+.mini-chart-title {
+  font-size:.78rem;
+  color:var(--text-sub);
+  margin-bottom:12px;
+}
+.chart-bars {
+  display:flex;
+  gap:4px;
+  align-items:flex-end;
+  height:60px;
+  margin-bottom:6px;
+}
+.chart-bar-wrap {
+  flex:1;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:5px;
-  cursor:pointer;
-  padding:8px 10px;
-  border-radius:12px;
-  border:1.5px solid transparent;
-  transition:.2s ease;
-  background:rgba(255,255,255,0.03);
+  gap:3px;
+  height:100%;
+  justify-content:flex-end;
 }
-.theme-card:hover { background:rgba(255,255,255,0.06); }
-.theme-card.active { border-color:var(--primary); background:rgba(255,255,255,0.06); }
-.theme-dot { width:26px; height:26px; border-radius:50%; }
-.theme-dot.neon    { background:linear-gradient(135deg,#00d2d3,#5f27cd); }
-.theme-dot.crimson { background:linear-gradient(135deg,#ff4757,#ff6b81); }
-.theme-dot.corporate { background:linear-gradient(135deg,#0984e3,#74b9ff); }
-.theme-dot.nature  { background:linear-gradient(135deg,#2d6a4f,#95d5b2); }
-.theme-dot.sunset  { background:linear-gradient(135deg,#f0932b,#e55039); }
-.theme-name { font-size:.72rem; color:var(--text-sub); }
-.theme-card.active .theme-name { color:var(--primary); }
-
-/* ── AVATAR SECTION ── */
-.avatar-section { margin-bottom:26px; }
-.avatar-title { text-align:center; color:var(--text-sub); margin-bottom:14px; font-size:.88rem; }
-.avatar-grid { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-
-.av-item { display:flex; flex-direction:column; align-items:center; gap:7px; cursor:pointer; }
-.av-ring {
-  width:74px; height:74px; border-radius:50%;
-  border:2px solid rgba(255,255,255,0.1);
-  background:rgba(255,255,255,0.04);
-  display:flex; align-items:center; justify-content:center;
-  transition:border-color .2s, transform .15s, background .2s;
+.chart-bar {
+  width:100%;
+  border-radius:4px 4px 0 0;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+  opacity:.7;
+  transition:height .8s cubic-bezier(.4,0,.2,1);
+  min-height:4px;
 }
-.av-item:hover .av-ring { transform:translateY(-3px); border-color:rgba(255,255,255,0.25); background:rgba(255,255,255,0.07); }
-.av-item.selected .av-ring { border:2px solid var(--primary); background:rgba(0,210,211,0.08); box-shadow:0 0 0 3px rgba(0,210,211,0.12); }
-.av-name { font-size:.75rem; color:var(--text-sub); }
-.av-item.selected .av-name { color:var(--primary); font-weight:700; }
+.chart-bar.user { opacity:1; box-shadow:0 0 8px var(--primary); }
+.chart-bar-label {
+  font-size:.6rem;
+  color:var(--text-sub);
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  height:28px;
+}
 
-/* ── SCREENS ── */
-.hidden { display:none !important; }
-.screen { animation:fade .4s ease; }
-@keyframes fade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+/* referral */
+.referral-box { margin-top:4px; text-align:right; }
+.referral-label {
+  display:block;
+  margin-bottom:7px;
+  color:var(--text-sub);
+  font-size:.8rem;
+}
+.referral-row { display:flex; gap:8px; }
+.copy-btn {
+  min-width:72px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:white;
+  font-weight:bold;
+  padding:10px;
+  font-size:.82rem;
+}
 
-#question-box { min-height:220px; }
+/* ═══════════════════════════════════════
+   ALREADY PARTICIPATED BANNER
+═══════════════════════════════════════ */
+.participated-banner {
+  background:rgba(0,210,211,0.06);
+  border:1px solid rgba(0,210,211,0.2);
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+  margin-bottom:20px;
+  display:none;
+}
+.participated-banner.show { display:block; }
+.participated-banner .pb-icon { font-size:2rem; margin-bottom:8px; display:block; }
+.participated-banner .pb-title { font-size:1rem; font-weight:800; margin-bottom:4px; color:var(--primary); }
+.participated-banner .pb-sub { font-size:.8rem; color:var(--text-sub); line-height:1.7; }
 
-.loader { width:40px; height:40px; border-radius:50%; border:3px solid rgba(255,255,255,0.08); border-top-color:var(--primary); margin:auto; animation:spin .8s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-/* ── REFERRAL ── */
-.referral-box { margin-top:22px; text-align:right; }
-.referral-box label { display:block; margin-bottom:9px; color:var(--text-sub); font-size:.88rem; }
-.referral-row { display:flex; gap:10px; }
-.copy-btn { min-width:80px; border-radius:14px; background:linear-gradient(135deg,var(--primary),var(--accent)); color:white; font-weight:bold; padding:12px; font-size:.88rem; }
-
-.signature { margin-top:24px; font-size:.78rem; color:var(--text-sub); }
-.signature span { color:var(--primary); font-weight:bold; }
+/* signature */
+.signature {
+  position:relative;
+  z-index:10;
+  margin-top:20px;
+  font-size:.72rem;
+  color:rgba(255,255,255,0.2);
+}
+.signature span { color:var(--primary); }
 
 @media(max-width:480px){
-  body { padding:12px; }
-  .container { padding:24px 16px; }
+  body { padding:10px; }
+  .container { padding:22px 16px; }
+  .avatar-grid { grid-template-columns:repeat(4,1fr); gap:7px; }
+  .av-ring { width:56px; height:56px; }
   .referral-row { flex-direction:column; }
-  h1 { font-size:1.55rem; }
-  .av-ring { width:62px; height:62px; }
 }
 </style>
 </head>
 <body>
 
-<div class="background-animation">
-  <div class="blob one"></div>
-  <div class="blob two"></div>
+<!-- Animated Background -->
+<div class="bg-canvas">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div id="particles"></div>
 </div>
 
 <div class="container">
-  <div class="progress-wrapper"><div id="progress-bar" class="progress-bar"></div></div>
+  <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="floating-avatar" id="floating-avatar"></div>
+
   <div id="loader" class="loader"></div>
 
-  <!-- START SCREEN -->
+  <!-- ══ START SCREEN ══ -->
   <div id="start-screen" class="screen hidden">
-    <h1 id="site-title">سامانه پژوهشی EconGraph</h1>
-    <p id="site-subtitle" class="subtitle">لطفاً اطلاعات خود را وارد کنید</p>
+    <h1 class="site-title" id="site-title">EconGraph</h1>
+    <p class="site-subtitle" id="site-subtitle">لطفاً اطلاعات خود را وارد کنید</p>
+    <div class="participants-badge" id="participants-badge" style="display:none">
+      <span class="dot"></span>
+      <span id="participants-count">۰ نفر تاکنون شرکت کرده‌اند</span>
+    </div>
 
-    <!-- AVATAR -->
+    <!-- Already participated banner -->
+    <div class="participated-banner" id="participated-banner">
+      <span class="pb-icon">✅</span>
+      <div class="pb-title">قبلاً شرکت کردید</div>
+      <div class="pb-sub">شما در این آزمون شرکت کرده‌اید.<br>با شروع آزمون جدید، پاسخ‌های قبلی به‌روز می‌شوند.</div>
+    </div>
+
+    <!-- Pixel Avatars -->
     <div class="avatar-section">
-      <div class="avatar-title">شخصیت خود را انتخاب کنید (اختیاری)</div>
-      <div class="avatar-grid" id="avatarGrid">
-
-        <!-- رسمی -->
-        <div class="av-item" onclick="pickAvatar(this,'رسمی')">
-          <div class="av-ring">
-            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
-              <circle cx="25" cy="17" r="12" fill="#FDDBB4"/>
-              <path d="M13 14 Q14 3 25 3 Q36 3 37 14 Q33 7 25 7 Q17 7 13 14Z" fill="#2C1810"/>
-              <ellipse cx="21" cy="18" rx="1.9" ry="2.3" fill="#111"/>
-              <ellipse cx="29" cy="18" rx="1.9" ry="2.3" fill="#111"/>
-              <path d="M21 23 Q25 27 29 23" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-              <rect x="21" y="28" width="8" height="9" rx="4" fill="#FDDBB4"/>
-              <path d="M7 62 Q7 44 25 42 Q43 44 43 62Z" fill="#1B2A4A"/>
-              <path d="M19 42 L25 48 L31 42" fill="#f0f0f0"/>
-              <rect x="23" y="42" width="4" height="12" rx="1" fill="#C0392B"/>
-            </svg>
-          </div>
-          <span class="av-name">رسمی</span>
-        </div>
-
-        <!-- موبلند فر سبز -->
-        <div class="av-item" onclick="pickAvatar(this,'آزاد')">
-          <div class="av-ring">
-            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
-              <path d="M10 36 Q8 52 14 60 Q18 48 25 46 Q32 48 36 60 Q42 52 40 36 Q36 44 25 44 Q14 44 10 36Z" fill="#27AE60"/>
-              <path d="M9 22 Q10 4 25 4 Q40 4 41 22 Q39 30 35 34 Q30 38 25 38 Q20 38 15 34 Q11 30 9 22Z" fill="#27AE60"/>
-              <path d="M10 20 Q8 10 10 6" stroke="#1E8449" stroke-width="3" stroke-linecap="round" fill="none"/>
-              <path d="M40 20 Q42 10 40 6" stroke="#1E8449" stroke-width="3" stroke-linecap="round" fill="none"/>
-              <path d="M11 18 Q9 12 12 8 Q10 14 13 16Z" fill="#1E8449"/>
-              <path d="M39 18 Q41 12 38 8 Q40 14 37 16Z" fill="#1E8449"/>
-              <circle cx="25" cy="21" r="12" fill="#FDDBB4"/>
-              <ellipse cx="21" cy="21" rx="1.9" ry="2.3" fill="#111"/>
-              <ellipse cx="29" cy="21" rx="1.9" ry="2.3" fill="#111"/>
-              <path d="M21 27 Q25 31 29 27" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-              <rect x="21" y="32" width="8" height="8" rx="3" fill="#FDDBB4"/>
-            </svg>
-          </div>
-          <span class="av-name">آزاد</span>
-        </div>
-
-        <!-- ریسک‌پذیر -->
-        <div class="av-item" onclick="pickAvatar(this,'ریسک‌پذیر')">
-          <div class="av-ring">
-            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
-              <circle cx="25" cy="17" r="12" fill="#FDDBB4"/>
-              <path d="M13 11 Q17 1 25 2 Q33 1 37 11 Q33 5 25 6 Q17 5 13 11Z" fill="#111"/>
-              <path d="M13 13 Q11 7 13 5" stroke="#111" stroke-width="3.2" stroke-linecap="round" fill="none"/>
-              <path d="M37 13 Q39 7 37 5" stroke="#111" stroke-width="3.2" stroke-linecap="round" fill="none"/>
-              <ellipse cx="21" cy="17" rx="1.9" ry="2.3" fill="#111"/>
-              <ellipse cx="29" cy="17" rx="1.9" ry="2.3" fill="#111"/>
-              <path d="M20 23 Q25 28 30 23" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-              <rect x="21" y="28" width="8" height="9" rx="4" fill="#FDDBB4"/>
-              <path d="M7 62 Q7 44 25 42 Q43 44 43 62Z" fill="#C0392B"/>
-              <path d="M19 42 Q25 48 31 42" stroke="#922B21" stroke-width="2.2" fill="none"/>
-            </svg>
-          </div>
-          <span class="av-name">ریسک‌پذیر</span>
-        </div>
-
-        <!-- تحلیلگر -->
-        <div class="av-item" onclick="pickAvatar(this,'تحلیلگر')">
-          <div class="av-ring">
-            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
-              <circle cx="25" cy="17" r="12" fill="#F5CBA7"/>
-              <path d="M14 13 Q16 4 25 4 Q34 4 36 13 Q32 7 25 7 Q18 7 14 13Z" fill="#6D4C41"/>
-              <rect x="17" y="14" width="7" height="5.5" rx="2.8" fill="none" stroke="#555" stroke-width="1.2"/>
-              <rect x="26" y="14" width="7" height="5.5" rx="2.8" fill="none" stroke="#555" stroke-width="1.2"/>
-              <line x1="24" y1="16.5" x2="26" y2="16.5" stroke="#555" stroke-width="1"/>
-              <line x1="17" y1="16.5" x2="15" y2="15.5" stroke="#555" stroke-width="1"/>
-              <line x1="33" y1="16.5" x2="35" y2="15.5" stroke="#555" stroke-width="1"/>
-              <ellipse cx="20.5" cy="16.5" rx="1.5" ry="1.8" fill="#111"/>
-              <ellipse cx="29.5" cy="16.5" rx="1.5" ry="1.8" fill="#111"/>
-              <path d="M21 23 Q25 27 29 23" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-              <rect x="21" y="28" width="8" height="9" rx="4" fill="#F5CBA7"/>
-              <path d="M7 62 Q7 44 25 42 Q43 44 43 62Z" fill="#2471A3"/>
-              <path d="M19 42 L25 48 L31 42" fill="#f0f0f0"/>
-            </svg>
-          </div>
-          <span class="av-name">تحلیلگر</span>
-        </div>
-
-        <!-- محافظه‌کار -->
-        <div class="av-item" onclick="pickAvatar(this,'محافظه‌کار')">
-          <div class="av-ring">
-            <svg width="50" height="62" viewBox="0 0 50 62" fill="none">
-              <path d="M12 19 Q12 1 25 1 Q38 1 38 19 Q35 9 25 9 Q15 9 12 19Z" fill="#D4AC0D"/>
-              <path d="M12 19 Q12 38 18 46 Q21 34 25 34 Q29 34 32 46 Q38 38 38 19 Q35 30 25 30 Q15 30 12 19Z" fill="#D4AC0D"/>
-              <circle cx="25" cy="20" r="12" fill="#FDDBB4"/>
-              <ellipse cx="21" cy="20" rx="1.9" ry="2.3" fill="#111"/>
-              <ellipse cx="29" cy="20" rx="1.9" ry="2.3" fill="#111"/>
-              <path d="M21 26 Q25 30 29 26" stroke="#c8846a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-              <rect x="21" y="31" width="8" height="8" rx="3" fill="#FDDBB4"/>
-              <path d="M7 62 Q7 46 25 44 Q43 46 43 62Z" fill="#7D3C98"/>
-              <path d="M19 44 Q25 50 31 44" stroke="#5B2C6F" stroke-width="2.2" fill="none"/>
-            </svg>
-          </div>
-          <span class="av-name">محافظه‌کار</span>
-        </div>
-
-      </div>
+      <div class="avatar-title">شخصیت اقتصادی خود را انتخاب کنید</div>
+      <div class="avatar-grid" id="avatarGrid"></div>
     </div>
 
     <div class="form-group">
@@ -369,52 +744,54 @@ button:hover { transform:translateY(-2px); }
     </div>
 
     <div class="theme-selector">
-      <div class="theme-title">انتخاب پوسته</div>
+      <div class="theme-title">پوسته</div>
       <div class="theme-options">
-        <div class="theme-card" onclick="changeTheme('neon')">
-          <div class="theme-dot neon"></div>
-          <span class="theme-name">نئون</span>
-        </div>
-        <div class="theme-card" onclick="changeTheme('crimson')">
-          <div class="theme-dot crimson"></div>
-          <span class="theme-name">قرمز</span>
-        </div>
-        <div class="theme-card" onclick="changeTheme('corporate')">
-          <div class="theme-dot corporate"></div>
-          <span class="theme-name">آبی</span>
-        </div>
-        <div class="theme-card" onclick="changeTheme('nature')">
-          <div class="theme-dot nature"></div>
-          <span class="theme-name">طبیعت</span>
-        </div>
-        <div class="theme-card" onclick="changeTheme('sunset')">
-          <div class="theme-dot sunset"></div>
-          <span class="theme-name">غروب</span>
-        </div>
+        <div class="theme-card" onclick="changeTheme('neon')"><div class="theme-dot neon"></div><span class="theme-name">نئون</span></div>
+        <div class="theme-card" onclick="changeTheme('crimson')"><div class="theme-dot crimson"></div><span class="theme-name">قرمز</span></div>
+        <div class="theme-card" onclick="changeTheme('corporate')"><div class="theme-dot corporate"></div><span class="theme-name">آبی</span></div>
+        <div class="theme-card" onclick="changeTheme('nature')"><div class="theme-dot nature"></div><span class="theme-name">طبیعت</span></div>
+        <div class="theme-card" onclick="changeTheme('sunset')"><div class="theme-dot sunset"></div><span class="theme-name">غروب</span></div>
       </div>
     </div>
 
     <div class="nav-buttons">
-      <button class="btn-primary" onclick="startQuiz()">شروع آزمون</button>
+      <button class="btn-primary" onclick="startQuiz()">شروع آزمون ←</button>
     </div>
   </div>
 
-  <!-- QUIZ SCREEN -->
+  <!-- ══ QUIZ SCREEN ══ -->
   <div id="quiz-screen" class="screen hidden">
     <div id="question-box"></div>
     <div class="nav-buttons">
-      <button id="btn-prev" class="btn-secondary" onclick="prevStep()">قبلی</button>
-      <button id="btn-next" class="btn-primary" onclick="nextStep()">بعدی</button>
+      <button id="btn-prev" class="btn-secondary" onclick="prevStep()">← قبلی</button>
+      <button id="btn-next" class="btn-primary" onclick="nextStep()">بعدی →</button>
     </div>
   </div>
 
-  <!-- END SCREEN -->
-  <div id="end-screen" class="screen hidden" style="text-align:center;">
-    <div style="font-size:3.5rem;">🎉</div>
-    <h2 style="margin-top:10px;">ثبت شد</h2>
-    <p style="color:var(--text-sub);margin-top:10px;line-height:1.9;">پاسخ‌های شما با موفقیت ذخیره شد.</p>
+  <!-- ══ CONFIRM SCREEN ══ -->
+  <div id="confirm-screen" class="screen hidden">
+    <div class="confirm-title">📋 خلاصه پاسخ‌ها</div>
+    <div class="confirm-sub">قبل از ثبت نهایی، پاسخ‌هایتان را مرور کنید</div>
+    <div class="answer-summary" id="answer-summary"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goBackToQuiz()">← ویرایش</button>
+      <button class="btn-primary" onclick="submitData()">ثبت نهایی ✓</button>
+    </div>
+  </div>
+
+  <!-- ══ END SCREEN ══ -->
+  <div id="end-screen" class="screen hidden">
+    <span class="end-emoji" id="end-emoji">🎉</span>
+    <div class="end-title">ثبت شد!</div>
+    <div class="end-sub">پاسخ‌های شما با موفقیت ذخیره شد.</div>
+
+    <div class="mini-chart" id="mini-chart" style="display:none">
+      <div class="mini-chart-title">📊 توزیع پاسخ‌های شما</div>
+      <div class="chart-bars" id="chart-bars"></div>
+    </div>
+
     <div class="referral-box">
-      <label>لینک دعوت اختصاصی شما</label>
+      <label class="referral-label">لینک دعوت اختصاصی شما</label>
       <div class="referral-row">
         <input type="text" id="referral-link" class="form-control" readonly>
         <button class="copy-btn" onclick="copyReferralLink()">کپی</button>
@@ -428,6 +805,216 @@ button:hover { transform:translateY(-2px); }
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzxljrF2WvzSJ0xFtxEoFh8Y5QSwg-Kp2LxO-nSJzzoZ10JzYdqcWk3g0vwrHg4Dru0AA/exec";
 
+// ═══════════════════════════════════════
+// PIXEL AVATARS DATA (Minecraft style)
+// ═══════════════════════════════════════
+const AVATARS = [
+  {
+    id:"محافظه‌کار",
+    name:"محافظه‌کار",
+    desc:"ثبات بر سود",
+    // pixel art: 8x8 grid, head + body colors
+    colors:{skin:"#FDDBB4",hair:"#5D3A1A",shirt:"#2C3E50",pants:"#1a252f"},
+    pixels:[
+      // 8-col pixel art encoded as base palette indices: s=skin,h=hair,b=shirt,p=pants,_=transparent
+      "  hhhh  ",
+      " hssssh ",
+      " hssssh ",
+      "  bbbb  ",
+      " bbbbbb ",
+      " bbbbbb ",
+      " pp  pp ",
+      " pp  pp ",
+    ]
+  },
+  {
+    id:"ریسک‌پذیر",
+    name:"ریسک‌پذیر",
+    colors:{skin:"#FDDBB4",hair:"#111",shirt:"#C0392B",pants:"#922B21"},
+    pixels:[
+      "  hhhh  ",
+      " h sss h",
+      " h sss h",
+      "  rrrr  ",
+      " rrrrrr ",
+      " rrrrrr ",
+      " pp  pp ",
+      " pp  pp ",
+    ]
+  },
+  {
+    id:"تحلیلگر",
+    name:"تحلیلگر",
+    colors:{skin:"#F5CBA7",hair:"#6D4C41",shirt:"#2471A3",pants:"#154360"},
+    pixels:[
+      "  hhhh  ",
+      " hssssh ",
+      " hssssh ",
+      "  bbbb  ",
+      " bbbbbb ",
+      " bbbbbb ",
+      " pp  pp ",
+      " pp  pp ",
+    ]
+  },
+  {
+    id:"سوداگر",
+    name:"سوداگر",
+    colors:{skin:"#FDDBB4",hair:"#E74C3C",shirt:"#F39C12",pants:"#D35400"},
+    pixels:[
+      "  hhhh  ",
+      " hssssh ",
+      " hssssh ",
+      "  bbbb  ",
+      " bbbbbb ",
+      " bbbbbb ",
+      " pp  pp ",
+      " pp  pp ",
+    ]
+  },
+  {
+    id:"آزاد",
+    name:"آزاد",
+    colors:{skin:"#FDDBB4",hair:"#27AE60",shirt:"#1E8449",pants:"#196F3D"},
+    pixels:[
+      " hhhhh  ",
+      "hh sss h",
+      " h sss h",
+      "  gggg  ",
+      " gggggg ",
+      " gggggg ",
+      " pp  pp ",
+      " pp  pp ",
+    ]
+  },
+  {
+    id:"رسمی",
+    name:"رسمی",
+    colors:{skin:"#FDDBB4",hair:"#2C1810",shirt:"#1B2A4A",pants:"#0d1b2e"},
+    pixels:[
+      "  hhhh  ",
+      " hssssh ",
+      " hssssh ",
+      "  bbbb  ",
+      " bbbbbb ",
+      " bbbbbb ",
+      " pp  pp ",
+      " pp  pp ",
+    ]
+  },
+  {
+    id:"صرفه‌جو",
+    name:"صرفه‌جو",
+    colors:{skin:"#FDDBB4",hair:"#7D6608",shirt:"#B7950B",pants:"#7D6608"},
+    pixels:[
+      "  hhhh  ",
+      " hssssh ",
+      " hssssh ",
+      "  bbbb  ",
+      " bbbbbb ",
+      " bbbbbb ",
+      " pp  pp ",
+      " pp  pp ",
+    ]
+  },
+  {
+    id:"نوآور",
+    name:"نوآور",
+    colors:{skin:"#FDDBB4",hair:"#8E44AD",shirt:"#9B59B6",pants:"#6C3483"},
+    pixels:[
+      "  hhhh  ",
+      " hssssh ",
+      " hssssh ",
+      "  bbbb  ",
+      " bbbbbb ",
+      " bbbbbb ",
+      " pp  pp ",
+      " pp  pp ",
+    ]
+  }
+];
+
+function renderPixelAvatar(av, size) {
+  const canvas = document.createElement("canvas");
+  const s = size || 48;
+  canvas.width = s; canvas.height = s;
+  canvas.className = "px-avatar";
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingEnabled = false;
+
+  const map = {
+    "s": av.colors.skin,
+    "h": av.colors.hair,
+    "b": av.colors.shirt,
+    "r": av.colors.shirt,
+    "g": av.colors.shirt,
+    "p": av.colors.pants,
+    " ": null,
+    "_": null
+  };
+
+  const rows = av.pixels;
+  const cellW = s / 8;
+  const cellH = s / rows.length;
+
+  rows.forEach((row, ri) => {
+    for (let ci = 0; ci < 8; ci++) {
+      const ch = row[ci] || " ";
+      const color = map[ch];
+      if (!color) continue;
+      ctx.fillStyle = color;
+      ctx.fillRect(ci * cellW, ri * cellH, cellW, cellH);
+      // pixel shade
+      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      ctx.fillRect(ci * cellW + cellW - 1, ri * cellH, 1, cellH);
+      ctx.fillRect(ci * cellW, ri * cellH + cellH - 1, cellW, 1);
+    }
+  });
+
+  return canvas;
+}
+
+function buildAvatarGrid() {
+  const grid = document.getElementById("avatarGrid");
+  grid.innerHTML = "";
+  AVATARS.forEach(av => {
+    const item = document.createElement("div");
+    item.className = "av-item";
+    item.onclick = () => pickAvatar(item, av.id);
+
+    const ring = document.createElement("div");
+    ring.className = "av-ring";
+    ring.appendChild(renderPixelAvatar(av, 48));
+
+    const name = document.createElement("span");
+    name.className = "av-name";
+    name.textContent = av.name;
+
+    item.appendChild(ring);
+    item.appendChild(name);
+    grid.appendChild(item);
+  });
+}
+
+// ═══════════════════════════════════════
+// BACKGROUND PARTICLES
+// ═══════════════════════════════════════
+function spawnParticles() {
+  const container = document.getElementById("particles");
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "%";
+    p.style.animationDelay = Math.random() * 8 + "s";
+    p.style.animationDuration = (6 + Math.random() * 6) + "s";
+    p.style.width = p.style.height = (1 + Math.random() * 2) + "px";
+    container.appendChild(p);
+  }
+}
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
 const state = {
   currentQuestion: 0,
   currentTheme: "neon",
@@ -438,126 +1025,202 @@ const state = {
   timeLogs: {},
   config: {}
 };
-
 let questionStartTime = 0;
 
 const screens = {
-  start: document.getElementById("start-screen"),
-  quiz:  document.getElementById("quiz-screen"),
-  end:   document.getElementById("end-screen")
+  start:   document.getElementById("start-screen"),
+  quiz:    document.getElementById("quiz-screen"),
+  confirm: document.getElementById("confirm-screen"),
+  end:     document.getElementById("end-screen")
 };
 
-window.addEventListener("DOMContentLoaded", initApp);
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+window.addEventListener("DOMContentLoaded", () => {
+  spawnParticles();
+  buildAvatarGrid();
+  loadTheme();
+  initApp();
+});
 
 async function initApp() {
-  loadTheme();
   try {
     const response = await fetch(API_URL);
     const data = await response.json();
     state.questions = data.questions || [];
     state.config = data.config || {};
+    state.count = data.count || 0;
     initializeUI();
+    checkParticipation();
     setScreen("start");
   } catch(e) {
     console.error(e);
-    alert("خطا در اتصال");
+    alert("خطا در اتصال به سرور");
   } finally {
     document.getElementById("loader").classList.add("hidden");
   }
 }
 
+function initializeUI() {
+  if (state.config.title)    document.getElementById("site-title").innerText = state.config.title;
+  if (state.config.subtitle) document.getElementById("site-subtitle").innerText = state.config.subtitle;
+
+  // participants count
+  if (state.count > 0) {
+    const badge = document.getElementById("participants-badge");
+    badge.style.display = "flex";
+    document.getElementById("participants-count").innerText =
+      toFarsiNum(state.count) + " نفر تاکنون شرکت کرده‌اند";
+  }
+}
+
+function toFarsiNum(n) {
+  return String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+}
+
+// ═══════════════════════════════════════
+// PARTICIPATION CHECK
+// ═══════════════════════════════════════
+function checkParticipation() {
+  const key = "participated_" + (state.config.title || "default");
+  const done = localStorage.getItem(key);
+  if (done) {
+    document.getElementById("participated-banner").classList.add("show");
+  }
+}
+
+function markParticipated() {
+  const key = "participated_" + (state.config.title || "default");
+  localStorage.setItem(key, "1");
+}
+
+// ═══════════════════════════════════════
+// SCREEN MANAGEMENT
+// ═══════════════════════════════════════
 function setScreen(s) {
   Object.values(screens).forEach(el => el.classList.add("hidden"));
   screens[s].classList.remove("hidden");
+
+  const showProgress = (s === "quiz");
+  document.getElementById("progress-label").style.display = showProgress ? "block" : "none";
+
+  const fa = document.getElementById("floating-avatar");
+  if (s === "quiz" && state.selectedAvatar) {
+    fa.classList.add("visible");
+    fa.innerHTML = "";
+    const av = AVATARS.find(a => a.id === state.selectedAvatar);
+    if (av) fa.appendChild(renderPixelAvatar(av, 30));
+  } else {
+    fa.classList.remove("visible");
+  }
 }
 
-function initializeUI() {
-  if(state.config.title) document.getElementById("site-title").innerText = state.config.title;
-  if(state.config.subtitle) document.getElementById("site-subtitle").innerText = state.config.subtitle;
-}
-
+// ═══════════════════════════════════════
+// AVATAR
+// ═══════════════════════════════════════
 function pickAvatar(el, name) {
   document.querySelectorAll(".av-item").forEach(i => i.classList.remove("selected"));
   el.classList.add("selected");
   state.selectedAvatar = name;
 }
 
+// ═══════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════
 function changeTheme(theme) {
   document.body.className = "";
-  if(theme !== "neon") document.body.classList.add("theme-" + theme);
+  if (theme !== "neon") document.body.classList.add("theme-" + theme);
   localStorage.setItem("econ_theme", theme);
   state.currentTheme = theme;
   document.querySelectorAll(".theme-card").forEach(btn => {
     btn.classList.remove("active");
-    if(btn.querySelector("." + theme)) btn.classList.add("active");
+    if (btn.querySelector("." + theme)) btn.classList.add("active");
   });
 }
-
 function loadTheme() {
-  const saved = localStorage.getItem("econ_theme") || "neon";
-  changeTheme(saved);
+  changeTheme(localStorage.getItem("econ_theme") || "neon");
 }
 
+// ═══════════════════════════════════════
+// QUIZ FLOW
+// ═══════════════════════════════════════
 function startQuiz() {
   const name = document.getElementById("user-name").value.trim();
   const age  = document.getElementById("user-age").value.trim();
-  if(!name || !age) { alert("لطفاً اطلاعات را کامل کنید"); return; }
+  if (!name || !age) { alert("لطفاً نام و سن را وارد کنید"); return; }
   state.currentQuestion = 0;
   setScreen("quiz");
   showQuestion();
 }
 
 function showQuestion() {
-  const q = state.questions[state.currentQuestion];
+  const q   = state.questions[state.currentQuestion];
   const box = document.getElementById("question-box");
   updateProgress();
   questionStartTime = Date.now();
-  const saved = state.answers[q.id] || "";
+
+  const saved        = state.answers[q.id] || "";
   const savedComment = state.comments[q.id] || "";
 
-  let html = "";
-
-  if(q.type === "radio") {
-    html = q.options.map(opt => {
-      const checked = saved === opt ? "checked" : "";
-      const safeOpt = opt.replace(/"/g, "&quot;");
-      return `<label class="radio-option"><input type="radio" name="question" value="${safeOpt}" ${checked} onchange="saveAnswer('${q.id}','${safeOpt}')"> ${opt}</label>`;
+  let optionsHTML = "";
+  if (q.type === "radio") {
+    optionsHTML = q.options.map(opt => {
+      const checked  = saved === opt ? "checked" : "";
+      const safeOpt  = opt.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+      return `
+        <label class="radio-option">
+          <input type="radio" name="q_${q.id}" value="${safeOpt}" ${checked}
+            onchange="saveAnswer(${q.id},'${safeOpt}')">
+          <span class="radio-dot"></span>
+          <span>${opt}</span>
+        </label>`;
     }).join("");
-  }
-
-  if(q.type === "text") {
-    html = `<textarea class="form-control" rows="4" placeholder="پاسخ خود را وارد کنید..." oninput="saveAnswer('${q.id}',this.value)">${saved}</textarea>`;
-  }
-
-  if(q.type === "number") {
-    html = `<input type="number" class="form-control" value="${saved}" placeholder="عدد" oninput="saveAnswer('${q.id}',this.value)">`;
+  } else if (q.type === "text") {
+    optionsHTML = `<textarea class="form-control" rows="4" placeholder="پاسخ خود را بنویسید..."
+      oninput="saveAnswer(${q.id},this.value)">${saved}</textarea>`;
+  } else if (q.type === "number") {
+    optionsHTML = `<input type="number" class="form-control" value="${saved}"
+      placeholder="عدد را وارد کنید" oninput="saveAnswer(${q.id},this.value)">`;
   }
 
   box.innerHTML = `
-    <h3>${state.currentQuestion + 1}. ${q.text}</h3>
-    ${html}
-    <div class="comment-box">
-      <textarea class="form-control" placeholder="نظر یا توضیح اضافه‌ای دارید؟ (اختیاری)" oninput="saveComment('${q.id}',this.value)">${savedComment}</textarea>
+    <div class="question-header">
+      <span class="q-counter">سوال ${toFarsiNum(state.currentQuestion+1)} از ${toFarsiNum(state.questions.length)}</span>
     </div>
-  `;
+    <div class="q-text">${state.currentQuestion+1}. ${q.text}</div>
+    ${optionsHTML}
+    <div class="comment-box">
+      <span class="comment-label">نظر یا توضیح (اختیاری)</span>
+      <textarea class="form-control" rows="2"
+        placeholder="هر توضیح اضافه‌ای داری بنویس..."
+        oninput="saveComment(${q.id},this.value)">${savedComment}</textarea>
+    </div>`;
 
   updateButtons();
 }
 
-function saveAnswer(id, value) { state.answers[id] = value; }
+function saveAnswer(id, value)  { state.answers[id]  = value; }
 function saveComment(id, value) { state.comments[id] = value; }
 
 function nextStep() {
   const q = state.questions[state.currentQuestion];
-  if(q.required && !state.answers[q.id]) { alert("این سوال الزامی است"); return; }
+  if (q.required && !state.answers[q.id]) {
+    alert("این سوال اجباری است");
+    return;
+  }
   state.timeLogs[q.id] = ((Date.now() - questionStartTime) / 1000).toFixed(1);
-  if(state.currentQuestion >= state.questions.length - 1) { submitData(); return; }
+
+  if (state.currentQuestion >= state.questions.length - 1) {
+    showConfirm();
+    return;
+  }
   state.currentQuestion++;
   showQuestion();
 }
 
 function prevStep() {
-  if(state.currentQuestion <= 0) return;
+  if (state.currentQuestion <= 0) return;
   state.currentQuestion--;
   showQuestion();
 }
@@ -566,28 +1229,61 @@ function updateButtons() {
   const prev = document.getElementById("btn-prev");
   const next = document.getElementById("btn-next");
   prev.style.visibility = state.currentQuestion === 0 ? "hidden" : "visible";
-  next.innerText = state.currentQuestion === state.questions.length - 1 ? "ثبت نهایی" : "بعدی";
+  next.innerText = state.currentQuestion === state.questions.length - 1 ? "مرور پاسخ‌ها ←" : "بعدی →";
 }
 
 function updateProgress() {
   const pct = ((state.currentQuestion + 1) / state.questions.length) * 100;
-  document.getElementById("progress-bar").style.width = pct + "%";
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-label").style.display = "block";
+  document.getElementById("progress-label").innerText =
+    `سوال ${toFarsiNum(state.currentQuestion+1)} از ${toFarsiNum(state.questions.length)}`;
 }
 
+// ═══════════════════════════════════════
+// CONFIRM SCREEN
+// ═══════════════════════════════════════
+function showConfirm() {
+  const container = document.getElementById("answer-summary");
+  container.innerHTML = "";
+
+  state.questions.forEach((q, i) => {
+    const ans = state.answers[q.id] || "";
+    const item = document.createElement("div");
+    item.className = "summary-item";
+    item.innerHTML = `
+      <div class="summary-q">سوال ${toFarsiNum(i+1)}: ${q.text.substring(0,60)}${q.text.length>60?"...":""}</div>
+      <div class="summary-a ${!ans ? "summary-empty" : ""}">${ans || "بدون پاسخ"}</div>`;
+    container.appendChild(item);
+  });
+
+  setScreen("confirm");
+}
+
+function goBackToQuiz() {
+  state.currentQuestion = state.questions.length - 1;
+  setScreen("quiz");
+  showQuestion();
+}
+
+// ═══════════════════════════════════════
+// SUBMIT
+// ═══════════════════════════════════════
 async function submitData() {
-  const btn = document.getElementById("btn-next");
-  btn.disabled = true;
-  btn.innerText = "در حال ارسال...";
+  const submitBtn = document.querySelector("#confirm-screen .btn-primary");
+  submitBtn.disabled = true;
+  submitBtn.innerText = "در حال ارسال...";
 
   const answersArr = state.questions.map((q, i) => ({
     questionIndex: i + 1,
-    qId: q.id,
+    qId: i + 1,
     answer:  state.answers[q.id]  || "",
     comment: state.comments[q.id] || "",
     time:    state.timeLogs[q.id] || 0
   }));
 
-  const totalTime = Object.values(state.timeLogs).reduce((sum, t) => sum + parseFloat(t || 0), 0).toFixed(1);
+  const totalTime = Object.values(state.timeLogs)
+    .reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
 
   const payload = {
     surveyName: state.config.title || "EconGraph",
@@ -601,17 +1297,64 @@ async function submitData() {
   };
 
   try {
-    await fetch(API_URL, { method:"POST", body:JSON.stringify(payload) });
+    await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+    markParticipated();
     generateReferralLink();
+    buildMiniChart();
     setScreen("end");
+    document.getElementById("end-emoji").innerText = state.config.end_emoji || "🎉";
   } catch(e) {
     console.error(e);
-    alert("خطا در ارسال اطلاعات");
-    btn.disabled = false;
-    btn.innerText = "تلاش مجدد";
+    alert("خطا در ارسال. دوباره تلاش کن.");
+    submitBtn.disabled = false;
+    submitBtn.innerText = "ثبت نهایی ✓";
   }
 }
 
+// ═══════════════════════════════════════
+// MINI CHART (end screen)
+// ═══════════════════════════════════════
+function buildMiniChart() {
+  const radioQs = state.questions.filter(q => q.type === "radio" && state.answers[q.id]);
+  if (radioQs.length === 0) return;
+
+  const chart = document.getElementById("mini-chart");
+  const bars  = document.getElementById("chart-bars");
+  chart.style.display = "block";
+  bars.innerHTML = "";
+
+  // show first 5 radio answers
+  const shown = radioQs.slice(0, 5);
+  shown.forEach((q, i) => {
+    const ans     = state.answers[q.id];
+    const optIdx  = q.options.indexOf(ans);
+    const pct     = optIdx >= 0 ? ((optIdx + 1) / q.options.length) * 100 : 50;
+    const label   = `س${toFarsiNum(i+1)}`;
+
+    const wrap = document.createElement("div");
+    wrap.className = "chart-bar-wrap";
+
+    const bar = document.createElement("div");
+    bar.className = "chart-bar user";
+    bar.style.height = "0px";
+
+    const lbl = document.createElement("div");
+    lbl.className = "chart-bar-label";
+    lbl.textContent = label;
+
+    wrap.appendChild(bar);
+    wrap.appendChild(lbl);
+    bars.appendChild(wrap);
+
+    setTimeout(() => {
+      bar.style.height = Math.max(8, pct * 0.6) + "px";
+    }, i * 120);
+  });
+}
+
+// ═══════════════════════════════════════
+// REFERRAL
+// ═══════════════════════════════════════
 function generateReferralLink() {
   const name = document.getElementById("user-name").value.trim();
   document.getElementById("referral-link").value =
@@ -622,11 +1365,11 @@ async function copyReferralLink() {
   const input = document.getElementById("referral-link");
   try {
     await navigator.clipboard.writeText(input.value);
-    alert("لینک کپی شد");
+    alert("لینک کپی شد ✓");
   } catch {
     input.select();
     document.execCommand("copy");
-    alert("لینک کپی شد");
+    alert("لینک کپی شد ✓");
   }
 }
 </script>
