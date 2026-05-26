@@ -579,9 +579,9 @@ async function submitData() {
   btn.disabled = true;
   btn.innerText = "در حال ارسال...";
 
-  const answersArr = state.questions.map((q, i) => ({
+  const = state.questions.map((q, i) => ({
     questionIndex: i + 1,
-    qId: q.id,
+    qId: i + 1,       // ← اینجا
     answer:  state.answers[q.id]  || "",
     comment: state.comments[q.id] || "",
     time:    state.timeLogs[q.id] || 0
