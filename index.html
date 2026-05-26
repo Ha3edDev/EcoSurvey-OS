@@ -580,12 +580,12 @@ async function submitData() {
   btn.innerText = "در حال ارسال...";
 
   const = state.questions.map((q, i) => ({
-    questionIndex: i + 1,
-    qId: i + 1,       // ← اینجا
-    answer:  state.answers[q.id]  || "",
-    comment: state.comments[q.id] || "",
-    time:    state.timeLogs[q.id] || 0
-  }));
+  questionIndex: i + 1,
+  qId: q.id,
+  answer:  state.answers[q.id]  || "",
+  comment: state.comments[q.id] || "",
+  time:    state.timeLogs[q.id] || 0
+}));
 
   const totalTime = Object.values(state.timeLogs).reduce((sum, t) => sum + parseFloat(t || 0), 0).toFixed(1);
 
