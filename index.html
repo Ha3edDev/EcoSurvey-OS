@@ -9,1368 +9,1022 @@
 :root {
   --primary: #00d2d3;
   --accent: #5f27cd;
-  --bg-body: #0a0e17;
-  --card-bg: rgba(14,20,32,0.85);
-  --card-border: rgba(255,255,255,0.07);
-  --text-main: #f0f2fa;
-  --text-sub: #8892a4;
-  --input-bg: rgba(255,255,255,0.04);
-  --border-color: rgba(255,255,255,0.07);
-  --shadow: 0 32px 64px rgba(0,0,0,0.6);
-  --radius: 24px;
-  --pixel: 3px;
+  --bg: #080c14;
+  --card: rgba(12,18,30,0.7);
+  --border: rgba(255,255,255,0.07);
+  --text: #eef0f8;
+  --sub: #7a8499;
+  --input: rgba(255,255,255,0.04);
+  --r: 20px;
 }
-body.theme-crimson  { --primary:#ff4757; --accent:#c0392b; --bg-body:#100a0a; }
-body.theme-corporate{ --primary:#2980b9; --accent:#1abc9c; --bg-body:#080f1a; }
-body.theme-nature   { --primary:#27ae60; --accent:#f39c12; --bg-body:#060f09; }
-body.theme-sunset   { --primary:#e67e22; --accent:#e74c3c; --bg-body:#100808; }
 
 *{ margin:0; padding:0; box-sizing:border-box; outline:none; }
 
 body {
   font-family:'Vazirmatn',sans-serif;
   min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   padding:20px;
-  color:var(--text-main);
-  background:var(--bg-body);
   overflow-x:hidden;
+  transition:--primary .6s;
 }
 
-/* ═══════════════════════════════════════
-   ANIMATED BACKGROUND
-═══════════════════════════════════════ */
-.bg-canvas {
+/* ── BACKGROUND ── */
+.bg {
   position:fixed;
   inset:0;
   z-index:0;
   overflow:hidden;
+  pointer-events:none;
 }
-
-/* grid lines */
-.bg-canvas::before {
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:
-    linear-gradient(rgba(0,210,211,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,210,211,0.04) 1px, transparent 1px);
-  background-size:40px 40px;
-  animation:gridMove 20s linear infinite;
-}
-@keyframes gridMove {
-  from { transform:translateY(0); }
-  to   { transform:translateY(40px); }
-}
-
-/* floating orbs */
 .orb {
   position:absolute;
   border-radius:50%;
-  filter:blur(80px);
-  opacity:.2;
-  animation:orbFloat 15s ease-in-out infinite alternate;
+  filter:blur(100px);
+  opacity:.18;
+  animation:drift 18s ease-in-out infinite alternate;
 }
-.orb-1 { width:500px; height:500px; background:var(--primary); top:-200px; right:-150px; animation-delay:0s; }
-.orb-2 { width:400px; height:400px; background:var(--accent);  bottom:-150px; left:-100px; animation-delay:-5s; }
-.orb-3 { width:200px; height:200px; background:var(--primary); top:50%; left:50%; animation-delay:-10s; opacity:.08; }
-@keyframes orbFloat {
-  from { transform:translate(0,0) scale(1); }
-  to   { transform:translate(30px,-40px) scale(1.15); }
+.orb-1 { width:600px;height:600px;background:var(--primary);top:-200px;right:-200px; }
+.orb-2 { width:500px;height:500px;background:var(--accent);bottom:-200px;left:-150px;animation-delay:-7s; }
+@keyframes drift {
+  from{transform:translate(0,0) scale(1);}
+  to{transform:translate(40px,-50px) scale(1.1);}
 }
-
-/* particles */
-.particle {
+.star {
   position:absolute;
-  width:2px; height:2px;
-  background:var(--primary);
+  width:1.5px;height:1.5px;
+  background:white;
   border-radius:50%;
   opacity:0;
-  animation:particleFly 8s linear infinite;
+  animation:twinkle var(--d,4s) ease-in-out infinite;
+  animation-delay:var(--dl,0s);
 }
-@keyframes particleFly {
-  0%   { opacity:0; transform:translateY(100vh) translateX(0); }
-  10%  { opacity:.6; }
-  90%  { opacity:.3; }
-  100% { opacity:0; transform:translateY(-20px) translateX(20px); }
+@keyframes twinkle {
+  0%,100%{opacity:0;transform:scale(1);}
+  50%{opacity:.7;transform:scale(1.4);}
 }
 
-/* ═══════════════════════════════════════
-   CARD
-═══════════════════════════════════════ */
-.container {
+/* ── LOADER ── */
+#loader-screen {
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  z-index:100;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  transition:opacity .5s ease;
+}
+#loader-screen.fade-out { opacity:0; pointer-events:none; }
+.typewriter {
+  font-size:1.8rem;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  border-left:3px solid var(--primary);
+  padding-left:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  width:0;
+  animation:type 1.6s steps(14) .3s forwards;
+}
+@keyframes type { to { width:14ch; } }
+.loader-sub {
+  font-size:.78rem;
+  color:var(--sub);
+  opacity:0;
+  animation:fadeUp .4s ease 2s forwards;
+}
+@keyframes fadeUp {
+  from{opacity:0;transform:translateY(6px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ── CARD ── */
+.card {
   position:relative;
   z-index:10;
   width:100%;
   max-width:480px;
-  background:var(--card-bg);
-  border:1px solid var(--card-border);
-  border-radius:var(--radius);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  box-shadow:var(--shadow), 0 0 0 1px rgba(0,210,211,0.05), inset 0 1px 0 rgba(255,255,255,0.05);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+  box-shadow:0 40px 80px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05);
   overflow:hidden;
-  padding:32px 24px;
+  padding:32px 24px 28px;
+  /* tilt */
+  transform-style:preserve-3d;
+  transition:transform .1s ease, box-shadow .1s ease;
 }
-
-/* top glow line */
-.container::before {
+.card::before {
   content:"";
   position:absolute;
-  top:0; left:10%; right:10%;
+  top:0;left:15%;right:15%;
   height:1px;
-  background:linear-gradient(90deg, transparent, var(--primary), transparent);
-  opacity:.6;
+  background:linear-gradient(90deg,transparent,var(--primary),transparent);
+  opacity:.5;
 }
 
-/* ═══════════════════════════════════════
-   PROGRESS
-═══════════════════════════════════════ */
-.progress-track {
+/* ── PROGRESS ── */
+.prog-wrap {
   position:absolute;
-  top:0; left:0; right:0;
+  top:0;left:0;right:0;
   height:3px;
-  background:rgba(255,255,255,0.04);
+  background:rgba(255,255,255,.04);
 }
-.progress-fill {
+.prog-bar {
   height:100%;
   width:0%;
-  background:linear-gradient(90deg, var(--primary), var(--accent));
+  background:linear-gradient(90deg,var(--primary),var(--accent));
   transition:width .4s cubic-bezier(.4,0,.2,1);
-  box-shadow:0 0 12px var(--primary);
+  box-shadow:0 0 10px var(--primary);
   position:relative;
 }
-.progress-fill::after {
+.prog-bar::after {
   content:"";
   position:absolute;
-  right:0; top:-2px;
-  width:6px; height:7px;
+  right:-3px;top:-2px;
+  width:7px;height:7px;
   background:white;
   border-radius:50%;
   box-shadow:0 0 8px var(--primary);
 }
 
-.progress-label {
+/* floating avatar */
+.float-av {
   position:absolute;
-  top:8px; left:24px;
-  font-size:.72rem;
-  color:var(--text-sub);
-  letter-spacing:.05em;
+  top:14px;left:16px;
+  width:38px;height:38px;
+  border-radius:9px;
+  border:1.5px solid var(--primary);
+  background:rgba(0,210,211,.08);
   display:none;
+  align-items:center;
+  justify-content:center;
+  image-rendering:pixelated;
+  z-index:5;
+  box-shadow:0 0 12px rgba(0,210,211,.2);
 }
+.float-av.on { display:flex; }
 
-/* ═══════════════════════════════════════
-   LOADER
-═══════════════════════════════════════ */
-.loader {
-  width:36px; height:36px;
-  border-radius:50%;
-  border:2px solid rgba(255,255,255,0.06);
-  border-top-color:var(--primary);
-  margin:40px auto;
-  animation:spin .7s linear infinite;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
-
-/* ═══════════════════════════════════════
-   SCREENS
-═══════════════════════════════════════ */
-.screen { animation:screenIn .35s ease; }
-@keyframes screenIn {
-  from { opacity:0; transform:translateY(12px); }
-  to   { opacity:1; transform:translateY(0); }
+/* ── SCREENS ── */
+.screen { animation:fadeIn .35s ease; }
+@keyframes fadeIn {
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
 }
 .hidden { display:none !important; }
 
-/* ═══════════════════════════════════════
-   TYPOGRAPHY
-═══════════════════════════════════════ */
+/* ── START ── */
 .site-title {
   text-align:center;
-  font-size:1.7rem;
+  font-size:1.65rem;
   font-weight:900;
-  margin-bottom:6px;
-  background:linear-gradient(135deg, var(--text-main), var(--primary));
+  margin-bottom:5px;
+  background:linear-gradient(135deg,var(--text),var(--primary));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
 }
-.site-subtitle {
+.site-sub {
   text-align:center;
-  color:var(--text-sub);
-  font-size:.85rem;
+  color:var(--sub);
+  font-size:.83rem;
   line-height:1.9;
   margin-bottom:8px;
 }
-.participants-badge {
-  display:flex;
+.p-badge {
+  display:none;
   align-items:center;
   justify-content:center;
   gap:6px;
-  margin-bottom:24px;
-  font-size:.78rem;
+  margin-bottom:20px;
+  font-size:.75rem;
   color:var(--primary);
-  opacity:.8;
 }
-.participants-badge .dot {
-  width:6px; height:6px;
+.p-badge.on { display:flex; }
+.p-dot {
+  width:6px;height:6px;
   background:var(--primary);
   border-radius:50%;
   animation:pulse 2s infinite;
 }
 @keyframes pulse {
-  0%,100% { opacity:1; transform:scale(1); }
-  50%      { opacity:.4; transform:scale(1.4); }
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:.4;transform:scale(1.5);}
 }
 
-/* ═══════════════════════════════════════
-   PIXEL AVATARS (Minecraft style)
-═══════════════════════════════════════ */
-.avatar-section { margin-bottom:24px; }
-.avatar-title {
+/* participated banner */
+.part-banner {
+  display:none;
+  background:rgba(0,210,211,.05);
+  border:1px solid rgba(0,210,211,.18);
+  border-radius:14px;
+  padding:14px 16px;
   text-align:center;
-  color:var(--text-sub);
-  font-size:.8rem;
-  margin-bottom:14px;
-  letter-spacing:.05em;
+  margin-bottom:18px;
 }
-.avatar-grid {
+.part-banner.on { display:block; }
+.part-banner b { color:var(--primary); display:block; margin-bottom:3px; }
+.part-banner span { font-size:.78rem; color:var(--sub); line-height:1.7; }
+
+/* ── AVATARS ── */
+.av-title {
+  text-align:center;
+  color:var(--sub);
+  font-size:.78rem;
+  margin-bottom:12px;
+  letter-spacing:.04em;
+}
+.av-grid {
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:10px;
+  gap:9px;
+  margin-bottom:22px;
 }
 .av-item {
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:6px;
+  gap:5px;
   cursor:pointer;
 }
 .av-ring {
-  width:64px; height:64px;
+  width:62px;height:62px;
   border-radius:10px;
-  border:2px solid rgba(255,255,255,0.08);
-  background:rgba(255,255,255,0.03);
+  border:1.5px solid var(--border);
+  background:rgba(255,255,255,.02);
   display:flex;
   align-items:center;
   justify-content:center;
   transition:all .2s ease;
   image-rendering:pixelated;
-  position:relative;
-  overflow:hidden;
 }
 .av-item:hover .av-ring {
   transform:translateY(-3px);
-  border-color:rgba(255,255,255,0.2);
-  background:rgba(255,255,255,0.06);
-  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  border-color:rgba(255,255,255,.2);
+  box-shadow:0 8px 20px rgba(0,0,0,.4);
 }
-.av-item.selected .av-ring {
+.av-item.sel .av-ring {
   border-color:var(--primary);
-  background:rgba(0,210,211,0.08);
-  box-shadow:0 0 0 3px rgba(0,210,211,0.15), 0 8px 20px rgba(0,210,211,0.2);
+  background:rgba(0,210,211,.07);
+  box-shadow:0 0 0 3px rgba(0,210,211,.15);
 }
-.av-name {
-  font-size:.68rem;
-  color:var(--text-sub);
-  text-align:center;
-}
-.av-item.selected .av-name {
-  color:var(--primary);
-  font-weight:700;
-}
+.av-name { font-size:.65rem; color:var(--sub); text-align:center; }
+.av-item.sel .av-name { color:var(--primary); font-weight:700; }
 
-/* pixel canvas avatars */
-.px-avatar {
-  image-rendering:pixelated;
-  image-rendering:crisp-edges;
-}
-
-/* ═══════════════════════════════════════
-   FLOATING AVATAR (during quiz)
-═══════════════════════════════════════ */
-.floating-avatar {
-  position:absolute;
-  top:14px; left:16px;
-  width:36px; height:36px;
-  border-radius:8px;
-  border:1.5px solid var(--primary);
-  background:rgba(0,210,211,0.08);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  display:none;
-  image-rendering:pixelated;
-  z-index:5;
-}
-.floating-avatar.visible { display:flex; }
-
-/* ═══════════════════════════════════════
-   FORM INPUTS
-═══════════════════════════════════════ */
-.form-group { margin-bottom:14px; }
-.label {
-  display:block;
-  margin-bottom:6px;
-  font-size:.82rem;
-  color:var(--text-sub);
-}
-.form-control {
+/* ── INPUTS ── */
+.fg { margin-bottom:13px; }
+.lbl { display:block; margin-bottom:5px; font-size:.8rem; color:var(--sub); }
+.fc {
   width:100%;
-  border:1px solid var(--border-color);
-  background:var(--input-bg);
-  color:var(--text-main);
-  border-radius:12px;
-  padding:12px 14px;
+  border:1px solid var(--border);
+  background:var(--input);
+  color:var(--text);
+  border-radius:11px;
+  padding:11px 13px;
   font-family:inherit;
-  font-size:.92rem;
-  transition:.2s ease;
+  font-size:.9rem;
+  transition:.2s;
 }
-.form-control:focus {
+.fc:focus {
   border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(0,210,211,0.08);
-  background:rgba(0,210,211,0.04);
+  box-shadow:0 0 0 3px rgba(0,210,211,.08);
 }
-.form-control::placeholder { color:var(--text-sub); opacity:.6; }
-textarea.form-control { resize:none; min-height:70px; }
+.fc::placeholder { color:var(--sub); opacity:.5; }
+textarea.fc { resize:none; min-height:68px; }
 
-/* ═══════════════════════════════════════
-   THEME SELECTOR
-═══════════════════════════════════════ */
-.theme-selector { margin-top:20px; }
-.theme-title {
-  text-align:center;
-  color:var(--text-sub);
-  font-size:.78rem;
-  margin-bottom:10px;
+/* theme */
+.theme-wrap { margin-top:18px; }
+.theme-lbl { text-align:center; color:var(--sub); font-size:.75rem; margin-bottom:9px; }
+.theme-opts { display:flex; justify-content:center; gap:7px; flex-wrap:wrap; }
+.tc {
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;padding:6px 8px;border-radius:9px;
+  border:1.5px solid transparent;background:rgba(255,255,255,.02);
+  transition:.2s;
 }
-.theme-options {
-  display:flex;
-  justify-content:center;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.theme-card {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  cursor:pointer;
-  padding:7px 9px;
-  border-radius:10px;
-  border:1.5px solid transparent;
-  background:rgba(255,255,255,0.03);
-  transition:.2s ease;
-}
-.theme-card:hover { background:rgba(255,255,255,0.06); }
-.theme-card.active { border-color:var(--primary); }
-.theme-dot { width:22px; height:22px; border-radius:50%; }
-.theme-dot.neon      { background:linear-gradient(135deg,#00d2d3,#5f27cd); }
-.theme-dot.crimson   { background:linear-gradient(135deg,#ff4757,#c0392b); }
-.theme-dot.corporate { background:linear-gradient(135deg,#2980b9,#1abc9c); }
-.theme-dot.nature    { background:linear-gradient(135deg,#27ae60,#f39c12); }
-.theme-dot.sunset    { background:linear-gradient(135deg,#e67e22,#e74c3c); }
-.theme-name { font-size:.68rem; color:var(--text-sub); }
-.theme-card.active .theme-name { color:var(--primary); }
+.tc:hover { background:rgba(255,255,255,.05); }
+.tc.act { border-color:var(--primary); }
+.td { width:20px;height:20px;border-radius:50%; }
+.td.neon      { background:linear-gradient(135deg,#00d2d3,#5f27cd); }
+.td.crimson   { background:linear-gradient(135deg,#ff4757,#c0392b); }
+.td.corporate { background:linear-gradient(135deg,#2980b9,#1abc9c); }
+.td.nature    { background:linear-gradient(135deg,#27ae60,#f39c12); }
+.td.sunset    { background:linear-gradient(135deg,#e67e22,#e74c3c); }
+.tn { font-size:.65rem; color:var(--sub); }
+.tc.act .tn { color:var(--primary); }
 
-/* ═══════════════════════════════════════
-   QUIZ QUESTION CARD
-═══════════════════════════════════════ */
-.question-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+/* ── BUTTONS ── */
+.nav { display:flex; gap:10px; margin-top:20px; }
+button { border:none; cursor:pointer; font-family:inherit; transition:all .2s; }
+button:hover { transform:translateY(-2px); }
+button:active { transform:translateY(0); }
+.btn-p {
+  flex:2;
+  position:relative;overflow:hidden;
+  border-radius:11px;padding:13px;
+  font-size:.9rem;font-weight:800;color:white;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+.btn-p::before {
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent);
+  transform:translateX(-100%);transition:.5s;
+}
+.btn-p:hover::before { transform:translateX(100%); }
+.btn-s {
+  flex:1;border-radius:11px;padding:13px;
+  background:transparent;color:var(--sub);
+  border:1px solid var(--border);font-size:.85rem;
+}
+.btn-s:hover { border-color:rgba(255,255,255,.18);color:var(--text); }
+
+/* ── QUESTION CARD ── */
+.q-card {
+  background:transparent;
+  border-right:3px solid var(--primary);
+  padding-right:14px;
   margin-bottom:18px;
-  padding-bottom:14px;
-  border-bottom:1px solid var(--border-color);
-}
-.q-counter {
-  font-size:.78rem;
-  color:var(--primary);
-  font-weight:700;
-  background:rgba(0,210,211,0.1);
-  padding:4px 10px;
-  border-radius:20px;
-  border:1px solid rgba(0,210,211,0.2);
 }
 .q-text {
-  font-size:.96rem;
+  font-size:.95rem;
   font-weight:700;
-  line-height:1.85;
-  margin-bottom:16px;
-  color:var(--text-main);
+  line-height:1.9;
+  color:var(--text);
 }
 
-/* radio options */
-.radio-option {
+.radio-opt {
   display:flex;
   align-items:flex-start;
   gap:10px;
   width:100%;
-  padding:12px 14px;
-  margin-bottom:8px;
-  border-radius:12px;
-  border:1px solid var(--border-color);
-  background:rgba(255,255,255,0.02);
+  padding:11px 13px;
+  margin-bottom:7px;
+  border-radius:11px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.02);
   cursor:pointer;
-  transition:.2s ease;
-  font-size:.88rem;
+  transition:all .2s ease;
+  font-size:.86rem;
   line-height:1.6;
 }
-.radio-option:hover {
-  border-color:rgba(255,255,255,0.14);
-  background:rgba(255,255,255,0.04);
+.radio-opt:hover {
+  border-color:rgba(255,255,255,.13);
+  background:rgba(255,255,255,.04);
   transform:translateX(-2px);
 }
-.radio-option input { display:none; }
-.radio-dot {
-  width:16px; height:16px; min-width:16px;
+.radio-opt input { display:none; }
+.rdot {
+  width:15px;height:15px;min-width:15px;
   border-radius:50%;
-  border:2px solid var(--border-color);
-  margin-top:2px;
-  transition:.2s ease;
-  display:flex; align-items:center; justify-content:center;
+  border:2px solid var(--border);
+  margin-top:3px;
+  transition:all .2s;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
 }
-.radio-option:has(input:checked) {
+.radio-opt:has(input:checked) {
   border-color:var(--primary);
-  color:var(--primary);
-  background:rgba(0,210,211,0.05);
+  background:rgba(0,210,211,.05);
+  transform:translateX(-2px);
 }
-.radio-option:has(input:checked) .radio-dot {
+.radio-opt:has(input:checked) .rdot {
   border-color:var(--primary);
   background:var(--primary);
-  box-shadow:0 0 0 3px rgba(0,210,211,0.15);
+  box-shadow:0 0 0 3px rgba(0,210,211,.15);
+  animation:popIn .2s ease;
 }
-.radio-option:has(input:checked) .radio-dot::after {
-  content:"";
-  width:5px; height:5px;
-  background:white;
-  border-radius:50%;
+@keyframes popIn {
+  0%{transform:scale(.6);}
+  60%{transform:scale(1.2);}
+  100%{transform:scale(1);}
 }
-
-/* comment box */
-.comment-box { margin-top:10px; }
-.comment-label {
-  font-size:.75rem;
-  color:var(--text-sub);
-  margin-bottom:5px;
-  display:block;
-  opacity:.7;
+.radio-opt:has(input:checked) .rdot::after {
+  content:"";width:5px;height:5px;
+  background:white;border-radius:50%;
 }
 
-/* ═══════════════════════════════════════
-   BUTTONS
-═══════════════════════════════════════ */
-.nav-buttons {
+.comment-lbl { font-size:.73rem; color:var(--sub); margin-bottom:5px; display:block; opacity:.6; margin-top:10px; }
+
+/* ── CONFIRM ── */
+.conf-title { font-size:1.05rem; font-weight:800; text-align:center; margin-bottom:4px; }
+.conf-sub { text-align:center; font-size:.78rem; color:var(--sub); margin-bottom:16px; }
+
+/* edit row */
+.edit-row {
   display:flex;
-  gap:10px;
-  margin-top:22px;
+  gap:8px;
+  margin-bottom:14px;
+  padding:10px 12px;
+  background:rgba(255,255,255,.02);
+  border:1px solid var(--border);
+  border-radius:11px;
+  align-items:center;
 }
-button {
-  border:none;
-  cursor:pointer;
-  font-family:inherit;
-  transition:all .2s ease;
-}
-button:hover { transform:translateY(-2px); }
-button:active { transform:translateY(0); }
-
-.btn-primary {
-  flex:2;
-  position:relative;
-  overflow:hidden;
-  border-radius:12px;
-  padding:13px;
-  font-size:.92rem;
-  font-weight:800;
-  color:white;
-  background:linear-gradient(135deg, var(--primary), var(--accent));
-  box-shadow:0 6px 20px rgba(0,0,0,0.2);
-}
-.btn-primary::before {
-  content:"";
-  position:absolute; inset:0;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.18),transparent);
-  transform:translateX(-100%);
-  transition:.5s;
-}
-.btn-primary:hover::before { transform:translateX(100%); }
-.btn-secondary {
+.edit-row label { font-size:.78rem; color:var(--sub); min-width:30px; }
+.edit-row input {
   flex:1;
-  border-radius:12px;
-  padding:13px;
   background:transparent;
-  color:var(--text-sub);
-  border:1px solid var(--border-color);
+  border:none;
+  border-bottom:1px solid var(--border);
+  color:var(--text);
+  font-family:inherit;
   font-size:.88rem;
+  padding:3px 0;
+  transition:.2s;
 }
-.btn-secondary:hover {
-  border-color:rgba(255,255,255,0.18);
-  color:var(--text-main);
-}
+.edit-row input:focus { border-color:var(--primary); }
 
-/* ═══════════════════════════════════════
-   CONFIRM SCREEN
-═══════════════════════════════════════ */
-#confirm-screen .confirm-title {
-  font-size:1.1rem;
-  font-weight:800;
-  text-align:center;
+.ans-list { max-height:260px; overflow-y:auto; padding-left:2px; }
+.ans-list::-webkit-scrollbar { width:2px; }
+.ans-list::-webkit-scrollbar-thumb { background:var(--primary); border-radius:2px; }
+.ans-item {
+  padding:9px 11px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.02);
   margin-bottom:6px;
 }
-#confirm-screen .confirm-sub {
-  text-align:center;
-  font-size:.8rem;
-  color:var(--text-sub);
-  margin-bottom:18px;
-}
-.answer-summary {
-  max-height:280px;
-  overflow-y:auto;
-  padding-left:4px;
-}
-.answer-summary::-webkit-scrollbar { width:3px; }
-.answer-summary::-webkit-scrollbar-thumb { background:var(--primary); border-radius:3px; }
+.ans-q { font-size:.72rem; color:var(--sub); margin-bottom:3px; }
+.ans-a { font-size:.82rem; color:var(--primary); font-weight:600; line-height:1.5; }
+.ans-empty { color:var(--sub); font-style:italic; opacity:.55; }
 
-.summary-item {
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid var(--border-color);
-  background:rgba(255,255,255,0.02);
-  margin-bottom:7px;
-}
-.summary-q {
-  font-size:.75rem;
-  color:var(--text-sub);
-  margin-bottom:4px;
-}
-.summary-a {
-  font-size:.84rem;
-  color:var(--primary);
-  font-weight:600;
-  line-height:1.5;
-}
-.summary-empty {
-  color:var(--text-sub);
-  font-style:italic;
-  opacity:.6;
-}
-
-/* ═══════════════════════════════════════
-   END SCREEN
-═══════════════════════════════════════ */
-#end-screen {
-  text-align:center;
-}
-.end-emoji {
-  font-size:3rem;
-  margin-bottom:10px;
-  display:block;
+/* ── END ── */
+#end-screen { text-align:center; }
+.end-av {
+  width:80px;height:80px;
+  border-radius:16px;
+  border:2px solid var(--primary);
+  background:rgba(0,210,211,.08);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;
+  box-shadow:0 0 24px rgba(0,210,211,.2);
+  image-rendering:pixelated;
   animation:bounceIn .5s ease;
 }
 @keyframes bounceIn {
-  0%   { transform:scale(0); }
-  60%  { transform:scale(1.2); }
-  100% { transform:scale(1); }
+  0%{transform:scale(0);}
+  60%{transform:scale(1.15);}
+  100%{transform:scale(1);}
 }
-.end-title {
-  font-size:1.4rem;
-  font-weight:900;
-  margin-bottom:6px;
-}
-.end-sub {
-  color:var(--text-sub);
-  font-size:.85rem;
-  line-height:1.8;
+.end-title { font-size:1.3rem; font-weight:900; margin-bottom:5px; }
+.end-msg {
+  color:var(--sub);font-size:.83rem;
+  line-height:1.85;
   margin-bottom:20px;
+  background:rgba(0,210,211,.04);
+  border:1px solid rgba(0,210,211,.1);
+  border-radius:12px;
+  padding:12px 14px;
 }
 
-/* mini chart */
-.mini-chart {
-  background:rgba(255,255,255,0.02);
-  border:1px solid var(--border-color);
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:18px;
-  text-align:right;
-}
-.mini-chart-title {
-  font-size:.78rem;
-  color:var(--text-sub);
-  margin-bottom:12px;
-}
-.chart-bars {
-  display:flex;
-  gap:4px;
-  align-items:flex-end;
-  height:60px;
-  margin-bottom:6px;
-}
-.chart-bar-wrap {
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:3px;
-  height:100%;
-  justify-content:flex-end;
-}
-.chart-bar {
-  width:100%;
-  border-radius:4px 4px 0 0;
-  background:linear-gradient(180deg, var(--primary), var(--accent));
-  opacity:.7;
-  transition:height .8s cubic-bezier(.4,0,.2,1);
-  min-height:4px;
-}
-.chart-bar.user { opacity:1; box-shadow:0 0 8px var(--primary); }
-.chart-bar-label {
-  font-size:.6rem;
-  color:var(--text-sub);
-  text-align:center;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:100%;
-  writing-mode:vertical-rl;
-  transform:rotate(180deg);
-  height:28px;
-}
-
-/* referral */
-.referral-box { margin-top:4px; text-align:right; }
-.referral-label {
-  display:block;
-  margin-bottom:7px;
-  color:var(--text-sub);
-  font-size:.8rem;
-}
-.referral-row { display:flex; gap:8px; }
+.ref-box { text-align:right; }
+.ref-lbl { display:block; margin-bottom:7px; color:var(--sub); font-size:.78rem; }
+.ref-row { display:flex; gap:8px; }
 .copy-btn {
-  min-width:72px;
-  border-radius:10px;
+  min-width:68px;border-radius:10px;
   background:linear-gradient(135deg,var(--primary),var(--accent));
-  color:white;
-  font-weight:bold;
-  padding:10px;
-  font-size:.82rem;
+  color:white;font-weight:bold;padding:10px;font-size:.8rem;
 }
 
-/* ═══════════════════════════════════════
-   ALREADY PARTICIPATED BANNER
-═══════════════════════════════════════ */
-.participated-banner {
-  background:rgba(0,210,211,0.06);
-  border:1px solid rgba(0,210,211,0.2);
-  border-radius:14px;
-  padding:18px;
-  text-align:center;
-  margin-bottom:20px;
-  display:none;
+.sig {
+  position:relative;z-index:10;
+  margin-top:18px;font-size:.7rem;
+  color:rgba(255,255,255,.18);
 }
-.participated-banner.show { display:block; }
-.participated-banner .pb-icon { font-size:2rem; margin-bottom:8px; display:block; }
-.participated-banner .pb-title { font-size:1rem; font-weight:800; margin-bottom:4px; color:var(--primary); }
-.participated-banner .pb-sub { font-size:.8rem; color:var(--text-sub); line-height:1.7; }
-
-/* signature */
-.signature {
-  position:relative;
-  z-index:10;
-  margin-top:20px;
-  font-size:.72rem;
-  color:rgba(255,255,255,0.2);
-}
-.signature span { color:var(--primary); }
+.sig span { color:var(--primary); }
 
 @media(max-width:480px){
-  body { padding:10px; }
-  .container { padding:22px 16px; }
-  .avatar-grid { grid-template-columns:repeat(4,1fr); gap:7px; }
-  .av-ring { width:56px; height:56px; }
-  .referral-row { flex-direction:column; }
+  body{padding:10px;}
+  .card{padding:22px 15px 20px;}
+  .av-ring{width:54px;height:54px;}
+  .ref-row{flex-direction:column;}
 }
 </style>
 </head>
 <body>
 
-<!-- Animated Background -->
-<div class="bg-canvas">
+<div class="bg" id="bg">
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div id="particles"></div>
 </div>
 
-<div class="container">
-  <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
-  <div class="progress-label" id="progress-label"></div>
-  <div class="floating-avatar" id="floating-avatar"></div>
+<!-- LOADER -->
+<div id="loader-screen">
+  <div class="typewriter" id="tw-text">EconGraph</div>
+  <div class="loader-sub">سامانه پژوهشی اقتصادی</div>
+</div>
 
-  <div id="loader" class="loader"></div>
+<div class="card" id="card">
+  <div class="prog-wrap"><div id="prog" class="prog-bar"></div></div>
+  <div class="float-av" id="float-av"></div>
 
-  <!-- ══ START SCREEN ══ -->
-  <div id="start-screen" class="screen hidden">
+  <!-- START -->
+  <div id="s-start" class="screen hidden">
     <h1 class="site-title" id="site-title">EconGraph</h1>
-    <p class="site-subtitle" id="site-subtitle">لطفاً اطلاعات خود را وارد کنید</p>
-    <div class="participants-badge" id="participants-badge" style="display:none">
-      <span class="dot"></span>
-      <span id="participants-count">۰ نفر تاکنون شرکت کرده‌اند</span>
+    <p class="site-sub" id="site-sub"></p>
+    <div class="p-badge" id="p-badge">
+      <span class="p-dot"></span>
+      <span id="p-count"></span>
     </div>
 
-    <!-- Already participated banner -->
-    <div class="participated-banner" id="participated-banner">
-      <span class="pb-icon">✅</span>
-      <div class="pb-title">قبلاً شرکت کردید</div>
-      <div class="pb-sub">شما در این آزمون شرکت کرده‌اید.<br>با شروع آزمون جدید، پاسخ‌های قبلی به‌روز می‌شوند.</div>
+    <div class="part-banner" id="part-banner">
+      <b>✅ قبلاً شرکت کردید</b>
+      <span>شما در این آزمون شرکت کرده‌اید.<br>در صورت تمایل می‌توانید دوباره شرکت کنید.</span>
     </div>
 
-    <!-- Pixel Avatars -->
-    <div class="avatar-section">
-      <div class="avatar-title">شخصیت اقتصادی خود را انتخاب کنید</div>
-      <div class="avatar-grid" id="avatarGrid"></div>
+    <div class="av-title">شخصیت اقتصادی خود را انتخاب کنید</div>
+    <div class="av-grid" id="av-grid"></div>
+
+    <div class="fg">
+      <label class="lbl">نام شما</label>
+      <input type="text" id="u-name" class="fc" placeholder="مثلاً علی">
+    </div>
+    <div class="fg">
+      <label class="lbl">سن</label>
+      <input type="number" id="u-age" class="fc" placeholder="مثلاً ۲۲">
     </div>
 
-    <div class="form-group">
-      <label class="label">نام شما</label>
-      <input type="text" id="user-name" class="form-control" placeholder="مثلاً علی">
-    </div>
-    <div class="form-group">
-      <label class="label">سن</label>
-      <input type="number" id="user-age" class="form-control" placeholder="مثلاً ۲۲">
-    </div>
-
-    <div class="theme-selector">
-      <div class="theme-title">پوسته</div>
-      <div class="theme-options">
-        <div class="theme-card" onclick="changeTheme('neon')"><div class="theme-dot neon"></div><span class="theme-name">نئون</span></div>
-        <div class="theme-card" onclick="changeTheme('crimson')"><div class="theme-dot crimson"></div><span class="theme-name">قرمز</span></div>
-        <div class="theme-card" onclick="changeTheme('corporate')"><div class="theme-dot corporate"></div><span class="theme-name">آبی</span></div>
-        <div class="theme-card" onclick="changeTheme('nature')"><div class="theme-dot nature"></div><span class="theme-name">طبیعت</span></div>
-        <div class="theme-card" onclick="changeTheme('sunset')"><div class="theme-dot sunset"></div><span class="theme-name">غروب</span></div>
+    <div class="theme-wrap">
+      <div class="theme-lbl">پوسته</div>
+      <div class="theme-opts">
+        <div class="tc" onclick="setTheme('neon')"><div class="td neon"></div><span class="tn">نئون</span></div>
+        <div class="tc" onclick="setTheme('crimson')"><div class="td crimson"></div><span class="tn">قرمز</span></div>
+        <div class="tc" onclick="setTheme('corporate')"><div class="td corporate"></div><span class="tn">آبی</span></div>
+        <div class="tc" onclick="setTheme('nature')"><div class="td nature"></div><span class="tn">طبیعت</span></div>
+        <div class="tc" onclick="setTheme('sunset')"><div class="td sunset"></div><span class="tn">غروب</span></div>
       </div>
     </div>
 
-    <div class="nav-buttons">
-      <button class="btn-primary" onclick="startQuiz()">شروع آزمون ←</button>
+    <div class="nav">
+      <button class="btn-p" onclick="startQuiz()">شروع آزمون ←</button>
     </div>
   </div>
 
-  <!-- ══ QUIZ SCREEN ══ -->
-  <div id="quiz-screen" class="screen hidden">
-    <div id="question-box"></div>
-    <div class="nav-buttons">
-      <button id="btn-prev" class="btn-secondary" onclick="prevStep()">← قبلی</button>
-      <button id="btn-next" class="btn-primary" onclick="nextStep()">بعدی →</button>
+  <!-- QUIZ -->
+  <div id="s-quiz" class="screen hidden">
+    <div id="q-box"></div>
+    <div class="nav">
+      <button id="btn-prev" class="btn-s" onclick="prevQ()">← قبلی</button>
+      <button id="btn-next" class="btn-p" onclick="nextQ()">بعدی →</button>
     </div>
   </div>
 
-  <!-- ══ CONFIRM SCREEN ══ -->
-  <div id="confirm-screen" class="screen hidden">
-    <div class="confirm-title">📋 خلاصه پاسخ‌ها</div>
-    <div class="confirm-sub">قبل از ثبت نهایی، پاسخ‌هایتان را مرور کنید</div>
-    <div class="answer-summary" id="answer-summary"></div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goBackToQuiz()">← ویرایش</button>
-      <button class="btn-primary" onclick="submitData()">ثبت نهایی ✓</button>
+  <!-- CONFIRM -->
+  <div id="s-confirm" class="screen hidden">
+    <div class="conf-title">📋 مرور پاسخ‌ها</div>
+    <div class="conf-sub">قبل از ثبت نهایی بررسی کنید</div>
+
+    <div class="edit-row">
+      <label>نام</label>
+      <input type="text" id="c-name">
+    </div>
+    <div class="edit-row">
+      <label>سن</label>
+      <input type="number" id="c-age">
+    </div>
+
+    <div class="ans-list" id="ans-list"></div>
+    <div class="nav">
+      <button class="btn-s" onclick="backToQuiz()">← ویرایش</button>
+      <button class="btn-p" onclick="submitData()">ثبت نهایی ✓</button>
     </div>
   </div>
 
-  <!-- ══ END SCREEN ══ -->
-  <div id="end-screen" class="screen hidden">
-    <span class="end-emoji" id="end-emoji">🎉</span>
+  <!-- END -->
+  <div id="s-end" class="screen hidden">
+    <div class="end-av" id="end-av"></div>
     <div class="end-title">ثبت شد!</div>
-    <div class="end-sub">پاسخ‌های شما با موفقیت ذخیره شد.</div>
-
-    <div class="mini-chart" id="mini-chart" style="display:none">
-      <div class="mini-chart-title">📊 توزیع پاسخ‌های شما</div>
-      <div class="chart-bars" id="chart-bars"></div>
-    </div>
-
-    <div class="referral-box">
-      <label class="referral-label">لینک دعوت اختصاصی شما</label>
-      <div class="referral-row">
-        <input type="text" id="referral-link" class="form-control" readonly>
-        <button class="copy-btn" onclick="copyReferralLink()">کپی</button>
+    <div class="end-msg" id="end-msg">پاسخ‌های شما با موفقیت ذخیره شد.</div>
+    <div class="ref-box">
+      <label class="ref-lbl">لینک دعوت اختصاصی</label>
+      <div class="ref-row">
+        <input type="text" id="ref-link" class="fc" readonly>
+        <button class="copy-btn" onclick="copyRef()">کپی</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="signature">Designed for <span>Economic Research</span></div>
+<div class="sig">Designed for <span>Economic Research</span></div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzxljrF2WvzSJ0xFtxEoFh8Y5QSwg-Kp2LxO-nSJzzoZ10JzYdqcWk3g0vwrHg4Dru0AA/exec";
+const API = "https://script.google.com/macros/s/AKfycbzxljrF2WvzSJ0xFtxEoFh8Y5QSwg-Kp2LxO-nSJzzoZ10JzYdqcWk3g0vwrHg4Dru0AA/exec";
 
-// ═══════════════════════════════════════
-// PIXEL AVATARS DATA (Minecraft style)
-// ═══════════════════════════════════════
-const AVATARS = [
-  {
-    id:"محافظه‌کار",
-    name:"محافظه‌کار",
-    desc:"ثبات بر سود",
-    // pixel art: 8x8 grid, head + body colors
-    colors:{skin:"#FDDBB4",hair:"#5D3A1A",shirt:"#2C3E50",pants:"#1a252f"},
-    pixels:[
-      // 8-col pixel art encoded as base palette indices: s=skin,h=hair,b=shirt,p=pants,_=transparent
-      "  hhhh  ",
-      " hssssh ",
-      " hssssh ",
-      "  bbbb  ",
-      " bbbbbb ",
-      " bbbbbb ",
-      " pp  pp ",
-      " pp  pp ",
-    ]
-  },
-  {
-    id:"ریسک‌پذیر",
-    name:"ریسک‌پذیر",
-    colors:{skin:"#FDDBB4",hair:"#111",shirt:"#C0392B",pants:"#922B21"},
-    pixels:[
-      "  hhhh  ",
-      " h sss h",
-      " h sss h",
-      "  rrrr  ",
-      " rrrrrr ",
-      " rrrrrr ",
-      " pp  pp ",
-      " pp  pp ",
-    ]
-  },
-  {
-    id:"تحلیلگر",
-    name:"تحلیلگر",
-    colors:{skin:"#F5CBA7",hair:"#6D4C41",shirt:"#2471A3",pants:"#154360"},
-    pixels:[
-      "  hhhh  ",
-      " hssssh ",
-      " hssssh ",
-      "  bbbb  ",
-      " bbbbbb ",
-      " bbbbbb ",
-      " pp  pp ",
-      " pp  pp ",
-    ]
-  },
-  {
-    id:"سوداگر",
-    name:"سوداگر",
-    colors:{skin:"#FDDBB4",hair:"#E74C3C",shirt:"#F39C12",pants:"#D35400"},
-    pixels:[
-      "  hhhh  ",
-      " hssssh ",
-      " hssssh ",
-      "  bbbb  ",
-      " bbbbbb ",
-      " bbbbbb ",
-      " pp  pp ",
-      " pp  pp ",
-    ]
-  },
-  {
-    id:"آزاد",
-    name:"آزاد",
-    colors:{skin:"#FDDBB4",hair:"#27AE60",shirt:"#1E8449",pants:"#196F3D"},
-    pixels:[
-      " hhhhh  ",
-      "hh sss h",
-      " h sss h",
-      "  gggg  ",
-      " gggggg ",
-      " gggggg ",
-      " pp  pp ",
-      " pp  pp ",
-    ]
-  },
-  {
-    id:"رسمی",
-    name:"رسمی",
-    colors:{skin:"#FDDBB4",hair:"#2C1810",shirt:"#1B2A4A",pants:"#0d1b2e"},
-    pixels:[
-      "  hhhh  ",
-      " hssssh ",
-      " hssssh ",
-      "  bbbb  ",
-      " bbbbbb ",
-      " bbbbbb ",
-      " pp  pp ",
-      " pp  pp ",
-    ]
-  },
-  {
-    id:"صرفه‌جو",
-    name:"صرفه‌جو",
-    colors:{skin:"#FDDBB4",hair:"#7D6608",shirt:"#B7950B",pants:"#7D6608"},
-    pixels:[
-      "  hhhh  ",
-      " hssssh ",
-      " hssssh ",
-      "  bbbb  ",
-      " bbbbbb ",
-      " bbbbbb ",
-      " pp  pp ",
-      " pp  pp ",
-    ]
-  },
-  {
-    id:"نوآور",
-    name:"نوآور",
-    colors:{skin:"#FDDBB4",hair:"#8E44AD",shirt:"#9B59B6",pants:"#6C3483"},
-    pixels:[
-      "  hhhh  ",
-      " hssssh ",
-      " hssssh ",
-      "  bbbb  ",
-      " bbbbbb ",
-      " bbbbbb ",
-      " pp  pp ",
-      " pp  pp ",
-    ]
-  }
+// ── AVATAR THEMES ──
+const AV_THEMES = {
+  "محافظه‌کار": { primary:"#2980b9", accent:"#1a5276" },
+  "ریسک‌پذیر":  { primary:"#e74c3c", accent:"#922b21" },
+  "تحلیلگر":    { primary:"#8e44ad", accent:"#4a235a" },
+  "سوداگر":     { primary:"#f39c12", accent:"#d35400" },
+  "آزاد":        { primary:"#27ae60", accent:"#1e8449" },
+  "رسمی":        { primary:"#2c3e50", accent:"#1a252f" },
+  "صرفه‌جو":    { primary:"#d4ac0d", accent:"#7d6608" },
+  "نوآور":       { primary:"#9b59b6", accent:"#6c3483" },
+};
+
+// ── AVATAR MESSAGES (end screen) ──
+const AV_MSG = {
+  "محافظه‌کار": "شما در شرایط اقتصادی سخت، ثبات و امنیت را به سود ترجیح می‌دهید. این رویکرد محتاطانه در بلندمدت اغلب نتیجه‌بخش است.",
+  "ریسک‌پذیر":  "شما در برابر نااطمینانی اقتصادی جسورانه عمل می‌کنید. پتانسیل رشد بالایی دارید اما مدیریت ریسک را جدی بگیرید.",
+  "تحلیلگر":    "شما تصمیمات مالی را با داده و منطق می‌گیرید. این نگاه تحلیلی یکی از ارزشمندترین مهارت‌ها در اقتصاد پرنوسان امروز است.",
+  "سوداگر":     "شما فرصت‌های بازار را سریع شناسایی می‌کنید. چابکی در تصمیم‌گیری قدرت اصلی شماست.",
+  "آزاد":        "شما رویکرد منعطف و خلاقانه‌ای به مسائل مالی دارید. توانایی سازگاری با شرایط متغیر از ویژگی‌های برجسته شماست.",
+  "رسمی":        "شما چارچوب‌های استاندارد مالی را ترجیح می‌دهید. این اعتماد به ساختارهای مرسوم در شرایط پایدار بسیار موثر است.",
+  "صرفه‌جو":    "شما ارزش پول را به‌خوبی درک می‌کنید و مصرف هوشمندانه دارید. قدرت تجمیع سرمایه در بلندمدت در شماست.",
+  "نوآور":       "شما به دنبال راه‌حل‌های جدید برای چالش‌های اقتصادی هستید. تفکر خلاقانه در اقتصاد امروز یک مزیت رقابتی واقعی است.",
+};
+
+// ── PIXEL AVATARS ──
+const AVS = [
+  { id:"محافظه‌کار", colors:{s:"#FDDBB4",h:"#5D3A1A",b:"#2C3E50",p:"#1a252f"},
+    px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "] },
+  { id:"ریسک‌پذیر",  colors:{s:"#FDDBB4",h:"#111",b:"#C0392B",p:"#922B21"},
+    px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "] },
+  { id:"تحلیلگر",    colors:{s:"#F5CBA7",h:"#6D4C41",b:"#8E44AD",p:"#4A235A"},
+    px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "] },
+  { id:"سوداگر",     colors:{s:"#FDDBB4",h:"#E74C3C",b:"#F39C12",p:"#D35400"},
+    px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "] },
+  { id:"آزاد",        colors:{s:"#FDDBB4",h:"#27AE60",b:"#1E8449",p:"#196F3D"},
+    px:["hhhhhhh "," hssssh "," hssssh ","  gggg  "," gggggg "," gggggg "," pp  pp "," pp  pp "] },
+  { id:"رسمی",        colors:{s:"#FDDBB4",h:"#2C1810",b:"#1B2A4A",p:"#0d1b2e"},
+    px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "] },
+  { id:"صرفه‌جو",    colors:{s:"#FDDBB4",h:"#7D6608",b:"#D4AC0D",p:"#7D6608"},
+    px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "] },
+  { id:"نوآور",       colors:{s:"#FDDBB4",h:"#8E44AD",b:"#9B59B6",p:"#6C3483"},
+    px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "] },
 ];
 
-function renderPixelAvatar(av, size) {
-  const canvas = document.createElement("canvas");
-  const s = size || 48;
-  canvas.width = s; canvas.height = s;
-  canvas.className = "px-avatar";
-  const ctx = canvas.getContext("2d");
+function drawAv(av, size) {
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  c.style.imageRendering = "pixelated";
+  const ctx = c.getContext("2d");
   ctx.imageSmoothingEnabled = false;
-
-  const map = {
-    "s": av.colors.skin,
-    "h": av.colors.hair,
-    "b": av.colors.shirt,
-    "r": av.colors.shirt,
-    "g": av.colors.shirt,
-    "p": av.colors.pants,
-    " ": null,
-    "_": null
-  };
-
-  const rows = av.pixels;
-  const cellW = s / 8;
-  const cellH = s / rows.length;
-
-  rows.forEach((row, ri) => {
-    for (let ci = 0; ci < 8; ci++) {
-      const ch = row[ci] || " ";
-      const color = map[ch];
-      if (!color) continue;
-      ctx.fillStyle = color;
-      ctx.fillRect(ci * cellW, ri * cellH, cellW, cellH);
-      // pixel shade
-      ctx.fillStyle = "rgba(0,0,0,0.15)";
-      ctx.fillRect(ci * cellW + cellW - 1, ri * cellH, 1, cellH);
-      ctx.fillRect(ci * cellW, ri * cellH + cellH - 1, cellW, 1);
+  const map = { s:av.colors.s, h:av.colors.h, b:av.colors.b, g:av.colors.b, p:av.colors.p, " ":null };
+  const cw = size/8, ch = size/8;
+  av.px.forEach((row,ri) => {
+    for(let ci=0;ci<8;ci++){
+      const col = map[row[ci]||" "];
+      if(!col) continue;
+      ctx.fillStyle = col;
+      ctx.fillRect(ci*cw, ri*ch, cw, ch);
+      ctx.fillStyle = "rgba(0,0,0,0.12)";
+      ctx.fillRect(ci*cw+cw-1, ri*ch, 1, ch);
+      ctx.fillRect(ci*cw, ri*ch+ch-1, cw, 1);
     }
   });
-
-  return canvas;
+  return c;
 }
 
-function buildAvatarGrid() {
-  const grid = document.getElementById("avatarGrid");
-  grid.innerHTML = "";
-  AVATARS.forEach(av => {
+function buildGrid() {
+  const g = document.getElementById("av-grid");
+  g.innerHTML = "";
+  AVS.forEach(av => {
     const item = document.createElement("div");
     item.className = "av-item";
-    item.onclick = () => pickAvatar(item, av.id);
-
+    item.onclick = () => pickAv(item, av.id);
     const ring = document.createElement("div");
     ring.className = "av-ring";
-    ring.appendChild(renderPixelAvatar(av, 48));
-
-    const name = document.createElement("span");
-    name.className = "av-name";
-    name.textContent = av.name;
-
+    ring.appendChild(drawAv(av, 50));
+    const nm = document.createElement("span");
+    nm.className = "av-name";
+    nm.textContent = av.id;
     item.appendChild(ring);
-    item.appendChild(name);
-    grid.appendChild(item);
+    item.appendChild(nm);
+    g.appendChild(item);
   });
 }
 
-// ═══════════════════════════════════════
-// BACKGROUND PARTICLES
-// ═══════════════════════════════════════
-function spawnParticles() {
-  const container = document.getElementById("particles");
-  for (let i = 0; i < 20; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random() * 100 + "%";
-    p.style.animationDelay = Math.random() * 8 + "s";
-    p.style.animationDuration = (6 + Math.random() * 6) + "s";
-    p.style.width = p.style.height = (1 + Math.random() * 2) + "px";
-    container.appendChild(p);
+// ── STARS ──
+function buildStars() {
+  const bg = document.getElementById("bg");
+  for(let i=0;i<60;i++){
+    const s = document.createElement("div");
+    s.className = "star";
+    s.style.left = Math.random()*100+"%";
+    s.style.top  = Math.random()*100+"%";
+    s.style.setProperty("--d", (3+Math.random()*5)+"s");
+    s.style.setProperty("--dl", (Math.random()*6)+"s");
+    bg.appendChild(s);
   }
 }
 
-// ═══════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════
-const state = {
-  currentQuestion: 0,
-  currentTheme: "neon",
-  selectedAvatar: "",
-  questions: [],
-  answers: {},
-  comments: {},
-  timeLogs: {},
-  config: {}
-};
-let questionStartTime = 0;
+// ── TILT ──
+function initTilt() {
+  const card = document.getElementById("card");
+  document.addEventListener("mousemove", e => {
+    const r = card.getBoundingClientRect();
+    const cx = r.left + r.width/2;
+    const cy = r.top + r.height/2;
+    const dx = (e.clientX - cx) / (r.width/2);
+    const dy = (e.clientY - cy) / (r.height/2);
+    card.style.transform = `perspective(1000px) rotateY(${dx*5}deg) rotateX(${-dy*5}deg)`;
+    card.style.boxShadow = `${-dx*15}px ${dy*15}px 60px rgba(0,0,0,.6), 0 40px 80px rgba(0,0,0,.6)`;
+  });
+  document.addEventListener("mouseleave", () => {
+    card.style.transform = "";
+    card.style.boxShadow = "";
+  });
 
-const screens = {
-  start:   document.getElementById("start-screen"),
-  quiz:    document.getElementById("quiz-screen"),
-  confirm: document.getElementById("confirm-screen"),
-  end:     document.getElementById("end-screen")
+  // gyroscope
+  window.addEventListener("deviceorientation", e => {
+    const dx = (e.gamma||0)/30;
+    const dy = (e.beta||0)/30;
+    card.style.transform = `perspective(1000px) rotateY(${dx*4}deg) rotateX(${-dy*4}deg)`;
+  });
+}
+
+// ── STATE ──
+const S = {
+  q:0, theme:"neon", avatar:"",
+  questions:[], answers:{}, comments:{}, times:{}, config:{}
+};
+let t0 = 0;
+
+const SCR = {
+  start:   document.getElementById("s-start"),
+  quiz:    document.getElementById("s-quiz"),
+  confirm: document.getElementById("s-confirm"),
+  end:     document.getElementById("s-end"),
 };
 
-// ═══════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════
+// ── INIT ──
 window.addEventListener("DOMContentLoaded", () => {
-  spawnParticles();
-  buildAvatarGrid();
+  buildGrid();
+  buildStars();
+  initTilt();
   loadTheme();
-  initApp();
+  loadApp();
 });
 
-async function initApp() {
+async function loadApp() {
   try {
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    state.questions = data.questions || [];
-    state.config = data.config || {};
-    state.count = data.count || 0;
-    initializeUI();
-    checkParticipation();
-    setScreen("start");
+    const res  = await fetch(API);
+    const data = await res.json();
+    S.questions = data.questions || [];
+    S.config    = data.config    || {};
+    S.count     = data.count     || 0;
+    setupUI();
+    checkParticipated();
   } catch(e) {
-    console.error(e);
     alert("خطا در اتصال به سرور");
   } finally {
-    document.getElementById("loader").classList.add("hidden");
+    setTimeout(() => {
+      const ls = document.getElementById("loader-screen");
+      ls.classList.add("fade-out");
+      setTimeout(() => ls.remove(), 500);
+      show("start");
+    }, 2200);
   }
 }
 
-function initializeUI() {
-  if (state.config.title)    document.getElementById("site-title").innerText = state.config.title;
-  if (state.config.subtitle) document.getElementById("site-subtitle").innerText = state.config.subtitle;
-
-  // participants count
-  if (state.count > 0) {
-    const badge = document.getElementById("participants-badge");
-    badge.style.display = "flex";
-    document.getElementById("participants-count").innerText =
-      toFarsiNum(state.count) + " نفر تاکنون شرکت کرده‌اند";
+function setupUI() {
+  if(S.config.title)    document.getElementById("site-title").innerText = S.config.title;
+  if(S.config.subtitle) document.getElementById("site-sub").innerText   = S.config.subtitle;
+  if(S.count > 0) {
+    const b = document.getElementById("p-badge");
+    b.classList.add("on");
+    document.getElementById("p-count").innerText = toF(S.count) + " نفر تاکنون شرکت کرده‌اند";
   }
 }
 
-function toFarsiNum(n) {
-  return String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+function checkParticipated() {
+  const key = "done_" + (S.config.title||"x");
+  if(localStorage.getItem(key)) document.getElementById("part-banner").classList.add("on");
 }
 
-// ═══════════════════════════════════════
-// PARTICIPATION CHECK
-// ═══════════════════════════════════════
-function checkParticipation() {
-  const key = "participated_" + (state.config.title || "default");
-  const done = localStorage.getItem(key);
-  if (done) {
-    document.getElementById("participated-banner").classList.add("show");
-  }
+function markDone() {
+  localStorage.setItem("done_" + (S.config.title||"x"), "1");
 }
 
-function markParticipated() {
-  const key = "participated_" + (state.config.title || "default");
-  localStorage.setItem(key, "1");
-}
+function toF(n) { return String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]); }
 
-// ═══════════════════════════════════════
-// SCREEN MANAGEMENT
-// ═══════════════════════════════════════
-function setScreen(s) {
-  Object.values(screens).forEach(el => el.classList.add("hidden"));
-  screens[s].classList.remove("hidden");
+// ── SCREENS ──
+function show(name) {
+  Object.values(SCR).forEach(el => el.classList.add("hidden"));
+  SCR[name].classList.remove("hidden");
 
-  const showProgress = (s === "quiz");
-  document.getElementById("progress-label").style.display = showProgress ? "block" : "none";
+  const fa = document.getElementById("float-av");
+  const prog = document.getElementById("prog");
 
-  const fa = document.getElementById("floating-avatar");
-  if (s === "quiz" && state.selectedAvatar) {
-    fa.classList.add("visible");
+  if(name==="quiz") {
+    fa.classList.add("on");
     fa.innerHTML = "";
-    const av = AVATARS.find(a => a.id === state.selectedAvatar);
-    if (av) fa.appendChild(renderPixelAvatar(av, 30));
+    const av = AVS.find(a=>a.id===S.avatar);
+    if(av) fa.appendChild(drawAv(av,30));
   } else {
-    fa.classList.remove("visible");
+    fa.classList.remove("on");
+  }
+
+  if(name!=="quiz") {
+    prog.style.width = "0%";
   }
 }
 
-// ═══════════════════════════════════════
-// AVATAR
-// ═══════════════════════════════════════
-function pickAvatar(el, name) {
-  document.querySelectorAll(".av-item").forEach(i => i.classList.remove("selected"));
-  el.classList.add("selected");
-  state.selectedAvatar = name;
+// ── AVATAR ──
+function pickAv(el, id) {
+  document.querySelectorAll(".av-item").forEach(i=>i.classList.remove("sel"));
+  el.classList.add("sel");
+  S.avatar = id;
+  // theme change based on avatar
+  const t = AV_THEMES[id];
+  if(t) {
+    document.documentElement.style.setProperty("--primary", t.primary);
+    document.documentElement.style.setProperty("--accent",  t.accent);
+  }
 }
 
-// ═══════════════════════════════════════
-// THEME
-// ═══════════════════════════════════════
-function changeTheme(theme) {
-  document.body.className = "";
-  if (theme !== "neon") document.body.classList.add("theme-" + theme);
-  localStorage.setItem("econ_theme", theme);
-  state.currentTheme = theme;
-  document.querySelectorAll(".theme-card").forEach(btn => {
-    btn.classList.remove("active");
-    if (btn.querySelector("." + theme)) btn.classList.add("active");
+// ── THEME ──
+function setTheme(th) {
+  const map = {
+    neon:      { primary:"#00d2d3", accent:"#5f27cd" },
+    crimson:   { primary:"#ff4757", accent:"#c0392b" },
+    corporate: { primary:"#2980b9", accent:"#1abc9c" },
+    nature:    { primary:"#27ae60", accent:"#f39c12" },
+    sunset:    { primary:"#e67e22", accent:"#e74c3c" },
+  };
+  document.body.className = th==="neon"?"":"theme-"+th;
+  if(map[th]) {
+    document.documentElement.style.setProperty("--primary", map[th].primary);
+    document.documentElement.style.setProperty("--accent",  map[th].accent);
+  }
+  localStorage.setItem("econ_th", th);
+  S.theme = th;
+  document.querySelectorAll(".tc").forEach(c => {
+    c.classList.remove("act");
+    if(c.querySelector("."+th)) c.classList.add("act");
   });
 }
-function loadTheme() {
-  changeTheme(localStorage.getItem("econ_theme") || "neon");
-}
 
-// ═══════════════════════════════════════
-// QUIZ FLOW
-// ═══════════════════════════════════════
+function loadTheme() { setTheme(localStorage.getItem("econ_th")||"neon"); }
+
+// ── QUIZ ──
 function startQuiz() {
-  const name = document.getElementById("user-name").value.trim();
-  const age  = document.getElementById("user-age").value.trim();
-  if (!name || !age) { alert("لطفاً نام و سن را وارد کنید"); return; }
-  state.currentQuestion = 0;
-  setScreen("quiz");
-  showQuestion();
+  const nm = document.getElementById("u-name").value.trim();
+  const ag = document.getElementById("u-age").value.trim();
+  if(!nm||!ag) { alert("لطفاً نام و سن را وارد کنید"); return; }
+  S.q = 0;
+  show("quiz");
+  renderQ();
 }
 
-function showQuestion() {
-  const q   = state.questions[state.currentQuestion];
-  const box = document.getElementById("question-box");
-  updateProgress();
-  questionStartTime = Date.now();
+function renderQ() {
+  const q   = S.questions[S.q];
+  const box = document.getElementById("q-box");
+  t0 = Date.now();
 
-  const saved        = state.answers[q.id] || "";
-  const savedComment = state.comments[q.id] || "";
+  const pct = ((S.q+1)/S.questions.length)*100;
+  document.getElementById("prog").style.width = pct+"%";
 
-  let optionsHTML = "";
-  if (q.type === "radio") {
-    optionsHTML = q.options.map(opt => {
-      const checked  = saved === opt ? "checked" : "";
-      const safeOpt  = opt.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-      return `
-        <label class="radio-option">
-          <input type="radio" name="q_${q.id}" value="${safeOpt}" ${checked}
-            onchange="saveAnswer(${q.id},'${safeOpt}')">
-          <span class="radio-dot"></span>
-          <span>${opt}</span>
-        </label>`;
+  const saved  = S.answers[q.id]  || "";
+  const savedC = S.comments[q.id] || "";
+
+  let opts = "";
+  if(q.type==="radio") {
+    opts = q.options.map(o => {
+      const ch = saved===o?"checked":"";
+      const safe = o.replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+      return `<label class="radio-opt">
+        <input type="radio" name="q${q.id}" value="${safe}" ${ch} onchange="SA(${q.id},'${safe}')">
+        <span class="rdot"></span><span>${o}</span>
+      </label>`;
     }).join("");
-  } else if (q.type === "text") {
-    optionsHTML = `<textarea class="form-control" rows="4" placeholder="پاسخ خود را بنویسید..."
-      oninput="saveAnswer(${q.id},this.value)">${saved}</textarea>`;
-  } else if (q.type === "number") {
-    optionsHTML = `<input type="number" class="form-control" value="${saved}"
-      placeholder="عدد را وارد کنید" oninput="saveAnswer(${q.id},this.value)">`;
+  } else if(q.type==="text") {
+    opts = `<textarea class="fc" rows="4" placeholder="پاسخ خود را بنویسید..."
+      oninput="SA(${q.id},this.value)">${saved}</textarea>`;
+  } else if(q.type==="number") {
+    opts = `<input type="number" class="fc" value="${saved}"
+      placeholder="عدد را وارد کنید" oninput="SA(${q.id},this.value)">`;
   }
 
   box.innerHTML = `
-    <div class="question-header">
-      <span class="q-counter">سوال ${toFarsiNum(state.currentQuestion+1)} از ${toFarsiNum(state.questions.length)}</span>
-    </div>
-    <div class="q-text">${state.currentQuestion+1}. ${q.text}</div>
-    ${optionsHTML}
-    <div class="comment-box">
-      <span class="comment-label">نظر یا توضیح (اختیاری)</span>
-      <textarea class="form-control" rows="2"
-        placeholder="هر توضیح اضافه‌ای داری بنویس..."
-        oninput="saveComment(${q.id},this.value)">${savedComment}</textarea>
-    </div>`;
+    <div class="q-card"><div class="q-text">${S.q+1}. ${q.text}</div></div>
+    ${opts}
+    <span class="comment-lbl">نظر یا توضیح (اختیاری)</span>
+    <textarea class="fc" rows="2" placeholder="توضیح اضافه..."
+      oninput="SC(${q.id},this.value)">${savedC}</textarea>`;
 
-  updateButtons();
-}
-
-function saveAnswer(id, value)  { state.answers[id]  = value; }
-function saveComment(id, value) { state.comments[id] = value; }
-
-function nextStep() {
-  const q = state.questions[state.currentQuestion];
-  if (q.required && !state.answers[q.id]) {
-    alert("این سوال اجباری است");
-    return;
-  }
-  state.timeLogs[q.id] = ((Date.now() - questionStartTime) / 1000).toFixed(1);
-
-  if (state.currentQuestion >= state.questions.length - 1) {
-    showConfirm();
-    return;
-  }
-  state.currentQuestion++;
-  showQuestion();
-}
-
-function prevStep() {
-  if (state.currentQuestion <= 0) return;
-  state.currentQuestion--;
-  showQuestion();
-}
-
-function updateButtons() {
   const prev = document.getElementById("btn-prev");
   const next = document.getElementById("btn-next");
-  prev.style.visibility = state.currentQuestion === 0 ? "hidden" : "visible";
-  next.innerText = state.currentQuestion === state.questions.length - 1 ? "مرور پاسخ‌ها ←" : "بعدی →";
+  prev.style.visibility = S.q===0?"hidden":"visible";
+  next.innerText = S.q===S.questions.length-1?"مرور پاسخ‌ها ←":"بعدی →";
 }
 
-function updateProgress() {
-  const pct = ((state.currentQuestion + 1) / state.questions.length) * 100;
-  document.getElementById("progress-fill").style.width = pct + "%";
-  document.getElementById("progress-label").style.display = "block";
-  document.getElementById("progress-label").innerText =
-    `سوال ${toFarsiNum(state.currentQuestion+1)} از ${toFarsiNum(state.questions.length)}`;
+function SA(id,v) { S.answers[id]=v; }
+function SC(id,v) { S.comments[id]=v; }
+
+function nextQ() {
+  const q = S.questions[S.q];
+  if(q.required && !S.answers[q.id]) { alert("این سوال اجباری است"); return; }
+  S.times[q.id] = ((Date.now()-t0)/1000).toFixed(1);
+  if(S.q>=S.questions.length-1) { showConfirm(); return; }
+  S.q++;
+  renderQ();
 }
 
-// ═══════════════════════════════════════
-// CONFIRM SCREEN
-// ═══════════════════════════════════════
+function prevQ() {
+  if(S.q<=0) return;
+  S.q--;
+  renderQ();
+}
+
+// ── CONFIRM ──
 function showConfirm() {
-  const container = document.getElementById("answer-summary");
-  container.innerHTML = "";
+  document.getElementById("c-name").value = document.getElementById("u-name").value;
+  document.getElementById("c-age").value  = document.getElementById("u-age").value;
 
-  state.questions.forEach((q, i) => {
-    const ans = state.answers[q.id] || "";
-    const item = document.createElement("div");
-    item.className = "summary-item";
-    item.innerHTML = `
-      <div class="summary-q">سوال ${toFarsiNum(i+1)}: ${q.text.substring(0,60)}${q.text.length>60?"...":""}</div>
-      <div class="summary-a ${!ans ? "summary-empty" : ""}">${ans || "بدون پاسخ"}</div>`;
-    container.appendChild(item);
+  const list = document.getElementById("ans-list");
+  list.innerHTML = "";
+  S.questions.forEach((q,i) => {
+    const a = S.answers[q.id]||"";
+    const d = document.createElement("div");
+    d.className = "ans-item";
+    d.innerHTML = `<div class="ans-q">سوال ${toF(i+1)}: ${q.text.substring(0,55)}${q.text.length>55?"...":""}</div>
+      <div class="ans-a ${!a?"ans-empty":""}">${a||"بدون پاسخ"}</div>`;
+    list.appendChild(d);
   });
-
-  setScreen("confirm");
+  show("confirm");
 }
 
-function goBackToQuiz() {
-  state.currentQuestion = state.questions.length - 1;
-  setScreen("quiz");
-  showQuestion();
+function backToQuiz() {
+  S.q = S.questions.length-1;
+  show("quiz");
+  renderQ();
 }
 
-// ═══════════════════════════════════════
-// SUBMIT
-// ═══════════════════════════════════════
+// ── SUBMIT ──
 async function submitData() {
-  const submitBtn = document.querySelector("#confirm-screen .btn-primary");
-  submitBtn.disabled = true;
-  submitBtn.innerText = "در حال ارسال...";
+  const btn = document.querySelector("#s-confirm .btn-p");
+  btn.disabled=true; btn.innerText="در حال ارسال...";
 
-  const answersArr = state.questions.map((q, i) => ({
-    questionIndex: i + 1,
-    qId: i + 1,
-    answer:  state.answers[q.id]  || "",
-    comment: state.comments[q.id] || "",
-    time:    state.timeLogs[q.id] || 0
+  // apply edits from confirm screen
+  document.getElementById("u-name").value = document.getElementById("c-name").value;
+  document.getElementById("u-age").value  = document.getElementById("c-age").value;
+
+  const arr = S.questions.map((q,i) => ({
+    questionIndex: i+1,
+    qId: i+1,
+    answer:  S.answers[q.id]  || "",
+    comment: S.comments[q.id] || "",
+    time:    S.times[q.id]    || 0
   }));
-
-  const totalTime = Object.values(state.timeLogs)
-    .reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
+  const total = Object.values(S.times).reduce((s,t)=>s+parseFloat(t||0),0).toFixed(1);
 
   const payload = {
-    surveyName: state.config.title || "EconGraph",
-    name:       document.getElementById("user-name").value,
-    age:        document.getElementById("user-age").value,
-    avatar:     state.selectedAvatar,
-    source:     new URLSearchParams(window.location.search).get("ref") || "direct",
-    theme:      state.currentTheme,
-    totalTime:  totalTime,
-    answers:    answersArr
+    surveyName: S.config.title||"EconGraph",
+    name:   document.getElementById("u-name").value,
+    age:    document.getElementById("u-age").value,
+    avatar: S.avatar,
+    source: new URLSearchParams(location.search).get("ref")||"direct",
+    theme:  S.theme,
+    totalTime: total,
+    answers: arr
   };
 
   try {
-    await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
-    markParticipated();
-    generateReferralLink();
-    buildMiniChart();
-    setScreen("end");
-    document.getElementById("end-emoji").innerText = state.config.end_emoji || "🎉";
+    await fetch(API, { method:"POST", body:JSON.stringify(payload) });
+    markDone();
+    buildEnd();
+    show("end");
+    const lnk = location.origin+location.pathname+"?ref="+encodeURIComponent(document.getElementById("u-name").value);
+    document.getElementById("ref-link").value = lnk;
   } catch(e) {
-    console.error(e);
     alert("خطا در ارسال. دوباره تلاش کن.");
-    submitBtn.disabled = false;
-    submitBtn.innerText = "ثبت نهایی ✓";
+    btn.disabled=false; btn.innerText="ثبت نهایی ✓";
   }
 }
 
-// ═══════════════════════════════════════
-// MINI CHART (end screen)
-// ═══════════════════════════════════════
-function buildMiniChart() {
-  const radioQs = state.questions.filter(q => q.type === "radio" && state.answers[q.id]);
-  if (radioQs.length === 0) return;
+function buildEnd() {
+  // show avatar
+  const endAv = document.getElementById("end-av");
+  endAv.innerHTML = "";
+  const av = AVS.find(a=>a.id===S.avatar);
+  if(av) endAv.appendChild(drawAv(av, 64));
+  else endAv.style.display="none";
 
-  const chart = document.getElementById("mini-chart");
-  const bars  = document.getElementById("chart-bars");
-  chart.style.display = "block";
-  bars.innerHTML = "";
-
-  // show first 5 radio answers
-  const shown = radioQs.slice(0, 5);
-  shown.forEach((q, i) => {
-    const ans     = state.answers[q.id];
-    const optIdx  = q.options.indexOf(ans);
-    const pct     = optIdx >= 0 ? ((optIdx + 1) / q.options.length) * 100 : 50;
-    const label   = `س${toFarsiNum(i+1)}`;
-
-    const wrap = document.createElement("div");
-    wrap.className = "chart-bar-wrap";
-
-    const bar = document.createElement("div");
-    bar.className = "chart-bar user";
-    bar.style.height = "0px";
-
-    const lbl = document.createElement("div");
-    lbl.className = "chart-bar-label";
-    lbl.textContent = label;
-
-    wrap.appendChild(bar);
-    wrap.appendChild(lbl);
-    bars.appendChild(wrap);
-
-    setTimeout(() => {
-      bar.style.height = Math.max(8, pct * 0.6) + "px";
-    }, i * 120);
-  });
+  // personalized message
+  const msg = AV_MSG[S.avatar] || "پاسخ‌های شما با موفقیت ذخیره شد.";
+  document.getElementById("end-msg").innerText = msg;
 }
 
-// ═══════════════════════════════════════
-// REFERRAL
-// ═══════════════════════════════════════
-function generateReferralLink() {
-  const name = document.getElementById("user-name").value.trim();
-  document.getElementById("referral-link").value =
-    window.location.origin + window.location.pathname + "?ref=" + encodeURIComponent(name);
-}
-
-async function copyReferralLink() {
-  const input = document.getElementById("referral-link");
-  try {
-    await navigator.clipboard.writeText(input.value);
-    alert("لینک کپی شد ✓");
-  } catch {
-    input.select();
-    document.execCommand("copy");
-    alert("لینک کپی شد ✓");
-  }
+async function copyRef() {
+  const v = document.getElementById("ref-link").value;
+  try { await navigator.clipboard.writeText(v); } catch { }
+  alert("لینک کپی شد ✓");
 }
 </script>
 </body>
