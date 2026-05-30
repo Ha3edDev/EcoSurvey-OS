@@ -89,7 +89,7 @@ body{
 .pdot{width:6px;height:6px;background:var(--p);border-radius:50%;animation:pls 2s infinite;}
 @keyframes pls{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
 
-/* ─── BLOCKED SCREEN (طرح ۲) ─── */
+/* ─── BLOCKED SCREEN ─── */
 .blk{display:none;padding:4px 0 8px;}
 .blk.on{display:block;}
 
@@ -103,7 +103,7 @@ body{
   image-rendering:pixelated;
   box-shadow:0 0 0 4px rgba(255,255,255,.04);
 }
-.blk-av canvas{border-radius:10px;}
+.blk-av canvas{border-radius:10px;display:block;}
 .blk-lock{
   position:absolute;bottom:-7px;right:-7px;
   width:22px;height:22px;border-radius:50%;
@@ -176,6 +176,9 @@ body{
   font-weight:700;white-space:nowrap;
 }
 
+/* تلگرام SVG آیکون */
+.tg-icon-svg{width:18px;height:18px;flex-shrink:0;}
+
 .blk-tg{
   display:flex;align-items:center;justify-content:center;gap:6px;
   width:100%;padding:10px;border-radius:10px;
@@ -184,7 +187,6 @@ body{
   cursor:pointer;text-decoration:none;transition:.2s;
 }
 .blk-tg:hover{border-color:rgba(255,255,255,.15);color:var(--text);}
-.blk-tg-icon{font-size:1rem;}
 
 /* AVATARS */
 .avtitle{text-align:center;color:var(--sub);font-size:.75rem;margin-bottom:10px;letter-spacing:.04em;}
@@ -192,9 +194,10 @@ body{
 .avi{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;}
 .avr{width:58px;height:58px;border-radius:10px;border:1.5px solid var(--border);
   background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:center;
-  transition:all .2s;image-rendering:pixelated;}
+  transition:all .2s;image-rendering:pixelated;overflow:hidden;}
 .avi:hover .avr{transform:translateY(-3px);border-color:rgba(255,255,255,.2);box-shadow:0 8px 20px rgba(0,0,0,.4);}
 .avi.sel .avr{border-color:var(--p);background:rgba(0,210,211,.07);box-shadow:0 0 0 3px rgba(0,210,211,.15);}
+.avr canvas{display:block;}
 .avn{font-size:.62rem;color:var(--sub);text-align:center;}
 .avi.sel .avn{color:var(--p);font-weight:700;}
 
@@ -277,7 +280,7 @@ button:active{transform:translateY(0);}
 .aa{font-size:.8rem;color:var(--p);font-weight:600;line-height:1.5;}
 .ae{color:var(--sub);font-style:italic;opacity:.5;}
 
-/* ─── END SCREEN (طرح B) ─── */
+/* ─── END SCREEN ─── */
 #se{padding:4px 0;}
 
 .end-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
@@ -290,8 +293,9 @@ button:active{transform:translateY(0);}
   image-rendering:pixelated;
   box-shadow:0 0 0 4px rgba(255,255,255,.04);
   animation:bi .5s ease;
+  overflow:hidden;
 }
-.end-av canvas{border-radius:10px;}
+.end-av canvas{display:block;}
 @keyframes bi{0%{transform:scale(0);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
 .end-av-tag{
   position:absolute;top:-8px;right:-8px;
@@ -353,7 +357,6 @@ button:active{transform:translateY(0);}
   cursor:pointer;text-decoration:none;transition:.2s;
 }
 .end-tg:hover{border-color:rgba(255,255,255,.15);color:var(--text);}
-.end-tg-icon{font-size:1rem;}
 
 .sig{position:relative;z-index:10;margin-top:16px;font-size:.68rem;color:rgba(255,255,255,.15);}
 .sig span{color:var(--p);}
@@ -374,6 +377,13 @@ button:active{transform:translateY(0);}
   <div class="orb orb3"></div>
 </div>
 
+<!-- SVG آیکون تلگرام (مخفی، برای استفاده مجدد) -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="tg-icon" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+  </symbol>
+</svg>
+
 <div id="LS">
   <div class="ll" id="LL">EconGraph</div>
   <div class="lb-w"><div class="lb"></div></div>
@@ -389,7 +399,7 @@ button:active{transform:translateY(0);}
     <p class="sub" id="SB"></p>
     <div class="pbadge" id="PBG"><span class="pdot"></span><span id="PC"></span></div>
 
-    <!-- BLOCKED — طرح ۲ با آواتار -->
+    <!-- BLOCKED — خوش‌برگشتی -->
     <div class="blk h" id="BLK">
       <div class="blk-profile">
         <div class="blk-av-wrap">
@@ -447,11 +457,14 @@ button:active{transform:translateY(0);}
       </div>
 
       <a class="blk-tg" id="BLK_TG" href="#" target="_blank">
-        <span class="blk-tg-icon">✈️</span>
+        <svg class="tg-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+        </svg>
         <span>کانال تلگرام معیار</span>
       </a>
     </div>
 
+    <!-- فرم ثبت نام -->
     <div id="SF">
       <div class="avtitle">شخصیت اقتصادی خود را انتخاب کنید</div>
       <div class="avgrid" id="AG"></div>
@@ -493,7 +506,7 @@ button:active{transform:translateY(0);}
     </div>
   </div>
 
-  <!-- END — طرح B با آواتار -->
+  <!-- END -->
   <div id="se" class="scr h">
     <div class="end-top">
       <div class="end-av-wrap">
@@ -538,7 +551,9 @@ button:active{transform:translateY(0);}
     </div>
 
     <a class="end-tg" id="END_TG" href="#" target="_blank">
-      <span class="end-tg-icon">✈️</span>
+      <svg class="tg-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+      </svg>
       <span>کانال تلگرام معیار</span>
     </a>
   </div>
@@ -562,10 +577,10 @@ const AV_THEMES = {
   "ریسک‌پذیر": {p:"#e74c3c",a:"#922b21"},
   "تحلیلگر":   {p:"#8e44ad",a:"#4a235a"},
   "سوداگر":    {p:"#f39c12",a:"#d35400"},
-  "آزاد":       {p:"#27ae60",a:"#1e8449"},
-  "رسمی":       {p:"#2c3e50",a:"#1a252f"},
-  "صرفه‌جو":   {p:"#d4ac0d",a:"#7d6608"},
-  "نوآور":      {p:"#9b59b6",a:"#6c3483"},
+  "آزاد":      {p:"#27ae60",a:"#1e8449"},
+  "رسمی":      {p:"#2c3e50",a:"#1a252f"},
+  "صرفه‌جو":  {p:"#d4ac0d",a:"#7d6608"},
+  "نوآور":     {p:"#9b59b6",a:"#6c3483"},
 };
 
 const AV_MSG = {
@@ -573,32 +588,41 @@ const AV_MSG = {
   "ریسک‌پذیر": "شما در برابر نااطمینانی اقتصادی جسورانه عمل می‌کنید. پتانسیل رشد بالایی دارید اما مدیریت ریسک را جدی بگیرید.",
   "تحلیلگر":   "شما تصمیمات مالی را با داده و منطق می‌گیرید. این نگاه تحلیلی یکی از ارزشمندترین مهارت‌ها در اقتصاد پرنوسان است.",
   "سوداگر":    "شما فرصت‌های بازار را سریع شناسایی می‌کنید. چابکی در تصمیم‌گیری قدرت اصلی شماست.",
-  "آزاد":       "شما رویکرد منعطف و خلاقانه‌ای به مسائل مالی دارید. توانایی سازگاری با شرایط متغیر از ویژگی‌های برجسته شماست.",
-  "رسمی":       "شما چارچوب‌های استاندارد مالی را ترجیح می‌دهید. این اعتماد به ساختارهای مرسوم در شرایط پایدار بسیار موثر است.",
-  "صرفه‌جو":   "شما ارزش پول را به‌خوبی درک می‌کنید و مصرف هوشمندانه دارید. قدرت تجمیع سرمایه در بلندمدت در شماست.",
-  "نوآور":      "شما به دنبال راه‌حل‌های جدید برای چالش‌های اقتصادی هستید. تفکر خلاقانه در اقتصاد امروز یک مزیت رقابتی واقعی است.",
+  "آزاد":      "شما رویکرد منعطف و خلاقانه‌ای به مسائل مالی دارید. توانایی سازگاری با شرایط متغیر از ویژگی‌های برجسته شماست.",
+  "رسمی":      "شما چارچوب‌های استاندارد مالی را ترجیح می‌دهید. این اعتماد به ساختارهای مرسوم در شرایط پایدار بسیار موثر است.",
+  "صرفه‌جو":  "شما ارزش پول را به‌خوبی درک می‌کنید و مصرف هوشمندانه دارید. قدرت تجمیع سرمایه در بلندمدت در شماست.",
+  "نوآور":     "شما به دنبال راه‌حل‌های جدید برای چالش‌های اقتصادی هستید. تفکر خلاقانه در اقتصاد امروز یک مزیت رقابتی واقعی است.",
 };
 
+// ─── آواتارها با pixel map فیکس‌شده ───
+// هر سطر دقیقاً 8 کاراکتر: s=پوست h=مو b=لباس p=شلوار _=خالی
 const AVS = [
-  {id:"محافظه‌کار",c:{s:"#FDDBB4",h:"#5D3A1A",b:"#2C3E50",p:"#1a252f"},
-   px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "]},
-  {id:"ریسک‌پذیر", c:{s:"#FDDBB4",h:"#111",b:"#C0392B",p:"#922B21"},
-   px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "]},
-  {id:"تحلیلگر",   c:{s:"#F5CBA7",h:"#6D4C41",b:"#8E44AD",p:"#4A235A"},
-   px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "]},
-  {id:"سوداگر",    c:{s:"#FDDBB4",h:"#E74C3C",b:"#F39C12",p:"#D35400"},
-   px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "]},
-  {id:"آزاد",       c:{s:"#FDDBB4",h:"#27AE60",b:"#1E8449",p:"#196F3D"},
-   px:["hhhhhhh "," hssssh "," hssssh ","  gggg  "," gggggg "," gggggg "," pp  pp "," pp  pp "]},
-  {id:"رسمی",       c:{s:"#FDDBB4",h:"#2C1810",b:"#1B2A4A",p:"#0d1b2e"},
-   px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "]},
-  {id:"صرفه‌جو",   c:{s:"#FDDBB4",h:"#7D6608",b:"#D4AC0D",p:"#7D6608"},
-   px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "]},
-  {id:"نوآور",      c:{s:"#FDDBB4",h:"#8E44AD",b:"#9B59B6",p:"#6C3483"},
-   px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "]},
+  {id:"محافظه‌کار",
+   c:{s:"#FDDBB4",h:"#5D3A1A",b:"#2C3E50",p:"#1a252f"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"ریسک‌پذیر",
+   c:{s:"#FDDBB4",h:"#111111",b:"#C0392B",p:"#922B21"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"تحلیلگر",
+   c:{s:"#F5CBA7",h:"#6D4C41",b:"#8E44AD",p:"#4A235A"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"سوداگر",
+   c:{s:"#FDDBB4",h:"#E74C3C",b:"#F39C12",p:"#D35400"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"آزاد",
+   c:{s:"#FDDBB4",h:"#27AE60",b:"#1E8449",p:"#196F3D"},
+   px:["hhhhhhh_","_hssssh_","_hssssh_","__gggg__","_gggggg_","_gggggg_","_pp__pp_","_pp__pp_"]},
+  {id:"رسمی",
+   c:{s:"#FDDBB4",h:"#2C1810",b:"#1B2A4A",p:"#0d1b2e"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"صرفه‌جو",
+   c:{s:"#FDDBB4",h:"#7D6608",b:"#D4AC0D",p:"#7D6608"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"نوآور",
+   c:{s:"#FDDBB4",h:"#8E44AD",b:"#9B59B6",p:"#6C3483"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
 ];
 
-/* ─── رنگ پس‌زمینه اورب‌ها همگام با تم ─── */
 function syncOrbColors(p, a) {
   document.querySelector(".orb1").style.background = p;
   document.querySelector(".orb2").style.background = a;
@@ -606,51 +630,71 @@ function syncOrbColors(p, a) {
   document.querySelectorAll(".pt").forEach(el => el.style.background = p);
 }
 
+// ─── drawAv فیکس‌شده ───
 function drawAv(av, sz) {
   const cv = document.createElement("canvas");
   cv.width = cv.height = sz;
+  cv.style.width = cv.style.height = sz + "px";
   cv.style.imageRendering = "pixelated";
   const ctx = cv.getContext("2d");
   ctx.imageSmoothingEnabled = false;
-  const m = {s:av.c.s,h:av.c.h,b:av.c.b,g:av.c.b,p:av.c.p," ":null};
-  const cw = sz/8, ch = sz/8;
-  av.px.forEach((row,ri) => {
-    for(let ci=0;ci<8;ci++){
-      const col = m[row[ci]||" "];
-      if(!col) return;
-      ctx.fillStyle = col;
-      ctx.fillRect(ci*cw, ri*ch, cw, ch);
-      ctx.fillStyle = "rgba(0,0,0,0.12)";
-      ctx.fillRect(ci*cw+cw-1, ri*ch, 1, ch);
-      ctx.fillRect(ci*cw, ri*ch+ch-1, cw, 1);
+
+  // نقشه رنگ: _ = شفاف، s = پوست، h = مو، b = لباس، g = لباس (آزاد)، p = شلوار
+  const cmap = {
+    "_": null,
+    "s": av.c.s,
+    "h": av.c.h,
+    "b": av.c.b,
+    "g": av.c.b,  // همان رنگ لباس برای کاراکتر g
+    "p": av.c.p,
+  };
+
+  const rows = av.px;
+  const cellW = sz / 8;
+  const cellH = sz / 8;
+
+  rows.forEach((row, ri) => {
+    for (let ci = 0; ci < 8; ci++) {
+      const key = row[ci] || "_";
+      const color = cmap[key];
+      if (!color) continue;
+      ctx.fillStyle = color;
+      ctx.fillRect(ci * cellW, ri * cellH, cellW, cellH);
+      // سایه جزئی برای عمق
+      ctx.fillStyle = "rgba(0,0,0,0.08)";
+      ctx.fillRect(ci * cellW + cellW - 1, ri * cellH, 1, cellH);
+      ctx.fillRect(ci * cellW, ri * cellH + cellH - 1, cellW, 1);
     }
   });
+
   return cv;
 }
 
 function buildGrid() {
   const g = document.getElementById("AG");
+  g.innerHTML = "";
   AVS.forEach(av => {
     const d = document.createElement("div");
     d.className = "avi";
     d.onclick = () => pickAv(d, av.id);
     const r = document.createElement("div");
     r.className = "avr";
-    r.appendChild(drawAv(av, 46));
+    r.appendChild(drawAv(av, 52));
     const n = document.createElement("span");
     n.className = "avn";
     n.textContent = av.id;
-    d.appendChild(r); d.appendChild(n);
+    d.appendChild(r);
+    d.appendChild(n);
     g.appendChild(d);
   });
 }
 
 function buildParticles() {
   const bg = document.getElementById("BG");
-  for(let i=0;i<25;i++){
+  for(let i = 0; i < 25; i++){
     const p = document.createElement("div");
     p.className = "pt";
-    const sz = (.5+Math.random()*2).toFixed(1);
+    const sz = (.5 + Math.random() * 2).toFixed(1);
     p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:0;--d:${6+Math.random()*10}s;--dl:${Math.random()*10}s;`;
     bg.appendChild(p);
   }
@@ -663,7 +707,7 @@ function applyColor(p, a) {
 }
 
 function pickAv(el, id) {
-  document.querySelectorAll(".avi").forEach(i=>i.classList.remove("sel"));
+  document.querySelectorAll(".avi").forEach(i => i.classList.remove("sel"));
   el.classList.add("sel");
   S.avatar = id;
   const t = AV_THEMES[id];
@@ -677,17 +721,17 @@ function ST2(th) {
   S.theme = th;
   document.querySelectorAll(".tc").forEach(c => {
     c.classList.remove("act");
-    if(c.querySelector("."+th)) c.classList.add("act");
+    if(c.querySelector("." + th)) c.classList.add("act");
   });
 }
 
-function loadTheme() { ST2(localStorage.getItem("econ_th")||"neon"); }
-function toF(n){ return String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]); }
+function loadTheme() { ST2(localStorage.getItem("econ_th") || "neon"); }
+function toF(n){ return String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]); }
 function fmtTime(sec){
-  const s = parseFloat(sec)||0;
-  const m = Math.floor(s/60);
-  const r = Math.round(s%60);
-  return m>0 ? toF(m)+":" + toF(String(r).padStart(2,"0")) : toF(Math.round(s))+"ث";
+  const s = parseFloat(sec) || 0;
+  const m = Math.floor(s / 60);
+  const r = Math.round(s % 60);
+  return m > 0 ? toF(m) + ":" + toF(String(r).padStart(2,"0")) : toF(Math.round(s)) + "ث";
 }
 
 const S = {qi:0,theme:"neon",avatar:"",questions:[],answers:{},comments:{},times:{},config:{}};
@@ -730,47 +774,46 @@ async function loadApp() {
         document.getElementById("PC").innerText = toF(S.count) + " نفر تاکنون شرکت کرده‌اند";
       }
 
-      /* ─── چک شرکت قبلی ─── */
-      const key = "done_" + (S.config.title||"x");
+      // ─── چک شرکت قبلی ───
+      const key = "done_" + (S.config.title || "x");
       const savedData = localStorage.getItem(key);
       if(savedData) {
         let saved = {};
         try{ saved = JSON.parse(savedData); } catch(e){ saved = {}; }
 
-        /* پر کردن بلوک */
-        const savedName    = saved.name    || "شرکت‌کننده";
-        const savedAvatar  = saved.avatar  || "";
-        const savedPersona = saved.avatar  || "—";
-        const savedTotal   = saved.total   || "0";
-        const savedQCount  = saved.qcount  || toF(S.questions.length || 0);
+        const savedName    = saved.name   || "شرکت‌کننده";
+        const savedAvatar  = saved.avatar || "";
+        const savedTotal   = saved.total  || "0";
+        const savedQCount  = saved.qcount || toF(S.questions.length || 0);
 
         document.getElementById("BLK_NAME").innerText    = savedName;
-        document.getElementById("BLK_PERSONA").innerText = savedPersona;
+        document.getElementById("BLK_PERSONA").innerText = savedAvatar || "—";
         document.getElementById("BLK_TITLE").innerText   = S.config.title    || "—";
         document.getElementById("BLK_SUB").innerText     = S.config.subtitle || "—";
         document.getElementById("BLK_QCOUNT").innerText  = savedQCount;
         document.getElementById("BLK_TIME").innerText    = fmtTime(savedTotal);
         document.getElementById("BLK_COUNT").innerText   = toF(S.count);
         document.getElementById("BLK_RL").value =
-          location.origin+location.pathname+"?ref="+encodeURIComponent(savedName);
+          location.origin + location.pathname + "?ref=" + encodeURIComponent(savedName);
 
-        /* آواتار در بلاک */
+        // آواتار در صفحه بلاک
         const blkAvEl = document.getElementById("BLK_AV");
         blkAvEl.innerHTML = "";
         const blkAv = AVS.find(a => a.id === savedAvatar);
         if(blkAv){
-          const cvs = drawAv(blkAv, 52);
-          cvs.style.borderRadius = "10px";
+          const cvs = drawAv(blkAv, 56);
           blkAvEl.appendChild(cvs);
           const bt = AV_THEMES[savedAvatar];
           if(bt) applyColor(bt.p, bt.a);
         }
 
-        /* لینک تلگرام در بلاک */
+        // لینک تلگرام در بلاک
         if(S.config.link_telegram){
           document.getElementById("BLK_TG").href = S.config.link_telegram;
         }
 
+        // ─── نمایش صفحه بلاک، مخفی کردن فرم ───
+        document.getElementById("BLK").classList.remove("h");
         document.getElementById("BLK").classList.add("on");
         document.getElementById("SF").classList.add("h");
       }
@@ -787,7 +830,7 @@ async function loadApp() {
 function startQ() {
   const nm = document.getElementById("UN").value.trim();
   const ag = document.getElementById("UA").value.trim();
-  if(!nm||!ag){ alert("لطفاً نام و سن را وارد کنید"); return; }
+  if(!nm || !ag){ alert("لطفاً نام و سن را وارد کنید"); return; }
   S.qi = 0;
   show("sq");
   renderQ();
@@ -797,23 +840,23 @@ function renderQ() {
   const q = S.questions[S.qi];
   const box = document.getElementById("QB");
   t0 = Date.now();
-  const pct = ((S.qi+1)/S.questions.length)*100;
-  document.getElementById("PB").style.width = pct+"%";
+  const pct = ((S.qi + 1) / S.questions.length) * 100;
+  document.getElementById("PB").style.width = pct + "%";
 
-  const saved = S.answers[q.id]||"";
-  const savedC = S.comments[q.id]||"";
+  const saved  = S.answers[q.id]  || "";
+  const savedC = S.comments[q.id] || "";
 
   let opts = "";
-  if(q.type==="radio"){
+  if(q.type === "radio"){
     opts = q.options.map(o => {
-      const ch = saved===o?"checked":"";
+      const ch = saved === o ? "checked" : "";
       const safe = o.replace(/"/g,"&quot;").replace(/'/g,"&#39;");
       return `<label class="ropt"><input type="radio" name="q${q.id}" value="${safe}" ${ch} onchange="SA(${q.id},'${safe}')">
         <span class="rdot"></span><span>${o}</span></label>`;
     }).join("");
-  } else if(q.type==="text"){
+  } else if(q.type === "text"){
     opts = `<textarea class="fc" rows="4" placeholder="پاسخ خود را بنویسید..." oninput="SA(${q.id},this.value)">${saved}</textarea>`;
-  } else if(q.type==="number"){
+  } else if(q.type === "number"){
     opts = `<input type="number" class="fc" value="${saved}" placeholder="عدد" oninput="SA(${q.id},this.value)">`;
   }
 
@@ -823,24 +866,24 @@ function renderQ() {
     <span class="clbl">نظر یا توضیح (اختیاری)</span>
     <textarea class="fc" rows="2" placeholder="توضیح اضافه..." oninput="SC(${q.id},this.value)">${savedC}</textarea>`;
 
-  document.getElementById("BP").style.visibility = S.qi===0?"hidden":"visible";
-  document.getElementById("BN2").innerText = S.qi===S.questions.length-1?"مرور پاسخ‌ها ←":"بعدی →";
+  document.getElementById("BP").style.visibility = S.qi === 0 ? "hidden" : "visible";
+  document.getElementById("BN2").innerText = S.qi === S.questions.length - 1 ? "مرور پاسخ‌ها ←" : "بعدی →";
 }
 
-function SA(id,v){ S.answers[id]=v; }
-function SC(id,v){ S.comments[id]=v; }
+function SA(id, v){ S.answers[id] = v; }
+function SC(id, v){ S.comments[id] = v; }
 
 function nextQ() {
   const q = S.questions[S.qi];
   if(q.required && !S.answers[q.id]){ alert("این سوال اجباری است"); return; }
-  S.times[q.id] = ((Date.now()-t0)/1000).toFixed(1);
-  if(S.qi>=S.questions.length-1){ showConf(); return; }
+  S.times[q.id] = ((Date.now() - t0) / 1000).toFixed(1);
+  if(S.qi >= S.questions.length - 1){ showConf(); return; }
   S.qi++;
   renderQ();
 }
 
 function prevQ() {
-  if(S.qi<=0) return;
+  if(S.qi <= 0) return;
   S.qi--;
   renderQ();
 }
@@ -850,71 +893,73 @@ function showConf() {
   document.getElementById("CA").value = document.getElementById("UA").value;
   const list = document.getElementById("AL");
   list.innerHTML = "";
-  S.questions.forEach((q,i) => {
-    const a = S.answers[q.id]||"";
+  S.questions.forEach((q, i) => {
+    const a = S.answers[q.id] || "";
     const d = document.createElement("div");
     d.className = "aitm";
     d.innerHTML = `<div class="aq">سوال ${toF(i+1)}: ${q.text.substring(0,55)}${q.text.length>55?"...":""}</div>
-      <div class="aa ${!a?"ae":""}">${a||"بدون پاسخ"}</div>`;
+      <div class="aa ${!a?"ae":""}">${a || "بدون پاسخ"}</div>`;
     list.appendChild(d);
   });
   show("sc");
 }
 
 function backQ() {
-  S.qi = S.questions.length-1;
+  S.qi = S.questions.length - 1;
   show("sq");
   renderQ();
 }
 
 async function doSubmit() {
   const btn = document.getElementById("BTN_SUBMIT");
-  btn.disabled=true; btn.innerText="در حال ارسال...";
+  btn.disabled = true;
+  btn.innerText = "در حال ارسال...";
 
   document.getElementById("UN").value = document.getElementById("CN").value;
   document.getElementById("UA").value = document.getElementById("CA").value;
 
-  const arr = S.questions.map((q,i)=>({
-    questionIndex:i+1, qId:i+1,
-    answer:S.answers[q.id]||"",
-    comment:S.comments[q.id]||"",
-    time:S.times[q.id]||0
+  const arr = S.questions.map((q, i) => ({
+    questionIndex: i+1, qId: i+1,
+    answer:  S.answers[q.id]  || "",
+    comment: S.comments[q.id] || "",
+    time:    S.times[q.id]    || 0
   }));
-  const total = Object.values(S.times).reduce((s,t)=>s+parseFloat(t||0),0).toFixed(1);
+  const total = Object.values(S.times).reduce((s, t) => s + parseFloat(t||0), 0).toFixed(1);
   const userName = document.getElementById("UN").value;
   const userAge  = document.getElementById("UA").value;
 
   const payload = {
-    surveyName:S.config.title||"EconGraph",
-    name:userName,
-    age:userAge,
-    avatar:S.avatar,
-    source:new URLSearchParams(location.search).get("ref")||"direct",
-    theme:S.theme, totalTime:total, answers:arr
+    surveyName: S.config.title || "EconGraph",
+    name: userName,
+    age:  userAge,
+    avatar: S.avatar,
+    source: new URLSearchParams(location.search).get("ref") || "direct",
+    theme:  S.theme,
+    totalTime: total,
+    answers: arr
   };
 
   try {
-    await fetch(API,{method:"POST",body:JSON.stringify(payload)});
+    await fetch(API, {method:"POST", body:JSON.stringify(payload)});
 
-    /* ذخیره اطلاعات کامل‌تر در localStorage */
-    const key = "done_" + (S.config.title||"x");
+    // ذخیره در localStorage
+    const key = "done_" + (S.config.title || "x");
     localStorage.setItem(key, JSON.stringify({
-      name: userName,
+      name:   userName,
       avatar: S.avatar,
-      total: total,
+      total:  total,
       qcount: toF(S.questions.length)
     }));
 
-    /* پر کردن END screen */
-    const av = AVS.find(a=>a.id===S.avatar);
+    // پر کردن END screen
+    const av = AVS.find(a => a.id === S.avatar);
     const ea = document.getElementById("EA");
     ea.innerHTML = "";
     if(av){
-      const cvs = drawAv(av, 54);
-      cvs.style.borderRadius = "10px";
+      const cvs = drawAv(av, 60);
       ea.appendChild(cvs);
     } else {
-      ea.style.display="none";
+      ea.style.display = "none";
     }
 
     document.getElementById("END_NAME").innerText        = userName;
@@ -923,10 +968,10 @@ async function doSubmit() {
     document.getElementById("END_MSG").innerText         = S.config.success_msg || AV_MSG[S.avatar] || "پاسخ‌های شما با موفقیت ذخیره شد.";
     document.getElementById("END_QCOUNT").innerText      = toF(S.questions.length);
     document.getElementById("END_TIME").innerText        = fmtTime(total);
-    document.getElementById("END_COUNT").innerText       = toF((S.count||0) + 1);
+    document.getElementById("END_COUNT").innerText       = toF((S.count || 0) + 1);
 
     document.getElementById("RL").value =
-      location.origin+location.pathname+"?ref="+encodeURIComponent(userName);
+      location.origin + location.pathname + "?ref=" + encodeURIComponent(userName);
 
     if(S.config.link_telegram){
       document.getElementById("END_TG").href = S.config.link_telegram;
@@ -935,20 +980,20 @@ async function doSubmit() {
     show("se");
   } catch(e) {
     alert("خطا در ارسال. دوباره تلاش کن.");
-    btn.disabled=false;
+    btn.disabled = false;
     btn.innerText = S.config.btn_submit || "ثبت اطلاعات";
   }
 }
 
 async function copyR() {
   const v = document.getElementById("RL").value;
-  try{ await navigator.clipboard.writeText(v); }catch(e){}
+  try{ await navigator.clipboard.writeText(v); } catch(e){}
   alert("لینک کپی شد ✓");
 }
 
 async function copyBlk() {
   const v = document.getElementById("BLK_RL").value;
-  try{ await navigator.clipboard.writeText(v); }catch(e){}
+  try{ await navigator.clipboard.writeText(v); } catch(e){}
   alert("لینک کپی شد ✓");
 }
 </script>
