@@ -52,7 +52,7 @@ body{
 .ls{font-size:.74rem;color:var(--sub);opacity:0;animation:fup .4s ease .8s forwards;letter-spacing:.07em;}
 @keyframes fup{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
 
-/* CARD — کوچیک‌تر */
+/* CARD */
 .card{
   position:relative;z-index:10;
   width:100%;max-width:420px;
@@ -89,13 +89,102 @@ body{
 .pdot{width:6px;height:6px;background:var(--p);border-radius:50%;animation:pls 2s infinite;}
 @keyframes pls{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
 
-/* BLOCK */
-.blk{display:none;text-align:center;padding:16px 0;}
+/* ─── BLOCKED SCREEN (طرح ۲) ─── */
+.blk{display:none;padding:4px 0 8px;}
 .blk.on{display:block;}
-.blk-icon{font-size:2.8rem;margin-bottom:12px;display:block;}
-.blk-title{font-size:1rem;font-weight:900;color:var(--p);margin-bottom:8px;}
-.blk-sub{font-size:.8rem;color:var(--sub);line-height:1.9;}
-.blk-name{font-size:.7rem;color:var(--sub);opacity:.4;margin-top:8px;}
+
+.blk-profile{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.blk-av-wrap{position:relative;flex-shrink:0;}
+.blk-av{
+  width:64px;height:64px;border-radius:14px;
+  border:2px solid var(--p);
+  background:rgba(255,255,255,.04);
+  display:flex;align-items:center;justify-content:center;
+  image-rendering:pixelated;
+  box-shadow:0 0 0 4px rgba(255,255,255,.04);
+}
+.blk-av canvas{border-radius:10px;}
+.blk-lock{
+  position:absolute;bottom:-7px;right:-7px;
+  width:22px;height:22px;border-radius:50%;
+  background:#f39c12;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+  font-size:11px;
+}
+.blk-info{}
+.blk-back-lbl{font-size:.7rem;color:var(--sub);margin-bottom:3px;}
+.blk-name-lbl{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:5px;}
+.blk-persona-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:20px;padding:3px 10px;
+  font-size:.7rem;color:var(--p);
+}
+.blk-persona-dot{width:5px;height:5px;border-radius:50%;background:var(--p);}
+
+.blk-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+
+.blk-quiz-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;}
+.blk-quiz-icon{
+  width:38px;height:38px;border-radius:9px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:1.1rem;
+}
+.blk-quiz-lbl{font-size:.68rem;color:var(--sub);margin-bottom:4px;}
+.blk-quiz-title{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;}
+.blk-quiz-caption{font-size:.74rem;color:var(--sub);line-height:1.75;}
+
+.blk-banner{
+  background:rgba(243,156,18,.08);
+  border:1px solid rgba(243,156,18,.2);
+  border-radius:10px;padding:10px 12px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.blk-banner-icon{font-size:1rem;flex-shrink:0;}
+.blk-banner-text{font-size:.76rem;color:rgba(243,156,18,.9);line-height:1.75;}
+
+.blk-hist-title{font-size:.7rem;color:var(--sub);margin-bottom:8px;opacity:.7;}
+.blk-hist{display:flex;gap:8px;margin-bottom:14px;}
+.blk-hist-cell{
+  flex:1;border:1px solid var(--border);
+  border-radius:10px;padding:9px 8px;text-align:center;
+  background:rgba(255,255,255,.02);
+}
+.blk-hist-v{font-size:.95rem;font-weight:700;color:var(--p);}
+.blk-hist-l{font-size:.65rem;color:var(--sub);margin-top:2px;}
+
+.blk-link-box{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;
+  margin-bottom:10px;
+}
+.blk-link-lbl{font-size:.7rem;color:var(--sub);margin-bottom:6px;opacity:.7;}
+.blk-link-row{display:flex;gap:8px;}
+.blk-link-input{
+  flex:1;background:transparent;border:none;
+  color:var(--sub);font-family:'Vazirmatn',sans-serif;font-size:.8rem;padding:0;
+}
+.blk-copy-btn{
+  background:linear-gradient(135deg,var(--p),var(--a));
+  color:white;border:none;border-radius:8px;
+  padding:6px 14px;font-size:.75rem;
+  font-family:'Vazirmatn',sans-serif;cursor:pointer;
+  font-weight:700;white-space:nowrap;
+}
+
+.blk-tg{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  width:100%;padding:10px;border-radius:10px;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  color:var(--sub);font-size:.78rem;font-family:'Vazirmatn',sans-serif;
+  cursor:pointer;text-decoration:none;transition:.2s;
+}
+.blk-tg:hover{border-color:rgba(255,255,255,.15);color:var(--text);}
+.blk-tg-icon{font-size:1rem;}
 
 /* AVATARS */
 .avtitle{text-align:center;color:var(--sub);font-size:.75rem;margin-bottom:10px;letter-spacing:.04em;}
@@ -188,20 +277,83 @@ button:active{transform:translateY(0);}
 .aa{font-size:.8rem;color:var(--p);font-weight:600;line-height:1.5;}
 .ae{color:var(--sub);font-style:italic;opacity:.5;}
 
-/* END — فقط لینک */
-#se{text-align:center;}
-.endav{width:72px;height:72px;border-radius:14px;border:2px solid var(--p);
-  background:rgba(0,210,211,.08);display:flex;align-items:center;justify-content:center;
-  margin:0 auto 12px;box-shadow:0 0 20px rgba(0,210,211,.2);image-rendering:pixelated;
-  animation:bi .5s ease;}
+/* ─── END SCREEN (طرح B) ─── */
+#se{padding:4px 0;}
+
+.end-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.end-av-wrap{position:relative;flex-shrink:0;}
+.end-av{
+  width:68px;height:68px;border-radius:14px;
+  border:2px solid var(--p);
+  background:rgba(255,255,255,.04);
+  display:flex;align-items:center;justify-content:center;
+  image-rendering:pixelated;
+  box-shadow:0 0 0 4px rgba(255,255,255,.04);
+  animation:bi .5s ease;
+}
+.end-av canvas{border-radius:10px;}
 @keyframes bi{0%{transform:scale(0);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
-.etitle{font-size:1.2rem;font-weight:900;margin-bottom:6px;}
-.esub{color:var(--sub);font-size:.8rem;margin-bottom:20px;line-height:1.8;}
-.rbox{text-align:right;}
-.rlbl{display:block;margin-bottom:6px;color:var(--sub);font-size:.76rem;}
-.rrow{display:flex;gap:8px;}
-.cpbtn{min-width:64px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--a));
-  color:white;font-weight:bold;padding:10px;font-size:.78rem;}
+.end-av-tag{
+  position:absolute;top:-8px;right:-8px;
+  background:linear-gradient(135deg,var(--p),var(--a));
+  color:white;font-size:.62rem;border-radius:6px;
+  padding:2px 7px;white-space:nowrap;font-weight:700;
+}
+.end-info{}
+.end-info-back{font-size:.7rem;color:var(--sub);margin-bottom:3px;}
+.end-info-name{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:5px;}
+.end-persona{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:20px;padding:3px 10px;
+  font-size:.7rem;color:var(--p);
+}
+.end-persona-dot{width:5px;height:5px;border-radius:50%;background:var(--p);}
+
+.end-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+
+.end-msg{
+  font-size:.8rem;color:var(--sub);line-height:1.9;
+  margin-bottom:14px;padding:10px 12px;
+  background:rgba(255,255,255,.03);
+  border-radius:10px;border-right:3px solid var(--p);
+}
+
+.end-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.end-cell{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:10px;padding:10px 8px;text-align:center;
+}
+.end-cell-v{font-size:.95rem;font-weight:700;color:var(--p);}
+.end-cell-l{font-size:.65rem;color:var(--sub);margin-top:2px;}
+
+.end-link-box{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;margin-bottom:10px;
+}
+.end-link-lbl{font-size:.7rem;color:var(--sub);margin-bottom:6px;opacity:.7;}
+.end-link-row{display:flex;gap:8px;}
+.end-link-input{
+  flex:1;background:transparent;border:none;
+  color:var(--sub);font-family:'Vazirmatn',sans-serif;font-size:.8rem;padding:0;
+}
+.end-copy-btn{
+  background:linear-gradient(135deg,var(--p),var(--a));
+  color:white;border:none;border-radius:8px;
+  padding:6px 14px;font-size:.75rem;
+  font-family:'Vazirmatn',sans-serif;cursor:pointer;
+  font-weight:700;white-space:nowrap;
+}
+
+.end-tg{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  width:100%;padding:10px;border-radius:10px;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  color:var(--sub);font-size:.78rem;font-family:'Vazirmatn',sans-serif;
+  cursor:pointer;text-decoration:none;transition:.2s;
+}
+.end-tg:hover{border-color:rgba(255,255,255,.15);color:var(--text);}
+.end-tg-icon{font-size:1rem;}
 
 .sig{position:relative;z-index:10;margin-top:16px;font-size:.68rem;color:rgba(255,255,255,.15);}
 .sig span{color:var(--p);}
@@ -210,7 +362,7 @@ button:active{transform:translateY(0);}
   body{padding:12px;}
   .card{padding:24px 16px 20px;}
   .avr{width:52px;height:52px;}
-  .rrow{flex-direction:column;}
+  .end-link-row,.blk-link-row{flex-direction:column;}
 }
 </style>
 </head>
@@ -237,11 +389,67 @@ button:active{transform:translateY(0);}
     <p class="sub" id="SB"></p>
     <div class="pbadge" id="PBG"><span class="pdot"></span><span id="PC"></span></div>
 
+    <!-- BLOCKED — طرح ۲ با آواتار -->
     <div class="blk h" id="BLK">
-      <span class="blk-icon">🔒</span>
-      <div class="blk-title">قبلاً شرکت کردید</div>
-      <div class="blk-sub">شما در این آزمون شرکت کرده‌اید.<br>تا انتشار آزمون جدید امکان شرکت مجدد وجود ندارد.</div>
-      <div class="blk-name" id="BN"></div>
+      <div class="blk-profile">
+        <div class="blk-av-wrap">
+          <div class="blk-av" id="BLK_AV"></div>
+          <div class="blk-lock">🔒</div>
+        </div>
+        <div class="blk-info">
+          <div class="blk-back-lbl">شما قبلاً شرکت کردید</div>
+          <div class="blk-name-lbl" id="BLK_NAME">—</div>
+          <div class="blk-persona-tag" id="BLK_PERSONA_TAG">
+            <span class="blk-persona-dot"></span>
+            <span id="BLK_PERSONA">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk-divider"></div>
+
+      <div class="blk-quiz-row">
+        <div class="blk-quiz-icon">📋</div>
+        <div>
+          <div class="blk-quiz-lbl">آزمون جاری</div>
+          <div class="blk-quiz-title" id="BLK_TITLE">—</div>
+          <div class="blk-quiz-caption" id="BLK_SUB">—</div>
+        </div>
+      </div>
+
+      <div class="blk-banner">
+        <div class="blk-banner-icon">⏸</div>
+        <div class="blk-banner-text">این آزمون برای شما بسته است. آزمون بعدی به زودی منتشر می‌شود.</div>
+      </div>
+
+      <div class="blk-hist-title">مشارکت قبلی شما</div>
+      <div class="blk-hist">
+        <div class="blk-hist-cell">
+          <div class="blk-hist-v" id="BLK_QCOUNT">—</div>
+          <div class="blk-hist-l">سوال</div>
+        </div>
+        <div class="blk-hist-cell">
+          <div class="blk-hist-v" id="BLK_TIME">—</div>
+          <div class="blk-hist-l">زمان</div>
+        </div>
+        <div class="blk-hist-cell">
+          <div class="blk-hist-v" id="BLK_COUNT">—</div>
+          <div class="blk-hist-l">شرکت‌کننده</div>
+        </div>
+      </div>
+
+      <div class="blk-link-box">
+        <div class="blk-link-lbl">لینک دعوت اختصاصی شما</div>
+        <div class="blk-link-row">
+          <input class="blk-link-input" id="BLK_RL" readonly>
+          <button class="blk-copy-btn" onclick="copyBlk()">کپی</button>
+        </div>
+      </div>
+
+      <a class="blk-tg" id="BLK_TG" href="#" target="_blank">
+        <span class="blk-tg-icon">✈️</span>
+        <span>کانال تلگرام معیار</span>
+      </a>
     </div>
 
     <div id="SF">
@@ -285,18 +493,54 @@ button:active{transform:translateY(0);}
     </div>
   </div>
 
-  <!-- END -->
+  <!-- END — طرح B با آواتار -->
   <div id="se" class="scr h">
-    <div class="endav" id="EA"></div>
-    <div class="etitle" id="END_EMOJI">🎉</div>
-    <div class="esub" id="END_MSG">پاسخ‌های شما با موفقیت ذخیره شد.</div>
-    <div class="rbox">
-      <label class="rlbl">لینک دعوت اختصاصی</label>
-      <div class="rrow">
-        <input type="text" id="RL" class="fc" readonly>
-        <button class="cpbtn" onclick="copyR()">کپی</button>
+    <div class="end-top">
+      <div class="end-av-wrap">
+        <div class="end-av" id="EA"></div>
+        <div class="end-av-tag" id="END_PERSONA_TAG">—</div>
+      </div>
+      <div class="end-info">
+        <div class="end-info-back">پاسخ‌ها ثبت شد</div>
+        <div class="end-info-name" id="END_NAME">—</div>
+        <div class="end-persona">
+          <span class="end-persona-dot"></span>
+          <span id="END_PERSONA">شخصیت اقتصادی</span>
+        </div>
       </div>
     </div>
+
+    <div class="end-divider"></div>
+
+    <div class="end-msg" id="END_MSG">پاسخ‌های شما با موفقیت ذخیره شد.</div>
+
+    <div class="end-grid">
+      <div class="end-cell">
+        <div class="end-cell-v" id="END_QCOUNT">—</div>
+        <div class="end-cell-l">سوال پاسخ داده شد</div>
+      </div>
+      <div class="end-cell">
+        <div class="end-cell-v" id="END_TIME">—</div>
+        <div class="end-cell-l">زمان صرف‌شده</div>
+      </div>
+      <div class="end-cell">
+        <div class="end-cell-v" id="END_COUNT">—</div>
+        <div class="end-cell-l">شرکت‌کننده تاکنون</div>
+      </div>
+    </div>
+
+    <div class="end-link-box">
+      <div class="end-link-lbl">لینک دعوت اختصاصی</div>
+      <div class="end-link-row">
+        <input type="text" id="RL" class="end-link-input" readonly>
+        <button class="end-copy-btn" onclick="copyR()">کپی</button>
+      </div>
+    </div>
+
+    <a class="end-tg" id="END_TG" href="#" target="_blank">
+      <span class="end-tg-icon">✈️</span>
+      <span>کانال تلگرام معیار</span>
+    </a>
   </div>
 </div>
 
@@ -354,6 +598,14 @@ const AVS = [
    px:["  hhhh  "," hssssh "," hssssh ","  bbbb  "," bbbbbb "," bbbbbb "," pp  pp "," pp  pp "]},
 ];
 
+/* ─── رنگ پس‌زمینه اورب‌ها همگام با تم ─── */
+function syncOrbColors(p, a) {
+  document.querySelector(".orb1").style.background = p;
+  document.querySelector(".orb2").style.background = a;
+  document.querySelector(".orb3").style.background = p;
+  document.querySelectorAll(".pt").forEach(el => el.style.background = p);
+}
+
 function drawAv(av, sz) {
   const cv = document.createElement("canvas");
   cv.width = cv.height = sz;
@@ -365,7 +617,7 @@ function drawAv(av, sz) {
   av.px.forEach((row,ri) => {
     for(let ci=0;ci<8;ci++){
       const col = m[row[ci]||" "];
-      if(!col) continue;
+      if(!col) return;
       ctx.fillStyle = col;
       ctx.fillRect(ci*cw, ri*ch, cw, ch);
       ctx.fillStyle = "rgba(0,0,0,0.12)";
@@ -407,6 +659,7 @@ function buildParticles() {
 function applyColor(p, a) {
   document.documentElement.style.setProperty("--p", p);
   document.documentElement.style.setProperty("--a", a);
+  syncOrbColors(p, a);
 }
 
 function pickAv(el, id) {
@@ -430,6 +683,12 @@ function ST2(th) {
 
 function loadTheme() { ST2(localStorage.getItem("econ_th")||"neon"); }
 function toF(n){ return String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]); }
+function fmtTime(sec){
+  const s = parseFloat(sec)||0;
+  const m = Math.floor(s/60);
+  const r = Math.round(s%60);
+  return m>0 ? toF(m)+":" + toF(String(r).padStart(2,"0")) : toF(Math.round(s))+"ث";
+}
 
 const S = {qi:0,theme:"neon",avatar:"",questions:[],answers:{},comments:{},times:{},config:{}};
 let t0 = 0;
@@ -455,16 +714,14 @@ async function loadApp() {
     S.config    = data.config    || {};
     S.count     = data.count     || 0;
 
-    // لودر رو با اسم آزمون آپدیت کن
     if(S.config.title) document.getElementById("LL").innerText = S.config.title;
 
     setTimeout(() => {
       document.getElementById("LS").classList.add("out");
       setTimeout(() => { try{document.getElementById("LS").remove();}catch(e){} }, 600);
 
-      // اعمال config از شیت
-      if(S.config.title)    document.getElementById("ST").innerText = S.config.title;
-      if(S.config.subtitle) document.getElementById("SB").innerText = S.config.subtitle;
+      if(S.config.title)     document.getElementById("ST").innerText = S.config.title;
+      if(S.config.subtitle)  document.getElementById("SB").innerText = S.config.subtitle;
       if(S.config.btn_start) document.getElementById("BTN_START").innerText = S.config.btn_start + " ←";
       if(S.config.btn_submit) document.getElementById("BTN_SUBMIT").innerText = S.config.btn_submit;
 
@@ -473,12 +730,49 @@ async function loadApp() {
         document.getElementById("PC").innerText = toF(S.count) + " نفر تاکنون شرکت کرده‌اند";
       }
 
-      // چک شرکت قبلی
+      /* ─── چک شرکت قبلی ─── */
       const key = "done_" + (S.config.title||"x");
-      if(localStorage.getItem(key)) {
-        document.getElementById("BLK").classList.remove("h");
+      const savedData = localStorage.getItem(key);
+      if(savedData) {
+        let saved = {};
+        try{ saved = JSON.parse(savedData); } catch(e){ saved = {}; }
+
+        /* پر کردن بلوک */
+        const savedName    = saved.name    || "شرکت‌کننده";
+        const savedAvatar  = saved.avatar  || "";
+        const savedPersona = saved.avatar  || "—";
+        const savedTotal   = saved.total   || "0";
+        const savedQCount  = saved.qcount  || toF(S.questions.length || 0);
+
+        document.getElementById("BLK_NAME").innerText    = savedName;
+        document.getElementById("BLK_PERSONA").innerText = savedPersona;
+        document.getElementById("BLK_TITLE").innerText   = S.config.title    || "—";
+        document.getElementById("BLK_SUB").innerText     = S.config.subtitle || "—";
+        document.getElementById("BLK_QCOUNT").innerText  = savedQCount;
+        document.getElementById("BLK_TIME").innerText    = fmtTime(savedTotal);
+        document.getElementById("BLK_COUNT").innerText   = toF(S.count);
+        document.getElementById("BLK_RL").value =
+          location.origin+location.pathname+"?ref="+encodeURIComponent(savedName);
+
+        /* آواتار در بلاک */
+        const blkAvEl = document.getElementById("BLK_AV");
+        blkAvEl.innerHTML = "";
+        const blkAv = AVS.find(a => a.id === savedAvatar);
+        if(blkAv){
+          const cvs = drawAv(blkAv, 52);
+          cvs.style.borderRadius = "10px";
+          blkAvEl.appendChild(cvs);
+          const bt = AV_THEMES[savedAvatar];
+          if(bt) applyColor(bt.p, bt.a);
+        }
+
+        /* لینک تلگرام در بلاک */
+        if(S.config.link_telegram){
+          document.getElementById("BLK_TG").href = S.config.link_telegram;
+        }
+
+        document.getElementById("BLK").classList.add("on");
         document.getElementById("SF").classList.add("h");
-        document.getElementById("BN").innerText = "آزمون: " + (S.config.title||"");
       }
 
       show("ss");
@@ -587,11 +881,13 @@ async function doSubmit() {
     time:S.times[q.id]||0
   }));
   const total = Object.values(S.times).reduce((s,t)=>s+parseFloat(t||0),0).toFixed(1);
+  const userName = document.getElementById("UN").value;
+  const userAge  = document.getElementById("UA").value;
 
   const payload = {
     surveyName:S.config.title||"EconGraph",
-    name:document.getElementById("UN").value,
-    age:document.getElementById("UA").value,
+    name:userName,
+    age:userAge,
     avatar:S.avatar,
     source:new URLSearchParams(location.search).get("ref")||"direct",
     theme:S.theme, totalTime:total, answers:arr
@@ -599,18 +895,43 @@ async function doSubmit() {
 
   try {
     await fetch(API,{method:"POST",body:JSON.stringify(payload)});
-    localStorage.setItem("done_"+(S.config.title||"x"),"1");
 
-    // end screen
+    /* ذخیره اطلاعات کامل‌تر در localStorage */
+    const key = "done_" + (S.config.title||"x");
+    localStorage.setItem(key, JSON.stringify({
+      name: userName,
+      avatar: S.avatar,
+      total: total,
+      qcount: toF(S.questions.length)
+    }));
+
+    /* پر کردن END screen */
     const av = AVS.find(a=>a.id===S.avatar);
     const ea = document.getElementById("EA");
-    if(av){ ea.appendChild(drawAv(av,58)); } else { ea.style.display="none"; }
+    ea.innerHTML = "";
+    if(av){
+      const cvs = drawAv(av, 54);
+      cvs.style.borderRadius = "10px";
+      ea.appendChild(cvs);
+    } else {
+      ea.style.display="none";
+    }
 
-    // emoji و پیام از config
-    document.getElementById("END_EMOJI").innerText = S.config.end_emoji || "🎉";
-    document.getElementById("END_MSG").innerText   = S.config.success_msg || AV_MSG[S.avatar] || "پاسخ‌های شما با موفقیت ذخیره شد.";
+    document.getElementById("END_NAME").innerText        = userName;
+    document.getElementById("END_PERSONA").innerText     = S.avatar || "—";
+    document.getElementById("END_PERSONA_TAG").innerText = S.avatar || "—";
+    document.getElementById("END_MSG").innerText         = S.config.success_msg || AV_MSG[S.avatar] || "پاسخ‌های شما با موفقیت ذخیره شد.";
+    document.getElementById("END_QCOUNT").innerText      = toF(S.questions.length);
+    document.getElementById("END_TIME").innerText        = fmtTime(total);
+    document.getElementById("END_COUNT").innerText       = toF((S.count||0) + 1);
 
-    document.getElementById("RL").value = location.origin+location.pathname+"?ref="+encodeURIComponent(document.getElementById("UN").value);
+    document.getElementById("RL").value =
+      location.origin+location.pathname+"?ref="+encodeURIComponent(userName);
+
+    if(S.config.link_telegram){
+      document.getElementById("END_TG").href = S.config.link_telegram;
+    }
+
     show("se");
   } catch(e) {
     alert("خطا در ارسال. دوباره تلاش کن.");
@@ -621,6 +942,12 @@ async function doSubmit() {
 
 async function copyR() {
   const v = document.getElementById("RL").value;
+  try{ await navigator.clipboard.writeText(v); }catch(e){}
+  alert("لینک کپی شد ✓");
+}
+
+async function copyBlk() {
+  const v = document.getElementById("BLK_RL").value;
   try{ await navigator.clipboard.writeText(v); }catch(e){}
   alert("لینک کپی شد ✓");
 }
