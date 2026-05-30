@@ -27,15 +27,21 @@ body{
   overflow-x:hidden;
 }
 
-/* BG */
+/* BG — متحرک‌تر */
 .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-.orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.2;animation:drift 18s ease-in-out infinite alternate;}
-.orb1{width:600px;height:600px;background:var(--p);top:-200px;right:-200px;}
-.orb2{width:500px;height:500px;background:var(--a);bottom:-200px;left:-150px;animation-delay:-7s;}
-.orb3{width:280px;height:280px;background:var(--p);top:40%;left:30%;animation-delay:-12s;opacity:.08;}
-@keyframes drift{from{transform:translate(0,0)scale(1);}to{transform:translate(40px,-50px)scale(1.12);}}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.38;animation:drift 10s ease-in-out infinite alternate;}
+.orb1{width:620px;height:620px;background:var(--p);top:-200px;right:-150px;}
+.orb2{width:520px;height:520px;background:var(--a);bottom:-200px;left:-100px;animation-delay:-4s;}
+.orb3{width:320px;height:320px;background:var(--p);top:35%;left:25%;animation-delay:-7s;opacity:.22;}
+.orb4{width:200px;height:200px;background:var(--a);top:10%;left:10%;animation-delay:-9s;opacity:.18;}
+@keyframes drift{
+  0%  {transform:translate(0,0)   scale(1);}
+  33% {transform:translate(30px,-40px) scale(1.08);}
+  66% {transform:translate(-20px,20px)  scale(0.95);}
+  100%{transform:translate(50px,-30px) scale(1.15);}
+}
 .pt{position:absolute;border-radius:50%;background:var(--p);opacity:0;animation:rise var(--d,8s) linear var(--dl,0s) infinite;}
-@keyframes rise{0%{opacity:0;transform:translateY(0);}10%{opacity:.4;}90%{opacity:.1;}100%{opacity:0;transform:translateY(-100vh);}}
+@keyframes rise{0%{opacity:0;transform:translateY(0);}10%{opacity:.55;}90%{opacity:.15;}100%{opacity:0;transform:translateY(-100vh);}}
 
 /* LOADER */
 #LS{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;flex-direction:column;
@@ -176,7 +182,6 @@ body{
   font-weight:700;white-space:nowrap;
 }
 
-/* تلگرام SVG آیکون */
 .tg-icon-svg{width:18px;height:18px;flex-shrink:0;}
 
 .blk-tg{
@@ -323,7 +328,7 @@ button:active{transform:translateY(0);}
   border-radius:10px;border-right:3px solid var(--p);
 }
 
-.end-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.end-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
 .end-cell{
   background:rgba(255,255,255,.03);border:1px solid var(--border);
   border-radius:10px;padding:10px 8px;text-align:center;
@@ -375,9 +380,9 @@ button:active{transform:translateY(0);}
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
 </div>
 
-<!-- SVG آیکون تلگرام (مخفی، برای استفاده مجدد) -->
 <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
   <symbol id="tg-icon" viewBox="0 0 24 24">
     <path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
@@ -399,7 +404,7 @@ button:active{transform:translateY(0);}
     <p class="sub" id="SB"></p>
     <div class="pbadge" id="PBG"><span class="pdot"></span><span id="PC"></span></div>
 
-    <!-- BLOCKED — خوش‌برگشتی -->
+    <!-- BLOCKED -->
     <div class="blk h" id="BLK">
       <div class="blk-profile">
         <div class="blk-av-wrap">
@@ -441,10 +446,6 @@ button:active{transform:translateY(0);}
         <div class="blk-hist-cell">
           <div class="blk-hist-v" id="BLK_TIME">—</div>
           <div class="blk-hist-l">زمان</div>
-        </div>
-        <div class="blk-hist-cell">
-          <div class="blk-hist-v" id="BLK_COUNT">—</div>
-          <div class="blk-hist-l">شرکت‌کننده</div>
         </div>
       </div>
 
@@ -536,10 +537,6 @@ button:active{transform:translateY(0);}
         <div class="end-cell-v" id="END_TIME">—</div>
         <div class="end-cell-l">زمان صرف‌شده</div>
       </div>
-      <div class="end-cell">
-        <div class="end-cell-v" id="END_COUNT">—</div>
-        <div class="end-cell-l">شرکت‌کننده تاکنون</div>
-      </div>
     </div>
 
     <div class="end-link-box">
@@ -594,8 +591,6 @@ const AV_MSG = {
   "نوآور":     "شما به دنبال راه‌حل‌های جدید برای چالش‌های اقتصادی هستید. تفکر خلاقانه در اقتصاد امروز یک مزیت رقابتی واقعی است.",
 };
 
-// ─── آواتارها با pixel map فیکس‌شده ───
-// هر سطر دقیقاً 8 کاراکتر: s=پوست h=مو b=لباس p=شلوار _=خالی
 const AVS = [
   {id:"محافظه‌کار",
    c:{s:"#FDDBB4",h:"#5D3A1A",b:"#2C3E50",p:"#1a252f"},
@@ -627,10 +622,10 @@ function syncOrbColors(p, a) {
   document.querySelector(".orb1").style.background = p;
   document.querySelector(".orb2").style.background = a;
   document.querySelector(".orb3").style.background = p;
+  document.querySelector(".orb4").style.background = a;
   document.querySelectorAll(".pt").forEach(el => el.style.background = p);
 }
 
-// ─── drawAv فیکس‌شده ───
 function drawAv(av, sz) {
   const cv = document.createElement("canvas");
   cv.width = cv.height = sz;
@@ -638,21 +633,10 @@ function drawAv(av, sz) {
   cv.style.imageRendering = "pixelated";
   const ctx = cv.getContext("2d");
   ctx.imageSmoothingEnabled = false;
-
-  // نقشه رنگ: _ = شفاف، s = پوست، h = مو، b = لباس، g = لباس (آزاد)، p = شلوار
-  const cmap = {
-    "_": null,
-    "s": av.c.s,
-    "h": av.c.h,
-    "b": av.c.b,
-    "g": av.c.b,  // همان رنگ لباس برای کاراکتر g
-    "p": av.c.p,
-  };
-
+  const cmap = {"_":null,"s":av.c.s,"h":av.c.h,"b":av.c.b,"g":av.c.b,"p":av.c.p};
   const rows = av.px;
   const cellW = sz / 8;
   const cellH = sz / 8;
-
   rows.forEach((row, ri) => {
     for (let ci = 0; ci < 8; ci++) {
       const key = row[ci] || "_";
@@ -660,13 +644,11 @@ function drawAv(av, sz) {
       if (!color) continue;
       ctx.fillStyle = color;
       ctx.fillRect(ci * cellW, ri * cellH, cellW, cellH);
-      // سایه جزئی برای عمق
       ctx.fillStyle = "rgba(0,0,0,0.08)";
       ctx.fillRect(ci * cellW + cellW - 1, ri * cellH, 1, cellH);
       ctx.fillRect(ci * cellW, ri * cellH + cellH - 1, cellW, 1);
     }
   });
-
   return cv;
 }
 
@@ -691,11 +673,11 @@ function buildGrid() {
 
 function buildParticles() {
   const bg = document.getElementById("BG");
-  for(let i = 0; i < 25; i++){
+  for(let i = 0; i < 35; i++){
     const p = document.createElement("div");
     p.className = "pt";
-    const sz = (.5 + Math.random() * 2).toFixed(1);
-    p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:0;--d:${6+Math.random()*10}s;--dl:${Math.random()*10}s;`;
+    const sz = (.5 + Math.random() * 3).toFixed(1);
+    p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:0;--d:${5+Math.random()*8}s;--dl:${Math.random()*10}s;`;
     bg.appendChild(p);
   }
 }
@@ -727,11 +709,15 @@ function ST2(th) {
 
 function loadTheme() { ST2(localStorage.getItem("econ_th") || "neon"); }
 function toF(n){ return String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]); }
+
+// ─── فرمت زمان کامل ───
 function fmtTime(sec){
   const s = parseFloat(sec) || 0;
   const m = Math.floor(s / 60);
   const r = Math.round(s % 60);
-  return m > 0 ? toF(m) + ":" + toF(String(r).padStart(2,"0")) : toF(Math.round(s)) + "ث";
+  if(m > 0 && r > 0) return toF(m) + " دقیقه و " + toF(r) + " ثانیه";
+  if(m > 0)          return toF(m) + " دقیقه";
+  return toF(Math.round(s)) + " ثانیه";
 }
 
 const S = {qi:0,theme:"neon",avatar:"",questions:[],answers:{},comments:{},times:{},config:{}};
@@ -792,11 +778,9 @@ async function loadApp() {
         document.getElementById("BLK_SUB").innerText     = S.config.subtitle || "—";
         document.getElementById("BLK_QCOUNT").innerText  = savedQCount;
         document.getElementById("BLK_TIME").innerText    = fmtTime(savedTotal);
-        document.getElementById("BLK_COUNT").innerText   = toF(S.count);
         document.getElementById("BLK_RL").value =
           location.origin + location.pathname + "?ref=" + encodeURIComponent(savedName);
 
-        // آواتار در صفحه بلاک
         const blkAvEl = document.getElementById("BLK_AV");
         blkAvEl.innerHTML = "";
         const blkAv = AVS.find(a => a.id === savedAvatar);
@@ -807,12 +791,10 @@ async function loadApp() {
           if(bt) applyColor(bt.p, bt.a);
         }
 
-        // لینک تلگرام در بلاک
         if(S.config.link_telegram){
           document.getElementById("BLK_TG").href = S.config.link_telegram;
         }
 
-        // ─── نمایش صفحه بلاک، مخفی کردن فرم ───
         document.getElementById("BLK").classList.remove("h");
         document.getElementById("BLK").classList.add("on");
         document.getElementById("SF").classList.add("h");
@@ -942,7 +924,6 @@ async function doSubmit() {
   try {
     await fetch(API, {method:"POST", body:JSON.stringify(payload)});
 
-    // ذخیره در localStorage
     const key = "done_" + (S.config.title || "x");
     localStorage.setItem(key, JSON.stringify({
       name:   userName,
@@ -951,7 +932,6 @@ async function doSubmit() {
       qcount: toF(S.questions.length)
     }));
 
-    // پر کردن END screen
     const av = AVS.find(a => a.id === S.avatar);
     const ea = document.getElementById("EA");
     ea.innerHTML = "";
@@ -968,7 +948,6 @@ async function doSubmit() {
     document.getElementById("END_MSG").innerText         = S.config.success_msg || AV_MSG[S.avatar] || "پاسخ‌های شما با موفقیت ذخیره شد.";
     document.getElementById("END_QCOUNT").innerText      = toF(S.questions.length);
     document.getElementById("END_TIME").innerText        = fmtTime(total);
-    document.getElementById("END_COUNT").innerText       = toF((S.count || 0) + 1);
 
     document.getElementById("RL").value =
       location.origin + location.pathname + "?ref=" + encodeURIComponent(userName);
