@@ -741,6 +741,7 @@ async function loadApp() {
     const res = await fetch(API);
     const data = await res.json();
     S.questions = data.questions || [];
+    console.log("questions loaded:", S.questions.length, S.questions);
     S.config    = data.config    || {};
     S.count     = data.count     || 0;
 
