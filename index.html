@@ -27,6 +27,7 @@ body{
   overflow-x:hidden;
 }
 
+/* BG — متحرک‌تر */
 .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
 .orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.38;animation:drift 10s ease-in-out infinite alternate;}
 .orb1{width:620px;height:620px;background:var(--p);top:-200px;right:-150px;}
@@ -42,6 +43,7 @@ body{
 .pt{position:absolute;border-radius:50%;background:var(--p);opacity:0;animation:rise var(--d,8s) linear var(--dl,0s) infinite;}
 @keyframes rise{0%{opacity:0;transform:translateY(0);}10%{opacity:.55;}90%{opacity:.15;}100%{opacity:0;transform:translateY(-100vh);}}
 
+/* LOADER */
 #LS{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:18px;transition:opacity .6s;}
 #LS.out{opacity:0;pointer-events:none;}
@@ -56,6 +58,7 @@ body{
 .ls{font-size:.74rem;color:var(--sub);opacity:0;animation:fup .4s ease .8s forwards;letter-spacing:.07em;}
 @keyframes fup{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
 
+/* CARD */
 .card{
   position:relative;z-index:10;
   width:100%;max-width:420px;
@@ -70,16 +73,19 @@ body{
 .card::before{content:"";position:absolute;top:0;left:15%;right:15%;height:1px;
   background:linear-gradient(90deg,transparent,var(--p),transparent);opacity:.5;}
 
+/* PROGRESS */
 .pw{position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.04);}
 .pb{height:100%;width:0%;background:linear-gradient(90deg,var(--p),var(--a));
   transition:width .4s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px var(--p);position:relative;}
 .pb::after{content:"";position:absolute;right:-3px;top:-2px;width:7px;height:7px;
   background:white;border-radius:50%;box-shadow:0 0 8px var(--p);}
 
+/* SCREENS */
 .scr{animation:si .35s ease;}
 @keyframes si{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .h{display:none!important;}
 
+/* TYPOGRAPHY */
 .ttl{text-align:center;font-size:1.5rem;font-weight:900;margin-bottom:5px;
   background:linear-gradient(135deg,var(--text),var(--p));-webkit-background-clip:text;
   -webkit-text-fill-color:transparent;background-clip:text;}
@@ -208,13 +214,6 @@ body{
 .fc:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(0,210,211,.08);}
 .fc::placeholder{color:var(--sub);opacity:.5;}
 textarea.fc{resize:none;min-height:64px;}
-
-/* ─── GENDER ─── */
-.gender-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px;}
-.gender-btn{padding:10px;border-radius:10px;border:1px solid var(--border);
-  background:var(--inp);color:var(--sub);font-family:inherit;font-size:.88rem;
-  cursor:pointer;transition:all .2s;text-align:center;}
-.gender-btn.sel{border-color:var(--p);background:rgba(0,210,211,.07);color:var(--text);font-weight:700;}
 
 /* THEME */
 .thwrap{margin-top:16px;}
@@ -472,38 +471,8 @@ button:active{transform:translateY(0);}
     <div id="SF">
       <div class="avtitle">شخصیت اقتصادی خود را انتخاب کنید</div>
       <div class="avgrid" id="AG"></div>
-
       <div class="fg"><label class="lbl">نام شما</label><input type="text" id="UN" class="fc" placeholder="مثلاً علی"></div>
       <div class="fg"><label class="lbl">سن</label><input type="number" id="UA" class="fc" placeholder="مثلاً ۲۲"></div>
-
-      <!-- ─── جنسیت ─── -->
-      <div class="fg">
-        <label class="lbl">جنسیت</label>
-        <div class="gender-row">
-          <div class="gender-btn" id="GB_M" onclick="pickGender('مرد')">👨 مرد</div>
-          <div class="gender-btn" id="GB_F" onclick="pickGender('زن')">👩 زن</div>
-        </div>
-      </div>
-
-      <!-- ─── استان ─── -->
-      <div class="fg">
-        <label class="lbl">استان</label>
-        <select id="UST" class="fc">
-          <option value="">انتخاب کنید...</option>
-          <option>آذربایجان شرقی</option><option>آذربایجان غربی</option>
-          <option>اردبیل</option><option>اصفهان</option><option>البرز</option>
-          <option>ایلام</option><option>بوشهر</option><option>تهران</option>
-          <option>چهارمحال و بختیاری</option><option>خراسان جنوبی</option>
-          <option>خراسان رضوی</option><option>خراسان شمالی</option><option>خوزستان</option>
-          <option>زنجان</option><option>سمنان</option><option>سیستان و بلوچستان</option>
-          <option>فارس</option><option>قزوین</option><option>قم</option>
-          <option>کردستان</option><option>کرمان</option><option>کرمانشاه</option>
-          <option>کهگیلویه و بویراحمد</option><option>گلستان</option><option>گیلان</option>
-          <option>لرستان</option><option>مازندران</option><option>مرکزی</option>
-          <option>هرمزگان</option><option>همدان</option><option>یزد</option>
-        </select>
-      </div>
-
       <div class="thwrap">
         <div class="thlbl">پوسته</div>
         <div class="thopts">
@@ -729,13 +698,6 @@ function pickAv(el, id) {
   if(t) applyColor(t.p, t.a);
 }
 
-// ─── انتخاب جنسیت ───
-function pickGender(g) {
-  S.gender = g;
-  document.getElementById("GB_M").classList.toggle("sel", g === "مرد");
-  document.getElementById("GB_F").classList.toggle("sel", g === "زن");
-}
-
 function ST2(th) {
   const t = THEMES[th];
   if(t) applyColor(t.p, t.a);
@@ -750,6 +712,7 @@ function ST2(th) {
 function loadTheme() { ST2(localStorage.getItem("econ_th") || "neon"); }
 function toF(n){ return String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]); }
 
+// ─── فرمت زمان کامل ───
 function fmtTime(sec){
   const s = parseFloat(sec) || 0;
   const m = Math.floor(s / 60);
@@ -759,8 +722,7 @@ function fmtTime(sec){
   return toF(Math.round(s)) + " ثانیه";
 }
 
-// ─── State — شامل gender و province ───
-const S = {qi:0,theme:"neon",avatar:"",gender:"",province:"",questions:[],answers:{},comments:{},times:{},config:{}};
+const S = {qi:0,theme:"neon",avatar:"",questions:[],answers:{},comments:{},times:{},config:{}};
 let t0 = 0;
 
 function show(id) {
@@ -800,6 +762,7 @@ async function loadApp() {
         document.getElementById("PC").innerText = toF(S.count) + " نفر تاکنون شرکت کرده‌اند";
       }
 
+      // ─── چک شرکت قبلی ───
       const key = "done_" + (S.config.title || "x");
       const savedData = localStorage.getItem(key);
       if(savedData) {
@@ -848,16 +811,10 @@ async function loadApp() {
   }
 }
 
-// ─── شروع آزمون — با چک جنسیت و استان ───
 function startQ() {
   const nm = document.getElementById("UN").value.trim();
   const ag = document.getElementById("UA").value.trim();
-  const st = document.getElementById("UST").value.trim();
   if(!nm || !ag){ alert("لطفاً نام و سن را وارد کنید"); return; }
-  if(!S.avatar){ alert("لطفاً یک شخصیت اقتصادی انتخاب کنید"); return; }
-  if(!S.gender){ alert("لطفاً جنسیت را انتخاب کنید"); return; }
-  if(!st){ alert("لطفاً استان را انتخاب کنید"); return; }
-  S.province = st;
   S.qi = 0;
   show("sq");
   renderQ();
@@ -955,13 +912,10 @@ async function doSubmit() {
   const userName = document.getElementById("UN").value;
   const userAge  = document.getElementById("UA").value;
 
-  // ─── payload شامل gender و province ───
   const payload = {
     surveyName: S.config.title || "EconGraph",
     name: userName,
     age:  userAge,
-    gender: S.gender,
-    province: S.province,
     avatar: S.avatar,
     source: new URLSearchParams(location.search).get("ref") || "direct",
     theme:  S.theme,
