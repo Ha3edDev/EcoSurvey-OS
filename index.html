@@ -945,15 +945,22 @@ async function doSubmit() {
   document.getElementById("UN").value = document.getElementById("CN").value;
   document.getElementById("UA").value = document.getElementById("CA").value;
 
-  const arr = S.questions.map((q, i) => ({
-    questionIndex: i+1, qId: i+1,
-    answer:  S.answers[q.id]  || "",
-    comment: S.comments[q.id] || "",
-    time:    S.times[q.id]    || 0
-  }));
-  const total = Object.values(S.times).reduce((s, t) => s + parseFloat(t||0), 0).toFixed(1);
-  const userName = document.getElementById("UN").value;
-  const userAge  = document.getElementById("UA").value;
+const arr = S.questions.map((q, i) => {
+    const answer   = S.answers[q.id]  || "";
+    const optIndex = q.options ? q.options.indexOf(answer) : -1;
+    const weight   = optIndex >= 0 ? (q.weights && q.weights[optIndex] ? q.weights[optIndex] : optIndex + 1) : 0;
+    return {
+        questionIndex: i + 1,
+        qId:     i + 1,
+        answer:  answer,
+        weight:  weight,
+        comment: S.comments[q.id] || "",
+        time:    S.times[q.id]    || 0
+    };
+});
+const total    = Object.values(S.times).reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
+const userName = document.getElementById("UN").value;
+const userAge  = document.getElementById("UA").value;
 
   // ─── payload شامل gender و province ───
   const payload = {
