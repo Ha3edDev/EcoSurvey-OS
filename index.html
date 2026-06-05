@@ -951,14 +951,13 @@ const arr = S.questions.map((q, i) => {
     const weight   = optIndex >= 0 ? (q.weights && q.weights[optIndex] ? q.weights[optIndex] : optIndex + 1) : 0;
     return {
         questionIndex: i + 1,
-        qId:     i + 1,
+        qId:     q.id,
         answer:  answer,
         weight:  weight,
         comment: S.comments[q.id] || "",
         time:    S.times[q.id]    || 0
     };
-});
-const total    = Object.values(S.times).reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
+});tal    = Object.values(S.times).reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
 const userName = document.getElementById("UN").value;
 const userAge  = document.getElementById("UA").value;
 
