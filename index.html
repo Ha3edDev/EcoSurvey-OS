@@ -374,6 +374,7 @@ button:active{transform:translateY(0);}
   .end-link-row,.blk-link-row{flex-direction:column;}
   .orb{opacity:.15;filter:blur(80px);}
   .orb3,.orb4{display:none;}
+  
 }
 </style>
 </head>
@@ -471,9 +472,12 @@ button:active{transform:translateY(0);}
     <!-- فرم ثبت نام -->
     <div id="SF">
       <div class="avtitle">شخصیت اقتصادی خود را انتخاب کنید</div>
+<p style="text-align:center;font-size:.68rem;color:var(--sub);margin-bottom:10px;opacity:.6;">
+  انتخاب کاراکتر تأثیری بر تحلیل داده‌ها ندارد و صرفاً جنبه نمادین دارد
+</p>
       <div class="avgrid" id="AG"></div>
 
-      <div class="fg"><label class="lbl">نام شما</label><input type="text" id="UN" class="fc" placeholder="مثلاً علی"></div>
+      <div class="fg"><label class="lbl">نام شما</label><input type="text" id="UN" class="fc" placeholder="مثلاً حامد"></div>
       <div class="fg"><label class="lbl">سن</label><input type="number" id="UA" class="fc" placeholder="مثلاً ۲۲"></div>
 
       <!-- ─── جنسیت ─── -->
@@ -566,12 +570,29 @@ button:active{transform:translateY(0);}
         <div class="end-cell-v" id="END_QCOUNT">—</div>
         <div class="end-cell-l">سوال پاسخ داده شد</div>
       </div>
+      
       <div class="end-cell">
         <div class="end-cell-v" id="END_TIME">—</div>
         <div class="end-cell-l">زمان صرف‌شده</div>
       </div>
     </div>
-
+<!-- RISK RESULT -->
+<div id="RISK_BOX" style="display:none;margin-bottom:14px;">
+  <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px;">
+    <div style="font-size:.7rem;color:var(--sub);margin-bottom:8px;opacity:.7;">نتیجه سنجش ریسک‌پذیری</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="font-size:1.4rem;font-weight:900;color:var(--p)" id="RISK_SCORE">—</div>
+      <div style="font-size:.8rem;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid var(--border)" id="RISK_LABEL">—</div>
+    </div>
+    <!-- نوار -->
+    <div style="height:6px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden;margin-bottom:6px;">
+      <div id="RISK_BAR" style="height:100%;width:0%;border-radius:6px;background:linear-gradient(90deg,var(--p),var(--a));transition:width .8s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px var(--p)"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--sub);opacity:.5;">
+      <span>محافظه‌کار</span><span>جسور</span>
+    </div>
+  </div>
+</div>
     <div class="end-link-box">
       <div class="end-link-lbl">لینک دعوت اختصاصی</div>
       <div class="end-link-row">
@@ -607,65 +628,50 @@ const AV_THEMES = {
   "ریسک‌پذیر": {p:"#e74c3c",a:"#922b21"},
   "تحلیلگر":   {p:"#8e44ad",a:"#4a235a"},
   "سوداگر":    {p:"#f39c12",a:"#d35400"},
+  "آزاد":      {p:"#27ae60",a:"#1e8449"},
+  "رسمی":      {p:"#2c3e50",a:"#1a252f"},
+  "صرفه‌جو":  {p:"#d4ac0d",a:"#7d6608"},
+  "نوآور":     {p:"#9b59b6",a:"#6c3483"},
 };
 
 const AV_MSG = {
-  "محافظه‌کار":"شما ثبات و امنیت را به سود ترجیح می‌دهید. رویکرد محتاطانه در بلندمدت اغلب نتیجه‌بخش است.",
-  "ریسک‌پذیر": "شما جسورانه عمل می‌کنید. پتانسیل رشد بالایی دارید اما مدیریت ریسک را جدی بگیرید.",
-  "تحلیلگر":   "شما تصمیمات مالی را با داده و منطق می‌گیرید. این نگاه تحلیلی یک مزیت واقعی است.",
+  "محافظه‌کار":"شما در شرایط اقتصادی سخت، ثبات و امنیت را به سود ترجیح می‌دهید. این رویکرد محتاطانه در بلندمدت اغلب نتیجه‌بخش است.",
+  "ریسک‌پذیر": "شما در برابر نااطمینانی اقتصادی جسورانه عمل می‌کنید. پتانسیل رشد بالایی دارید اما مدیریت ریسک را جدی بگیرید.",
+  "تحلیلگر":   "شما تصمیمات مالی را با داده و منطق می‌گیرید. این نگاه تحلیلی یکی از ارزشمندترین مهارت‌ها در اقتصاد پرنوسان است.",
   "سوداگر":    "شما فرصت‌های بازار را سریع شناسایی می‌کنید. چابکی در تصمیم‌گیری قدرت اصلی شماست.",
+  "آزاد":      "شما رویکرد منعطف و خلاقانه‌ای به مسائل مالی دارید. توانایی سازگاری با شرایط متغیر از ویژگی‌های برجسته شماست.",
+  "رسمی":      "شما چارچوب‌های استاندارد مالی را ترجیح می‌دهید. این اعتماد به ساختارهای مرسوم در شرایط پایدار بسیار موثر است.",
+  "صرفه‌جو":  "شما ارزش پول را به‌خوبی درک می‌کنید و مصرف هوشمندانه دارید. قدرت تجمیع سرمایه در بلندمدت در شماست.",
+  "نوآور":     "شما به دنبال راه‌حل‌های جدید برای چالش‌های اقتصادی هستید. تفکر خلاقانه در اقتصاد امروز یک مزیت رقابتی واقعی است.",
 };
 
 const AVS = [
   {id:"محافظه‌کار",
-   c:{s:"#FDDBB4",h:"#1a0d00",b:"#1B2A4A",p:"#0d1b2e",e:"white",t:"#2980b9"},
-   px:[
-     "__hhhh__",
-     "_hssssh_",
-     "_heessh_",
-     "_ssssss_",
-     "__bbbb__",
-     "_btbbbb_",
-     "_pp__pp_",
-     "_pp__pp_"
-   ]},
+   c:{s:"#FDDBB4",h:"#5D3A1A",b:"#2C3E50",p:"#1a252f"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
   {id:"ریسک‌پذیر",
-   c:{s:"#FDDBB4",h:"#111111",b:"#C0392B",p:"#7B241C",e:"white",t:"#e74c3c"},
-   px:[
-     "hh_hh_hh",
-     "_hssssh_",
-     "_heessh_",
-     "_ssssss_",
-     "__bbbb__",
-     "_bjbbbb_",
-     "_pp__pp_",
-     "_pp__pp_"
-   ]},
+   c:{s:"#FDDBB4",h:"#111111",b:"#C0392B",p:"#922B21"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
   {id:"تحلیلگر",
-   c:{s:"#F5CBA7",h:"#6D4C41",b:"#8E44AD",p:"#4A235A",e:"#8e44ad",t:"#f39c12"},
-   px:[
-     "_hhhh___",
-     "_hssssh_",
-     "eesssee_",
-     "_ssssss_",
-     "__bbbb__",
-     "_btbbbb_",
-     "_pp__pp_",
-     "_pp__pp_"
-   ]},
-{id:"سوداگر",
- c:{s:"#FDDBB4",h:"#D4AC0D",b:"#D4AC0D",p:"#7D6608",e:"white",t:"#e74c3c"},
- px:[
-   "hhhhhhhh",
-   "_hssssh_",
-   "_heessh_",
-   "_ssssss_",
-   "__bbbb__",
-   "_btbbbb_",
-   "_pp__pp_",
-   "_pp__pp_"
- ]},
+   c:{s:"#F5CBA7",h:"#6D4C41",b:"#8E44AD",p:"#4A235A"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"سوداگر",
+   c:{s:"#FDDBB4",h:"#E74C3C",b:"#F39C12",p:"#D35400"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"آزاد",
+   c:{s:"#FDDBB4",h:"#27AE60",b:"#1E8449",p:"#196F3D"},
+   px:["hhhhhhh_","_hssssh_","_hssssh_","__gggg__","_gggggg_","_gggggg_","_pp__pp_","_pp__pp_"]},
+  {id:"رسمی",
+   c:{s:"#FDDBB4",h:"#2C1810",b:"#1B2A4A",p:"#0d1b2e"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"صرفه‌جو",
+   c:{s:"#FDDBB4",h:"#7D6608",b:"#D4AC0D",p:"#7D6608"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  {id:"نوآور",
+   c:{s:"#FDDBB4",h:"#8E44AD",b:"#9B59B6",p:"#6C3483"},
+   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
 ];
+
 function syncOrbColors(p, a) {
   document.querySelector(".orb1").style.background = p;
   document.querySelector(".orb2").style.background = a;
@@ -681,16 +687,7 @@ function drawAv(av, sz) {
   cv.style.imageRendering = "pixelated";
   const ctx = cv.getContext("2d");
   ctx.imageSmoothingEnabled = false;
-  const cmap = {
-    "_":null,
-    "s":av.c.s,
-    "h":av.c.h,
-    "b":av.c.b,
-    "p":av.c.p,
-    "e":"white",      // سفیده چشم
-    "t":av.c.t||av.c.b, // کراوات/جزئیات
-    "j":"#111111",    // مردمک
-  };
+  const cmap = {"_":null,"s":av.c.s,"h":av.c.h,"b":av.c.b,"g":av.c.b,"p":av.c.p};
   const rows = av.px;
   const cellW = sz / 8;
   const cellH = sz / 8;
@@ -701,7 +698,7 @@ function drawAv(av, sz) {
       if (!color) continue;
       ctx.fillStyle = color;
       ctx.fillRect(ci * cellW, ri * cellH, cellW, cellH);
-      ctx.fillStyle = "rgba(0,0,0,0.06)";
+      ctx.fillStyle = "rgba(0,0,0,0.08)";
       ctx.fillRect(ci * cellW + cellW - 1, ri * cellH, 1, cellH);
       ctx.fillRect(ci * cellW, ri * cellH + cellH - 1, cellW, 1);
     }
