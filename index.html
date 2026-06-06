@@ -102,6 +102,7 @@ body{
   display:flex;align-items:center;justify-content:center;
   image-rendering:pixelated;
   box-shadow:0 0 0 4px rgba(255,255,255,.04);
+  overflow:hidden;
 }
 .blk-av canvas{border-radius:10px;display:block;}
 .blk-lock{
@@ -112,7 +113,6 @@ body{
   border:2px solid var(--bg);
   font-size:11px;
 }
-.blk-info{}
 .blk-back-lbl{font-size:.7rem;color:var(--sub);margin-bottom:3px;}
 .blk-name-lbl{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:5px;}
 .blk-persona-tag{
@@ -287,8 +287,6 @@ button:active{transform:translateY(0);}
 .ae{color:var(--sub);font-style:italic;opacity:.5;}
 
 /* ─── END SCREEN ─── */
-#se{padding:4px 0;}
-
 .end-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .end-av-wrap{position:relative;flex-shrink:0;}
 .end-av{
@@ -303,12 +301,6 @@ button:active{transform:translateY(0);}
 }
 .end-av canvas{display:block;}
 @keyframes bi{0%{transform:scale(0);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
-.end-av-tag{
-  position:absolute;top:-8px;right:-8px;
-  background:linear-gradient(135deg,var(--p),var(--a));
-  color:white;font-size:.62rem;border-radius:6px;
-  padding:2px 7px;white-space:nowrap;font-weight:700;
-}
 .end-info{}
 .end-info-back{font-size:.7rem;color:var(--sub);margin-bottom:3px;}
 .end-info-name{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:5px;}
@@ -387,12 +379,7 @@ button:active{transform:translateY(0);}
   <div class="orb orb4"></div>
 </div>
 
-<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="tg-icon" viewBox="0 0 24 24">
-    <path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-  </symbol>
-</svg>
-
+<!-- Loading Screen -->
 <div id="LS">
   <div class="ll" id="LL">EconGraph</div>
   <div class="lb-w"><div class="lb"></div></div>
@@ -402,13 +389,13 @@ button:active{transform:translateY(0);}
 <div class="card" id="CARD">
   <div class="pw"><div id="PB" class="pb"></div></div>
 
-  <!-- START -->
+  <!-- ══════════ START SCREEN ══════════ -->
   <div id="ss" class="scr h">
     <h1 class="ttl" id="ST">EconGraph</h1>
     <p class="sub" id="SB"></p>
     <div class="pbadge" id="PBG"><span class="pdot"></span><span id="PC"></span></div>
 
-    <!-- BLOCKED -->
+    <!-- حالت بلاک (قبلاً شرکت کرده) -->
     <div class="blk h" id="BLK">
       <div class="blk-profile">
         <div class="blk-av-wrap">
@@ -418,7 +405,7 @@ button:active{transform:translateY(0);}
         <div class="blk-info">
           <div class="blk-back-lbl">شما قبلاً شرکت کردید</div>
           <div class="blk-name-lbl" id="BLK_NAME">—</div>
-          <div class="blk-persona-tag" id="BLK_PERSONA_TAG">
+          <div class="blk-persona-tag">
             <span class="blk-persona-dot"></span>
             <span id="BLK_PERSONA">—</span>
           </div>
@@ -469,18 +456,17 @@ button:active{transform:translateY(0);}
       </a>
     </div>
 
-    <!-- فرم ثبت نام -->
+    <!-- فرم ثبت‌نام -->
     <div id="SF">
       <div class="avtitle">شخصیت اقتصادی خود را انتخاب کنید</div>
-<p style="text-align:center;font-size:.68rem;color:var(--sub);margin-bottom:10px;opacity:.6;">
-  انتخاب کاراکتر تأثیری بر تحلیل داده‌ها ندارد و صرفاً جنبه نمادین دارد
-</p>
+      <p style="text-align:center;font-size:.68rem;color:var(--sub);margin-bottom:10px;opacity:.6;">
+        انتخاب کاراکتر تأثیری بر تحلیل داده‌ها ندارد و صرفاً جنبه نمادین دارد
+      </p>
       <div class="avgrid" id="AG"></div>
 
       <div class="fg"><label class="lbl">نام شما</label><input type="text" id="UN" class="fc" placeholder="مثلاً حامد"></div>
       <div class="fg"><label class="lbl">سن</label><input type="number" id="UA" class="fc" placeholder="مثلاً ۲۲"></div>
 
-      <!-- ─── جنسیت ─── -->
       <div class="fg">
         <label class="lbl">جنسیت</label>
         <div class="gender-row">
@@ -489,7 +475,6 @@ button:active{transform:translateY(0);}
         </div>
       </div>
 
-      <!-- ─── استان ─── -->
       <div class="fg">
         <label class="lbl">استان</label>
         <select id="UST" class="fc">
@@ -511,18 +496,21 @@ button:active{transform:translateY(0);}
       <div class="thwrap">
         <div class="thlbl">پوسته</div>
         <div class="thopts">
-<div class="tc" onclick="ST2('neon')"><div class="td neon"></div><span class="tn">Cyber</span></div>
-<div class="tc" onclick="ST2('crimson')"><div class="td crimson"></div><span class="tn">Crimson</span></div>
-<div class="tc" onclick="ST2('corporate')"><div class="td corporate"></div><span class="tn">Cobalt</span></div>
-<div class="tc" onclick="ST2('nature')"><div class="td nature"></div><span class="tn">Forest</span></div>
-<div class="tc" onclick="ST2('sunset')"><div class="td sunset"></div><span class="tn">Ember</span></div>
+          <div class="tc" onclick="setTheme('neon')"><div class="td neon"></div><span class="tn">Cyber</span></div>
+          <div class="tc" onclick="setTheme('crimson')"><div class="td crimson"></div><span class="tn">Crimson</span></div>
+          <div class="tc" onclick="setTheme('corporate')"><div class="td corporate"></div><span class="tn">Cobalt</span></div>
+          <div class="tc" onclick="setTheme('nature')"><div class="td nature"></div><span class="tn">Forest</span></div>
+          <div class="tc" onclick="setTheme('sunset')"><div class="td sunset"></div><span class="tn">Ember</span></div>
         </div>
       </div>
-      <div class="nav"><button class="btnp" id="BTN_START" onclick="startQ()">شروع آزمون ←</button></div>
+
+      <div class="nav">
+        <button class="btnp" id="BTN_START" onclick="startQ()">شروع آزمون ←</button>
+      </div>
     </div>
   </div>
 
-  <!-- QUIZ -->
+  <!-- ══════════ QUIZ SCREEN ══════════ -->
   <div id="sq" class="scr h">
     <div id="QB"></div>
     <div class="nav">
@@ -531,7 +519,7 @@ button:active{transform:translateY(0);}
     </div>
   </div>
 
-  <!-- CONFIRM -->
+  <!-- ══════════ CONFIRM SCREEN ══════════ -->
   <div id="sc" class="scr h">
     <div class="ctitle">📋 مرور پاسخ‌ها</div>
     <div class="csub">قبل از ثبت نهایی بررسی کنید</div>
@@ -544,14 +532,14 @@ button:active{transform:translateY(0);}
     </div>
   </div>
 
-  <!-- END -->
+  <!-- ══════════ END SCREEN ══════════ -->
   <div id="se" class="scr h">
     <div class="end-top">
       <div class="end-av-wrap">
         <div class="end-av" id="EA"></div>
       </div>
       <div class="end-info">
-        <div class="end-info-back">پاسخ‌ها ثبت شد</div>
+        <div class="end-info-back">پاسخ‌ها ثبت شد ✓</div>
         <div class="end-info-name" id="END_NAME">—</div>
         <div class="end-persona">
           <span class="end-persona-dot"></span>
@@ -595,78 +583,113 @@ button:active{transform:translateY(0);}
 <div class="sig">Designed for <span>Economic Research</span></div>
 
 <script>
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
 const API = "https://script.google.com/macros/s/AKfycbza2JeMqLyPi2qEe_dpQNFATN2T_yyUNpfITy3Lf66E8DZmSSXKefq1AhITXpzt30m_Zw/exec";
 
 const THEMES = {
-  neon:      {p:"#00d2d3",a:"#5f27cd"},
-  crimson:   {p:"#ff4757",a:"#c0392b"},
-  corporate: {p:"#2980b9",a:"#1abc9c"},
-  nature:    {p:"#27ae60",a:"#f39c12"},
-  sunset:    {p:"#e67e22",a:"#e74c3c"},
+  neon:      { p:"#00d2d3", a:"#5f27cd" },
+  crimson:   { p:"#ff4757", a:"#c0392b" },
+  corporate: { p:"#2980b9", a:"#1abc9c" },
+  nature:    { p:"#27ae60", a:"#f39c12" },
+  sunset:    { p:"#e67e22", a:"#e74c3c" },
 };
 
 const AV_THEMES = {
-  "محافظه‌کار":{p:"#2980b9",a:"#1a5276"},
-  "ریسک‌پذیر": {p:"#e74c3c",a:"#922b21"},
-  "سوداگر":    {p:"#f39c12",a:"#d35400"},
-  "صرفه‌جو":  {p:"#d4ac0d",a:"#7d6608"},
+  "محافظه‌کار": { p:"#2980b9", a:"#1a5276" },
+  "ریسک‌پذیر":  { p:"#e74c3c", a:"#922b21" },
+  "سوداگر":     { p:"#f39c12", a:"#d35400" },
+  "صرفه‌جو":   { p:"#d4ac0d", a:"#7d6608" },
 };
 
 const AV_MSG = {
-  "محافظه‌کار":"شما در شرایط اقتصادی سخت، ثبات و امنیت را به سود ترجیح می‌دهید. این رویکرد محتاطانه در بلندمدت اغلب نتیجه‌بخش است.",
-  "ریسک‌پذیر": "شما در برابر نااطمینانی اقتصادی جسورانه عمل می‌کنید. پتانسیل رشد بالایی دارید اما مدیریت ریسک را جدی بگیرید.",
-  "تحلیلگر":   "شما تصمیمات مالی را با داده و منطق می‌گیرید. این نگاه تحلیلی یکی از ارزشمندترین مهارت‌ها در اقتصاد پرنوسان است.",
-  "سوداگر":    "شما فرصت‌های بازار را سریع شناسایی می‌کنید. چابکی در تصمیم‌گیری قدرت اصلی شماست.",
-  "آزاد":      "شما رویکرد منعطف و خلاقانه‌ای به مسائل مالی دارید. توانایی سازگاری با شرایط متغیر از ویژگی‌های برجسته شماست.",
-  "رسمی":      "شما چارچوب‌های استاندارد مالی را ترجیح می‌دهید. این اعتماد به ساختارهای مرسوم در شرایط پایدار بسیار موثر است.",
-  "صرفه‌جو":  "شما ارزش پول را به‌خوبی درک می‌کنید و مصرف هوشمندانه دارید. قدرت تجمیع سرمایه در بلندمدت در شماست.",
-  "نوآور":     "شما به دنبال راه‌حل‌های جدید برای چالش‌های اقتصادی هستید. تفکر خلاقانه در اقتصاد امروز یک مزیت رقابتی واقعی است.",
+  "محافظه‌کار": "شما در شرایط اقتصادی سخت، ثبات و امنیت را به سود ترجیح می‌دهید.",
+  "ریسک‌پذیر":  "شما در برابر نااطمینانی اقتصادی جسورانه عمل می‌کنید.",
+  "سوداگر":     "شما فرصت‌های بازار را سریع شناسایی می‌کنید.",
+  "صرفه‌جو":   "شما ارزش پول را به‌خوبی درک می‌کنید و مصرف هوشمندانه دارید.",
 };
 
 const AVS = [
-  {id:"محافظه‌کار",
-   c:{s:"#FDDBB4",h:"#5D3A1A",b:"#2C3E50",p:"#1a252f"},
-   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
-  {id:"ریسک‌پذیر",
-   c:{s:"#FDDBB4",h:"#111111",b:"#C0392B",p:"#922B21"},
-   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
-  {id:"صرفه‌جو",
-   c:{s:"#FDDBB4",h:"#7D6608",b:"#D4AC0D",p:"#7D6608"},
-   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
-  {id:"سوداگر",
-   c:{s:"#FDDBB4",h:"#E74C3C",b:"#F39C12",p:"#D35400"},
-   px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"]},
+  { id:"محافظه‌کار", c:{s:"#FDDBB4",h:"#5D3A1A",b:"#2C3E50",p:"#1a252f"},
+    px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"] },
+  { id:"ریسک‌پذیر",  c:{s:"#FDDBB4",h:"#111111",b:"#C0392B",p:"#922B21"},
+    px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"] },
+  { id:"صرفه‌جو",   c:{s:"#FDDBB4",h:"#7D6608",b:"#D4AC0D",p:"#7D6608"},
+    px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"] },
+  { id:"سوداگر",    c:{s:"#FDDBB4",h:"#E74C3C",b:"#F39C12",p:"#D35400"},
+    px:["_hhhh___","_hssssh_","_hssssh_","__bbbb__","_bbbbbb_","_bbbbbb_","_pp__pp_","_pp__pp_"] },
 ];
 
-function syncOrbColors(p, a) {
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+const S = {
+  qi: 0,
+  theme: "neon",
+  avatar: "",
+  gender: "",
+  province: "",
+  questions: [],
+  answers: {},
+  comments: {},
+  times: {},
+  config: {}
+};
+let t0 = 0;
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+function toF(n) {
+  return String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+}
+
+function fmtTime(sec) {
+  const s = parseFloat(sec) || 0;
+  const m = Math.floor(s / 60);
+  const r = Math.round(s % 60);
+  if (m > 0 && r > 0) return toF(m) + " دقیقه و " + toF(r) + " ثانیه";
+  if (m > 0)          return toF(m) + " دقیقه";
+  return toF(Math.round(s)) + " ثانیه";
+}
+
+function applyColor(p, a) {
+  document.documentElement.style.setProperty("--p", p);
+  document.documentElement.style.setProperty("--a", a);
   document.querySelector(".orb1").style.background = p;
   document.querySelector(".orb2").style.background = a;
   document.querySelector(".orb3").style.background = p;
   document.querySelector(".orb4").style.background = a;
-  document.querySelectorAll(".pt").forEach(el => el.style.background = p);
 }
 
+function show(id) {
+  ["ss","sq","sc","se"].forEach(x => document.getElementById(x).classList.add("h"));
+  document.getElementById(id).classList.remove("h");
+  if (id !== "sq") document.getElementById("PB").style.width = "0%";
+}
+
+// ══════════════════════════════════════════
+//  AVATAR / PIXEL DRAW
+// ══════════════════════════════════════════
 function drawAv(av, sz) {
-  const cv = document.createElement("canvas");
-  cv.width = cv.height = sz;
+  const cv  = document.createElement("canvas");
+  cv.width  = cv.height = sz;
   cv.style.width = cv.style.height = sz + "px";
   cv.style.imageRendering = "pixelated";
   const ctx = cv.getContext("2d");
   ctx.imageSmoothingEnabled = false;
-  const cmap = {"_":null,"s":av.c.s,"h":av.c.h,"b":av.c.b,"g":av.c.b,"p":av.c.p};
-  const rows = av.px;
-  const cellW = sz / 8;
-  const cellH = sz / 8;
-  rows.forEach((row, ri) => {
+  const cmap = { "_":null, "s":av.c.s, "h":av.c.h, "b":av.c.b, "g":av.c.b, "p":av.c.p };
+  const cw = sz / 8, ch = sz / 8;
+  av.px.forEach((row, ri) => {
     for (let ci = 0; ci < 8; ci++) {
-      const key = row[ci] || "_";
-      const color = cmap[key];
-      if (!color) continue;
-      ctx.fillStyle = color;
-      ctx.fillRect(ci * cellW, ri * cellH, cellW, cellH);
+      const col = cmap[row[ci] || "_"];
+      if (!col) continue;
+      ctx.fillStyle = col;
+      ctx.fillRect(ci*cw, ri*ch, cw, ch);
       ctx.fillStyle = "rgba(0,0,0,0.08)";
-      ctx.fillRect(ci * cellW + cellW - 1, ri * cellH, 1, cellH);
-      ctx.fillRect(ci * cellW, ri * cellH + cellH - 1, cellW, 1);
+      ctx.fillRect(ci*cw + cw - 1, ri*ch, 1, ch);
+      ctx.fillRect(ci*cw, ri*ch + ch - 1, cw, 1);
     }
   });
   return cv;
@@ -693,8 +716,8 @@ function buildGrid() {
 
 function buildParticles() {
   const bg = document.getElementById("BG");
-  for(let i = 0; i < 35; i++){
-    const p = document.createElement("div");
+  for (let i = 0; i < 35; i++) {
+    const p  = document.createElement("div");
     p.className = "pt";
     const sz = (.5 + Math.random() * 3).toFixed(1);
     p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:0;--d:${5+Math.random()*8}s;--dl:${Math.random()*10}s;`;
@@ -702,60 +725,42 @@ function buildParticles() {
   }
 }
 
-function applyColor(p, a) {
-  document.documentElement.style.setProperty("--p", p);
-  document.documentElement.style.setProperty("--a", a);
-  syncOrbColors(p, a);
-}
-
+// ══════════════════════════════════════════
+//  THEME / AVATAR PICK
+// ══════════════════════════════════════════
 function pickAv(el, id) {
   document.querySelectorAll(".avi").forEach(i => i.classList.remove("sel"));
   el.classList.add("sel");
   S.avatar = id;
   const t = AV_THEMES[id];
-  if(t) applyColor(t.p, t.a);
+  if (t) applyColor(t.p, t.a);
 }
 
-// ─── انتخاب جنسیت ───
 function pickGender(g) {
   S.gender = g;
   document.getElementById("GB_M").classList.toggle("sel", g === "مرد");
   document.getElementById("GB_F").classList.toggle("sel", g === "زن");
 }
 
-function ST2(th) {
+function setTheme(th) {
   const t = THEMES[th];
-  if(t) applyColor(t.p, t.a);
+  if (!t) return;
+  applyColor(t.p, t.a);
   localStorage.setItem("econ_th", th);
   S.theme = th;
   document.querySelectorAll(".tc").forEach(c => {
     c.classList.remove("act");
-    if(c.querySelector("." + th)) c.classList.add("act");
+    if (c.querySelector("." + th)) c.classList.add("act");
   });
 }
 
-function loadTheme() { ST2(localStorage.getItem("econ_th") || "neon"); }
-function toF(n){ return String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]); }
-
-function fmtTime(sec){
-  const s = parseFloat(sec) || 0;
-  const m = Math.floor(s / 60);
-  const r = Math.round(s % 60);
-  if(m > 0 && r > 0) return toF(m) + " دقیقه و " + toF(r) + " ثانیه";
-  if(m > 0)          return toF(m) + " دقیقه";
-  return toF(Math.round(s)) + " ثانیه";
+function loadTheme() {
+  setTheme(localStorage.getItem("econ_th") || "neon");
 }
 
-// ─── State — شامل gender و province ───
-const S = {qi:0,theme:"neon",avatar:"",gender:"",province:"",questions:[],answers:{},comments:{},times:{},config:{}};
-let t0 = 0;
-
-function show(id) {
-  ["ss","sq","sc","se"].forEach(x => document.getElementById(x).classList.add("h"));
-  document.getElementById(id).classList.remove("h");
-  if(id !== "sq") document.getElementById("PB").style.width = "0%";
-}
-
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
 window.addEventListener("DOMContentLoaded", () => {
   buildGrid();
   buildParticles();
@@ -765,59 +770,55 @@ window.addEventListener("DOMContentLoaded", () => {
 
 async function loadApp() {
   try {
-    const res = await fetch(API);
+    const res  = await fetch(API);
     const data = await res.json();
     S.questions = data.questions || [];
     S.config    = data.config    || {};
     S.count     = data.count     || 0;
 
-    if(S.config.title) document.getElementById("LL").innerText = S.config.title;
+    if (S.config.title) document.getElementById("LL").innerText = S.config.title;
 
     setTimeout(() => {
       document.getElementById("LS").classList.add("out");
-      setTimeout(() => { try{document.getElementById("LS").remove();}catch(e){} }, 600);
+      setTimeout(() => { try { document.getElementById("LS").remove(); } catch(e){} }, 600);
 
-      if(S.config.title)     document.getElementById("ST").innerText = S.config.title;
-      if(S.config.subtitle)  document.getElementById("SB").innerText = S.config.subtitle;
-      if(S.config.btn_start) document.getElementById("BTN_START").innerText = S.config.btn_start + " ←";
-      if(S.config.btn_submit) document.getElementById("BTN_SUBMIT").innerText = S.config.btn_submit;
+      if (S.config.title)     document.getElementById("ST").innerText = S.config.title;
+      if (S.config.subtitle)  document.getElementById("SB").innerText = S.config.subtitle;
+      if (S.config.btn_start) document.getElementById("BTN_START").innerText = S.config.btn_start + " ←";
+      if (S.config.btn_submit) document.getElementById("BTN_SUBMIT").innerText = S.config.btn_submit;
 
-      if(S.count > 0) {
+      if (S.count > 0) {
         document.getElementById("PBG").classList.add("on");
         document.getElementById("PC").innerText = toF(S.count) + " نفر تاکنون شرکت کرده‌اند";
       }
 
-      const key = "done_" + (S.config.title || "x");
-      const savedData = localStorage.getItem(key);
-      if(savedData) {
+      // چک localStorage — اگر قبلاً شرکت کرده
+      const key       = "done_" + (S.config.title || "x");
+      const savedRaw  = localStorage.getItem(key);
+      if (savedRaw) {
         let saved = {};
-        try{ saved = JSON.parse(savedData); } catch(e){ saved = {}; }
+        try { saved = JSON.parse(savedRaw); } catch(e) {}
 
-        const savedName    = saved.name   || "شرکت‌کننده";
-        const savedAvatar  = saved.avatar || "";
-        const savedTotal   = saved.total  || "0";
-        const savedQCount  = saved.qcount || toF(S.questions.length || 0);
-
-        document.getElementById("BLK_NAME").innerText    = savedName;
-        document.getElementById("BLK_PERSONA").innerText = savedAvatar || "—";
+        document.getElementById("BLK_NAME").innerText    = saved.name   || "شرکت‌کننده";
+        document.getElementById("BLK_PERSONA").innerText = saved.avatar || "—";
         document.getElementById("BLK_TITLE").innerText   = S.config.title    || "—";
         document.getElementById("BLK_SUB").innerText     = S.config.subtitle || "—";
-        document.getElementById("BLK_QCOUNT").innerText  = savedQCount;
-        document.getElementById("BLK_TIME").innerText    = fmtTime(savedTotal);
+        document.getElementById("BLK_QCOUNT").innerText  = saved.qcount || toF(S.questions.length);
+        document.getElementById("BLK_TIME").innerText    = fmtTime(saved.total || 0);
         document.getElementById("BLK_RL").value =
-          location.origin + location.pathname + "?ref=" + encodeURIComponent(savedName);
+          location.origin + location.pathname + "?ref=" + encodeURIComponent(saved.name || "");
 
+        // آواتار در صفحه بلاک
         const blkAvEl = document.getElementById("BLK_AV");
         blkAvEl.innerHTML = "";
-        const blkAv = AVS.find(a => a.id === savedAvatar);
-        if(blkAv){
-          const cvs = drawAv(blkAv, 56);
-          blkAvEl.appendChild(cvs);
-          const bt = AV_THEMES[savedAvatar];
-          if(bt) applyColor(bt.p, bt.a);
+        const blkAv = AVS.find(a => a.id === saved.avatar);
+        if (blkAv) {
+          blkAvEl.appendChild(drawAv(blkAv, 56));
+          const bt = AV_THEMES[saved.avatar];
+          if (bt) applyColor(bt.p, bt.a);
         }
 
-        if(S.config.link_telegram){
+        if (S.config.link_telegram) {
           document.getElementById("BLK_TG").href = S.config.link_telegram;
         }
 
@@ -835,15 +836,17 @@ async function loadApp() {
   }
 }
 
-// ─── شروع آزمون — با چک جنسیت و استان ───
+// ══════════════════════════════════════════
+//  QUIZ FLOW
+// ══════════════════════════════════════════
 function startQ() {
   const nm = document.getElementById("UN").value.trim();
   const ag = document.getElementById("UA").value.trim();
   const st = document.getElementById("UST").value.trim();
-  if(!nm || !ag){ alert("لطفاً نام و سن را وارد کنید"); return; }
-  if(!S.avatar){ alert("لطفاً یک شخصیت اقتصادی انتخاب کنید"); return; }
-  if(!S.gender){ alert("لطفاً جنسیت را انتخاب کنید"); return; }
-  if(!st){ alert("لطفاً استان را انتخاب کنید"); return; }
+  if (!nm || !ag)  { alert("لطفاً نام و سن را وارد کنید"); return; }
+  if (!S.avatar)   { alert("لطفاً یک شخصیت اقتصادی انتخاب کنید"); return; }
+  if (!S.gender)   { alert("لطفاً جنسیت را انتخاب کنید"); return; }
+  if (!st)         { alert("لطفاً استان را انتخاب کنید"); return; }
   S.province = st;
   S.qi = 0;
   show("sq");
@@ -851,9 +854,10 @@ function startQ() {
 }
 
 function renderQ() {
-  const q = S.questions[S.qi];
+  const q   = S.questions[S.qi];
   const box = document.getElementById("QB");
   t0 = Date.now();
+
   const pct = ((S.qi + 1) / S.questions.length) * 100;
   document.getElementById("PB").style.width = pct + "%";
 
@@ -861,16 +865,18 @@ function renderQ() {
   const savedC = S.comments[q.id] || "";
 
   let opts = "";
-  if(q.type === "radio"){
+  if (q.type === "radio") {
     opts = q.options.map(o => {
-      const ch = saved === o ? "checked" : "";
+      const ch   = saved === o ? "checked" : "";
       const safe = o.replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-      return `<label class="ropt"><input type="radio" name="q${q.id}" value="${safe}" ${ch} onchange="SA(${q.id},'${safe}')">
-        <span class="rdot"></span><span>${o}</span></label>`;
+      return `<label class="ropt">
+        <input type="radio" name="q${q.id}" value="${safe}" ${ch} onchange="SA(${q.id},'${safe}')">
+        <span class="rdot"></span><span>${o}</span>
+      </label>`;
     }).join("");
-  } else if(q.type === "text"){
+  } else if (q.type === "text") {
     opts = `<textarea class="fc" rows="4" placeholder="پاسخ خود را بنویسید..." oninput="SA(${q.id},this.value)">${saved}</textarea>`;
-  } else if(q.type === "number"){
+  } else if (q.type === "number") {
     opts = `<input type="number" class="fc" value="${saved}" placeholder="عدد" oninput="SA(${q.id},this.value)">`;
   }
 
@@ -878,26 +884,27 @@ function renderQ() {
     <div class="qcard"><div class="qtxt">${S.qi+1}. ${q.text}</div></div>
     ${opts}
     <span class="clbl">نظر یا توضیح (اختیاری)</span>
-    <textarea class="fc" rows="2" placeholder="توضیح اضافه..." oninput="SC(${q.id},this.value)">${savedC}</textarea>`;
+    <textarea class="fc" rows="2" placeholder="توضیح اضافه..." oninput="SC(${q.id},this.value)">${savedC}</textarea>
+  `;
 
-  document.getElementById("BP").style.visibility = S.qi === 0 ? "hidden" : "visible";
+  document.getElementById("BP").style.visibility  = S.qi === 0 ? "hidden" : "visible";
   document.getElementById("BN2").innerText = S.qi === S.questions.length - 1 ? "مرور پاسخ‌ها ←" : "بعدی →";
 }
 
-function SA(id, v){ S.answers[id] = v; }
-function SC(id, v){ S.comments[id] = v; }
+function SA(id, v) { S.answers[id]  = v; }
+function SC(id, v) { S.comments[id] = v; }
 
 function nextQ() {
   const q = S.questions[S.qi];
-  if(q.required && !S.answers[q.id]){ alert("این سوال اجباری است"); return; }
+  if (q.required && !S.answers[q.id]) { alert("این سوال اجباری است"); return; }
   S.times[q.id] = ((Date.now() - t0) / 1000).toFixed(1);
-  if(S.qi >= S.questions.length - 1){ showConf(); return; }
+  if (S.qi >= S.questions.length - 1) { showConf(); return; }
   S.qi++;
   renderQ();
 }
 
 function prevQ() {
-  if(S.qi <= 0) return;
+  if (S.qi <= 0) return;
   S.qi--;
   renderQ();
 }
@@ -911,8 +918,10 @@ function showConf() {
     const a = S.answers[q.id] || "";
     const d = document.createElement("div");
     d.className = "aitm";
-    d.innerHTML = `<div class="aq">سوال ${toF(i+1)}: ${q.text.substring(0,55)}${q.text.length>55?"...":""}</div>
-      <div class="aa ${!a?"ae":""}">${a || "بدون پاسخ"}</div>`;
+    d.innerHTML = `
+      <div class="aq">سوال ${toF(i+1)}: ${q.text.substring(0,55)}${q.text.length>55?"...":""}</div>
+      <div class="aa ${!a?"ae":""}">${a || "بدون پاسخ"}</div>
+    `;
     list.appendChild(d);
   });
   show("sc");
@@ -924,96 +933,112 @@ function backQ() {
   renderQ();
 }
 
+// ══════════════════════════════════════════
+//  SUBMIT  ← اصلی‌ترین تغییر
+// ══════════════════════════════════════════
 async function doSubmit() {
   const btn = document.getElementById("BTN_SUBMIT");
-  btn.disabled = true;
+  btn.disabled  = true;
   btn.innerText = "در حال ارسال...";
 
-  document.getElementById("UN").value = document.getElementById("CN").value;
-  document.getElementById("UA").value = document.getElementById("CA").value;
+  // نام و سن ممکنه توی confirm ویرایش شده باشه
+  const userName = document.getElementById("CN").value.trim() || document.getElementById("UN").value.trim();
+  const userAge  = document.getElementById("CA").value.trim() || document.getElementById("UA").value.trim();
+  document.getElementById("UN").value = userName;
+  document.getElementById("UA").value = userAge;
 
-const arr = S.questions.map((q, i) => {
+  const total = Object.values(S.times).reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
+
+  const arr = S.questions.map((q, i) => {
     const answer   = S.answers[q.id]  || "";
     const optIndex = q.options ? q.options.indexOf(answer) : -1;
     const weight   = optIndex >= 0 ? (q.weights && q.weights[optIndex] ? q.weights[optIndex] : optIndex + 1) : 0;
     return {
-        questionIndex: i + 1,
-        qId:     i + 1,
-        answer:  answer,
-        weight:  weight,
-        comment: S.comments[q.id] || "",
-        time:    S.times[q.id]    || 0
+      questionIndex: i + 1,
+      qId:     i + 1,
+      answer,
+      weight,
+      comment: S.comments[q.id] || "",
+      time:    S.times[q.id]    || 0
     };
-});
-const total    = Object.values(S.times).reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
-const userName = document.getElementById("UN").value;
-const userAge  = document.getElementById("UA").value;
-  // ─── payload شامل gender و province ───
+  });
+
   const payload = {
     surveyName: S.config.title || "EconGraph",
-    name: userName,
-    age:  userAge,
-    gender: S.gender,
-    province: S.province,
-    avatar: S.avatar,
-    source: new URLSearchParams(location.search).get("ref") || "direct",
-    theme:  S.theme,
-    totalTime: total,
-    answers: arr
+    name:       userName,
+    age:        userAge,
+    gender:     S.gender,
+    province:   S.province,
+    avatar:     S.avatar,
+    source:     new URLSearchParams(location.search).get("ref") || "direct",
+    theme:      S.theme,
+    totalTime:  total,
+    answers:    arr
   };
 
   try {
-     await fetch(API, {method:"POST", mode:"no-cors", body:JSON.stringify(payload)});
+    // ─── FIX: no-cors از redirect مرورگر جلوگیری می‌کند
+    //     داده قبلاً به شیت رسیده — نتیجه رو نمی‌خوانیم
+    fetch(API, {
+      method: "POST",
+      mode:   "no-cors",
+      body:   JSON.stringify(payload)
+    });
 
+    // ذخیره در localStorage تا صفحه blocked نشون داده بشه
     const key = "done_" + (S.config.title || "x");
     localStorage.setItem(key, JSON.stringify({
       name:   userName,
       avatar: S.avatar,
-      total:  total,
+      total,
       qcount: toF(S.questions.length)
     }));
 
+    // نمایش صفحه پایان
     const av = AVS.find(a => a.id === S.avatar);
     const ea = document.getElementById("EA");
     ea.innerHTML = "";
-    if(av){
-      const cvs = drawAv(av, 60);
-      ea.appendChild(cvs);
+    if (av) {
+      ea.appendChild(drawAv(av, 60));
     } else {
       ea.style.display = "none";
     }
 
-    document.getElementById("END_NAME").innerText        = userName;
-    document.getElementById("END_PERSONA").innerText     = S.avatar || "—";
-    document.getElementById("END_PERSONA_TAG").innerText = S.avatar || "—";
-    document.getElementById("END_MSG").innerText         = S.config.success_msg || AV_MSG[S.avatar] || "پاسخ‌های شما با موفقیت ذخیره شد.";
-    document.getElementById("END_QCOUNT").innerText      = toF(S.questions.length);
-    document.getElementById("END_TIME").innerText        = fmtTime(total);
-
-    document.getElementById("RL").value =
+    document.getElementById("END_NAME").innerText    = userName;
+    document.getElementById("END_PERSONA").innerText = S.avatar || "—";
+    document.getElementById("END_MSG").innerText     = S.config.success_msg || AV_MSG[S.avatar] || "پاسخ‌های شما با موفقیت ذخیره شد.";
+    document.getElementById("END_QCOUNT").innerText  = toF(S.questions.length);
+    document.getElementById("END_TIME").innerText    = fmtTime(total);
+    document.getElementById("RL").value              =
       location.origin + location.pathname + "?ref=" + encodeURIComponent(userName);
 
-    if(S.config.link_telegram){
+    if (S.config.link_telegram) {
       document.getElementById("END_TG").href = S.config.link_telegram;
     }
 
     show("se");
+
   } catch(e) {
-    alert("خطا در ارسال. دوباره تلاش کن.");
-    btn.disabled = false;
+    // با no-cors این catch اجرا نمی‌شه ولی به عنوان fallback نگه‌داریم
+    console.error("Submit error:", e);
+    btn.disabled  = false;
     btn.innerText = S.config.btn_submit || "ثبت اطلاعات";
+    alert("خطا در ارسال. دوباره تلاش کن.");
   }
 }
 
+// ══════════════════════════════════════════
+//  COPY LINKS
+// ══════════════════════════════════════════
 async function copyR() {
   const v = document.getElementById("RL").value;
-  try{ await navigator.clipboard.writeText(v); } catch(e){}
+  try { await navigator.clipboard.writeText(v); } catch(e) {}
   alert("لینک کپی شد ✓");
 }
 
 async function copyBlk() {
   const v = document.getElementById("BLK_RL").value;
-  try{ await navigator.clipboard.writeText(v); } catch(e){}
+  try { await navigator.clipboard.writeText(v); } catch(e) {}
   alert("لینک کپی شد ✓");
 }
 </script>
