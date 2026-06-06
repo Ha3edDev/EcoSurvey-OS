@@ -586,7 +586,7 @@ button:active{transform:translateY(0);}
 // ══════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════
-const API = "https://script.google.com/macros/s/AKfycbza2JeMqLyPi2qEe_dpQNFATN2T_yyUNpfITy3Lf66E8DZmSSXKefq1AhITXpzt30m_Zw/exec";
+const API = "https://script.google.com/macros/s/AKfycbwLCQxFGF3TDZshRt9MBtaOUgvGxg0ua_-DYftDHCsmUAKMlco3sHy7a9ytDRzOaWuP/exec";
 
 const THEMES = {
   neon:      { p:"#00d2d3", a:"#5f27cd" },
@@ -637,6 +637,7 @@ const S = {
   config: {}
 };
 let t0 = 0;
+let quizStartTime = 0;
 
 // ══════════════════════════════════════════
 //  HELPERS
@@ -849,6 +850,7 @@ function startQ() {
   if (!st)         { alert("لطفاً استان را انتخاب کنید"); return; }
   S.province = st;
   S.qi = 0;
+  quizStartTime = Date.now(); // ثبت زمان شروع کل آزمون
   show("sq");
   renderQ();
 }
@@ -947,7 +949,10 @@ async function doSubmit() {
   document.getElementById("UN").value = userName;
   document.getElementById("UA").value = userAge;
 
-  const total = Object.values(S.times).reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
+  // زمان واقعی از شروع آزمون تا ثبت
+  const total = quizStartTime > 0
+    ? ((Date.now() - quizStartTime) / 1000).toFixed(1)
+    : Object.values(S.times).reduce((s, t) => s + parseFloat(t || 0), 0).toFixed(1);
 
   const arr = S.questions.map((q, i) => {
     const answer   = S.answers[q.id]  || "";
@@ -963,6 +968,9 @@ async function doSubmit() {
     };
   });
 
+  const now = new Date();
+  const timestamp = now.toLocaleDateString("en-US") + " " + now.toLocaleTimeString("en-GB");
+
   const payload = {
     surveyName: S.config.title || "EconGraph",
     name:       userName,
@@ -973,6 +981,7 @@ async function doSubmit() {
     source:     new URLSearchParams(location.search).get("ref") || "direct",
     theme:      S.theme,
     totalTime:  total,
+    timestamp:  timestamp,
     answers:    arr
   };
 
