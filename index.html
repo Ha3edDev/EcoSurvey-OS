@@ -1032,6 +1032,43 @@ const userAge  = document.getElementById("UA").value;
     }
 
     show("se");
+    // محاسبه ریسک
+(function(){
+  let total = 0, count = 0;
+  S.questions.forEach((q) => {
+    const w = q.weights;
+    if (!w || w.every(x => !x || x === 0)) return;
+    const ans = S.answers[q.id];
+    if (!ans) return;
+    const idx = q.options ? q.options.indexOf(ans) : -1;
+    if (idx < 0) return;
+    const weight = w[idx];
+    if (!weight || weight === 0) return;
+    total += weight;
+    count++;
+  });
+
+  if (count === 0) return;
+
+  const avg = Math.round((total / count) * 100) / 100;
+  const pct = ((avg - 1) / 3) * 100;
+
+  const profiles = [
+    { max: 1.5, label: "محافظه‌کار", icon: "🔵" },
+    { max: 2.5, label: "محتاط",      icon: "🟡" },
+    { max: 3.5, label: "ریسک‌پذیر",  icon: "🟠" },
+    { max: 9,   label: "جسور",       icon: "🔴" },
+  ];
+  const p = profiles.find(x => avg < x.max) || profiles[3];
+
+  document.getElementById("RISK_SCORE").innerText = p.icon + " " + toF(avg.toFixed(2)) + " از ۴";
+  document.getElementById("RISK_LABEL").innerText = p.label;
+  document.getElementById("RISK_BOX").style.display = "block";
+
+  setTimeout(() => {
+    document.getElementById("RISK_BAR").style.width = pct + "%";
+  }, 300);
+})();
   } catch(e) {
     alert("خطا در ارسال. دوباره تلاش کن.");
     btn.disabled = false;
