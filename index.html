@@ -374,6 +374,7 @@ button:active{transform:translateY(0);}
   .end-link-row,.blk-link-row{flex-direction:column;}
   .orb{opacity:.15;filter:blur(80px);}
   .orb3,.orb4{display:none;}
+  
 }
 </style>
 </head>
@@ -471,9 +472,12 @@ button:active{transform:translateY(0);}
     <!-- فرم ثبت نام -->
     <div id="SF">
       <div class="avtitle">شخصیت اقتصادی خود را انتخاب کنید</div>
+<p style="text-align:center;font-size:.68rem;color:var(--sub);margin-bottom:10px;opacity:.6;">
+  انتخاب کاراکتر تأثیری بر تحلیل داده‌ها ندارد و صرفاً جنبه نمادین دارد
+</p>
       <div class="avgrid" id="AG"></div>
 
-      <div class="fg"><label class="lbl">نام شما</label><input type="text" id="UN" class="fc" placeholder="مثلاً علی"></div>
+      <div class="fg"><label class="lbl">نام شما</label><input type="text" id="UN" class="fc" placeholder="مثلاً حامد"></div>
       <div class="fg"><label class="lbl">سن</label><input type="number" id="UA" class="fc" placeholder="مثلاً ۲۲"></div>
 
       <!-- ─── جنسیت ─── -->
@@ -566,12 +570,29 @@ button:active{transform:translateY(0);}
         <div class="end-cell-v" id="END_QCOUNT">—</div>
         <div class="end-cell-l">سوال پاسخ داده شد</div>
       </div>
+      
       <div class="end-cell">
         <div class="end-cell-v" id="END_TIME">—</div>
         <div class="end-cell-l">زمان صرف‌شده</div>
       </div>
     </div>
-
+<!-- RISK RESULT -->
+<div id="RISK_BOX" style="display:none;margin-bottom:14px;">
+  <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px;">
+    <div style="font-size:.7rem;color:var(--sub);margin-bottom:8px;opacity:.7;">نتیجه سنجش ریسک‌پذیری</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="font-size:1.4rem;font-weight:900;color:var(--p)" id="RISK_SCORE">—</div>
+      <div style="font-size:.8rem;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid var(--border)" id="RISK_LABEL">—</div>
+    </div>
+    <!-- نوار -->
+    <div style="height:6px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden;margin-bottom:6px;">
+      <div id="RISK_BAR" style="height:100%;width:0%;border-radius:6px;background:linear-gradient(90deg,var(--p),var(--a));transition:width .8s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px var(--p)"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--sub);opacity:.5;">
+      <span>محافظه‌کار</span><span>جسور</span>
+    </div>
+  </div>
+</div>
     <div class="end-link-box">
       <div class="end-link-lbl">لینک دعوت اختصاصی</div>
       <div class="end-link-row">
